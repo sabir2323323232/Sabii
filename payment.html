@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - Withdraw Payment</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.05);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    }
+
+    .sabii-input {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .sabii-input:focus {
+      border-color: #C5A059;
+      box-shadow: 0 0 8px rgba(197, 160, 89, 0.25);
+      outline: none;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FFFFFF; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-sabii-gold/15 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Withdrawal Portal</span>
+        </div>
+      </a>
+
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="py-1.5 px-3 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-6">
+
+    <!-- Top Info Card: Real-time Balance Display -->
+    <div class="sabii-card rounded-2xl p-4 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 flex items-center justify-between">
+      <div>
+        <p class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Your Live Balance</p>
+        <h3 id="live-balance" class="text-xl sm:text-2xl font-bold sabii-gold-text mt-0.5">Rs 0</h3>
+      </div>
+      <div class="text-right">
+        <span class="text-[10px] text-red-500 bg-red-50 border border-red-200 px-2.5 py-1 rounded-full font-bold inline-block">
+          Minimum Withdraw: Rs 250
+        </span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Left Column: Withdraw Request Form -->
+      <section class="sabii-card rounded-2xl p-5 space-y-4">
+        <div class="border-b border-stone-100 pb-3">
+          <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
+            <i class="fa-solid fa-money-bill-transfer text-sabii-gold"></i> Submit Withdraw Request
+          </h3>
+          <p class="text-xs text-stone-400">Apni account details dakhil karein aur withdrawal request bheinjein.</p>
+        </div>
+
+        <form id="withdraw-form" onsubmit="handleWithdrawSubmit(event)" class="space-y-3.5">
+          
+          <!-- Account Title / Name -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Account Holder Name</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-user"></i></span>
+              <input type="text" id="acc-name" required placeholder="Easypaisa/Jazzcash name" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+            </div>
+          </div>
+
+          <!-- Account Type / Method -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Payment Method</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-wallet"></i></span>
+              <select id="acc-type" required class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800 bg-white">
+                <option value="EasyPaisa">EasyPaisa</option>
+                <option value="JazzCash">JazzCash</option>
+                <option value="Bank Transfer">Bank Transfer</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Mobile / Account Number -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Account / Mobile Number</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-phone"></i></span>
+              <input type="text" id="acc-number" required placeholder="03001234567" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+            </div>
+          </div>
+
+          <!-- Amount -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Withdraw Amount (PKR)</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-coins"></i></span>
+              <input type="number" id="withdraw-amount" min="250" required placeholder="Minimum 250" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+            </div>
+          </div>
+
+          <button type="submit" id="submit-btn" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 mt-2 shadow-md">
+            <span>Submit Request</span>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </section>
+
+      <!-- Right Column: Live Status History -->
+      <section class="sabii-card rounded-2xl p-5 space-y-4">
+        <div class="border-b border-stone-100 pb-3 flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-sabii-gold"></i> Withdrawal History & Status
+            </h3>
+            <p class="text-xs text-stone-400">Yahan aapki request ka status live update hoga.</p>
+          </div>
+          <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Real-time</span>
+        </div>
+
+        <div id="history-list" class="space-y-3 max-h-[380px] overflow-y-auto pr-1">
+          <div class="text-center py-6 text-stone-400 text-xs">Loading history...</div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
+  </footer>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getDatabase, 
+      ref, 
+      set, 
+      push, 
+      onValue, 
+      update 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    let currentUserId = null;
+    let currentUserBalance = 0;
+    let processedRejections = new Set(); // Prevent double refunding locally
+
+    // Toast Alert Function
+    window.showToast = function(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColor = type === 'success' 
+        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' 
+        : 'bg-red-900 border-red-500 text-white';
+
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
+      
+      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
+
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          ${icon}
+          <span>${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    };
+
+    // Form Submission
+    window.handleWithdrawSubmit = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('submit-btn');
+      const amountInput = parseFloat(document.getElementById('withdraw-amount').value);
+      const name = document.getElementById('acc-name').value.trim();
+      const method = document.getElementById('acc-type').value;
+      const number = document.getElementById('acc-number').value.trim();
+
+      if (amountInput < 250) {
+        showToast("Minimum withdrawal amount 250 Rupees hai!", "error");
+        return;
+      }
+
+      if (amountInput > currentUserBalance) {
+        showToast("Aap ke paas itna balance nahi hai!", "error");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
+
+      try {
+        // 1. New balance calculate & deduct
+        const newBalance = currentUserBalance - amountInput;
+        await update(ref(db, 'users/' + currentUserId), {
+          balance: newBalance
+        });
+
+        // 2. Push Request to `admin/withdrawals` & `users/{uid}/withdrawals`
+        const newWithdrawRef = push(ref(db, 'admin/withdrawals'));
+        const withdrawId = newWithdrawRef.key;
+
+        const withdrawData = {
+          id: withdrawId,
+          uid: currentUserId,
+          accountName: name,
+          method: method,
+          accountNumber: number,
+          amount: amountInput,
+          status: 'Pending', // Pending, Approved, Rejected
+          refunded: false,
+          timestamp: new Date().toISOString()
+        };
+
+        await set(newWithdrawRef, withdrawData);
+        await set(ref(db, `user_withdrawals/${currentUserId}/${withdrawId}`), withdrawData);
+
+        showToast("Withdrawal request kamyabi se bhej di gayi hai!", "success");
+        document.getElementById('withdraw-form').reset();
+
+      } catch (err) {
+        console.error(err);
+        showToast("Request bhejte waqt masla aya!", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Submit Request</span> <i class="fa-solid fa-paper-plane"></i>`;
+      }
+    };
+
+    // Auth State Observer
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUserId = user.uid;
+
+        // Sync Balance
+        onValue(ref(db, 'users/' + currentUserId), (snapshot) => {
+          if (snapshot.exists()) {
+            currentUserBalance = snapshot.val().balance || 0;
+            document.getElementById('live-balance').innerText = `Rs ${currentUserBalance}`;
+          }
+        });
+
+        // Realtime Listener for History & Status (from user's node & admin updates)
+        onValue(ref(db, `user_withdrawals/${currentUserId}`), (snapshot) => {
+          const container = document.getElementById('history-list');
+          container.innerHTML = "";
+
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const keys = Object.keys(data).reverse(); // Latest first
+
+            keys.forEach((key) => {
+              const item = data[key];
+
+              // Check if Admin Rejected and needs refund
+              if (item.status === 'Rejected' && !item.refunded && !processedRejections.has(key)) {
+                processedRejections.add(key);
+
+                // Auto Refund Balance to User
+                const refundedBalance = currentUserBalance + item.amount;
+                update(ref(db, 'users/' + currentUserId), { balance: refundedBalance });
+                
+                // Update refund flag
+                update(ref(db, `user_withdrawals/${currentUserId}/${key}`), { refunded: true });
+                update(ref(db, `admin/withdrawals/${key}`), { refunded: true });
+
+                showToast(`Request reject hone par Rs ${item.amount} aap ke balance me wapis aagaye!`, "success");
+              }
+
+              // Status Badge UI
+              let statusBadge = "";
+              if (item.status === 'Pending') {
+                statusBadge = `<span class="bg-amber-50 text-amber-600 border border-amber-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock"></i> Pending</span>`;
+              } else if (item.status === 'Approved') {
+                statusBadge = `<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-check"></i> Approved</span>`;
+              } else if (item.status === 'Rejected') {
+                statusBadge = `<span class="bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>`;
+              }
+
+              const card = document.createElement('div');
+              card.className = "sabii-card rounded-xl p-3 flex items-center justify-between bg-stone-50/50";
+              card.innerHTML = `
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-stone-800">${item.method}</span>
+                    <span class="text-[11px] text-stone-500">(${item.accountNumber})</span>
+                  </div>
+                  <p class="text-[10px] text-stone-400 mt-0.5">${new Date(item.timestamp).toLocaleDateString()} - ${item.accountName}</p>
+                </div>
+                <div class="text-right">
+                  <span class="font-bold text-xs sabii-gold-text block mb-1">Rs ${item.amount}</span>
+                  ${statusBadge}
+                </div>
+              `;
+              container.appendChild(card);
+            });
+          } else {
+            container.innerHTML = `
+              <div class="text-center py-6 text-stone-400 text-xs">
+                Abhi tak koi withdrawal request nahi ki gayi.
+              </div>
+            `;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
