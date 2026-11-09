@@ -81,16 +81,9 @@
       outline: none;
     }
 
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #FAF9F6;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #C5A059;
-      border-radius: 10px;
-    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FAF9F6; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
 </head>
 <body class="flex items-center justify-center p-4 sm:p-6 relative overflow-x-hidden">
@@ -163,7 +156,6 @@
           </p>
         </div>
       </div>
-
 
       <!-- Register Form -->
       <div id="register-section" class="hidden max-w-xl mx-auto space-y-5">
@@ -252,99 +244,6 @@
         </div>
       </div>
 
-
-      <!-- Dashboard (Logged In User) -->
-      <div id="dashboard-section" class="hidden space-y-6">
-        
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-stone-900 via-stone-800 to-stone-900 text-white shadow-lg">
-          <div class="text-center sm:text-left space-y-1">
-            <span class="px-3 py-1 text-[10px] rounded-full bg-sabii-gold/20 border border-sabii-gold/40 text-sabii-lightgold font-semibold uppercase tracking-widest">Sabii Dashboard</span>
-            <h2 class="text-2xl font-brand font-bold">Khushamdeed, <span id="dash-name" class="text-sabii-lightgold">User</span>!</h2>
-            <p class="text-xs text-stone-400">Realtime Balance & Referral Tracker</p>
-          </div>
-          <button onclick="handleLogout()" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-semibold transition-all flex items-center gap-2">
-            <i class="fa-solid fa-right-from-bracket text-sabii-gold"></i> Logout
-          </button>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          
-          <div class="p-5 rounded-2xl bg-white border border-sabii-gold/25 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Total Balance</span>
-              <i class="fa-solid fa-wallet text-sabii-gold text-lg"></i>
-            </div>
-            <h3 class="text-2xl font-bold font-brand text-stone-800"><span id="dash-balance">0</span> <span class="text-xs font-sans text-sabii-darkgold">RS</span></h3>
-            <p class="text-[11px] text-stone-400 mt-1">+5 Rs per successful referral</p>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-white border border-sabii-gold/25 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Total Referrals</span>
-              <i class="fa-solid fa-users text-sabii-gold text-lg"></i>
-            </div>
-            <h3 id="dash-referrals" class="text-2xl font-bold font-brand text-stone-800">0</h3>
-            <p class="text-[11px] text-stone-400 mt-1">Users Joined</p>
-          </div>
-
-          <div class="p-5 rounded-2xl bg-white border border-sabii-gold/25 shadow-sm">
-            <div class="flex justify-between items-center mb-2">
-              <span class="text-xs font-semibold text-stone-400 uppercase tracking-wider">Referral Code</span>
-              <i class="fa-solid fa-tag text-sabii-gold text-lg"></i>
-            </div>
-            <h3 id="dash-code" class="text-lg font-bold font-mono text-sabii-darkgold">SABII-XXXX</h3>
-            <button onclick="copyReferralCode()" class="mt-2 w-full py-1.5 rounded-lg bg-sabii-gold/10 hover:bg-sabii-gold/20 text-sabii-darkgold text-xs font-medium transition-all flex items-center justify-center gap-1">
-              <i class="fa-solid fa-copy"></i> Copy Code
-            </button>
-          </div>
-
-        </div>
-
-        <div class="p-5 rounded-2xl bg-white border border-sabii-gold/25 shadow-sm space-y-2">
-          <label class="block text-xs font-semibold text-stone-700">Aapka Referral Link</label>
-          <div class="flex flex-col sm:flex-row gap-2">
-            <input type="text" id="dash-ref-link" readonly class="flex-1 bg-stone-50 border border-sabii-gold/20 rounded-xl px-3 py-2 text-xs font-mono text-stone-700">
-            <button onclick="copyReferralLink()" class="px-5 py-2 rounded-xl sabii-button text-xs font-bold whitespace-nowrap flex items-center justify-center gap-1">
-              <i class="fa-solid fa-link"></i> Copy Link
-            </button>
-          </div>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-white border border-sabii-gold/25 shadow-sm space-y-4">
-          <h3 class="text-xs font-bold text-stone-800 uppercase tracking-wider border-b border-sabii-gold/15 pb-2 flex items-center gap-2">
-            <i class="fa-solid fa-id-card text-sabii-gold"></i> Account Info
-          </h3>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-            <div>
-              <span class="text-stone-400 block mb-0.5">Full Name</span>
-              <span id="dash-detail-name" class="font-semibold text-stone-800 text-sm">-</span>
-            </div>
-            <div>
-              <span class="text-stone-400 block mb-0.5">Username</span>
-              <span id="dash-detail-username" class="font-semibold text-stone-800 text-sm">-</span>
-            </div>
-            <div>
-              <span class="text-stone-400 block mb-0.5">Email</span>
-              <span id="dash-detail-email" class="font-semibold text-stone-800 text-sm">-</span>
-            </div>
-            <div>
-              <span class="text-stone-400 block mb-0.5">Phone Number</span>
-              <span id="dash-detail-phone" class="font-semibold text-stone-800 text-sm">-</span>
-            </div>
-            <div>
-              <span class="text-stone-400 block mb-0.5">City</span>
-              <span id="dash-detail-city" class="font-semibold text-stone-800 text-sm">-</span>
-            </div>
-            <div>
-              <span class="text-stone-400 block mb-0.5">Referred By</span>
-              <span id="dash-detail-referred-by" class="font-semibold text-sabii-darkgold text-sm">Direct</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
     </div>
 
     <!-- Footer -->
@@ -360,7 +259,6 @@
       getAuth, 
       createUserWithEmailAndPassword, 
       signInWithEmailAndPassword, 
-      signOut, 
       onAuthStateChanged 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { 
@@ -368,11 +266,7 @@
       ref, 
       set, 
       get, 
-      update, 
-      onValue, 
-      query, 
-      orderByChild, 
-      equalTo 
+      update
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     // Firebase Configuration
@@ -389,8 +283,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-
-    let dbUnsubscribe = null;
 
     // Toast Alert Function
     window.showToast = function(message, type = 'success') {
@@ -429,13 +321,8 @@
     window.switchTab = function(tab) {
       const loginSec = document.getElementById('login-section');
       const regSec = document.getElementById('register-section');
-      const dashSec = document.getElementById('dashboard-section');
-      const tabs = document.getElementById('auth-tabs');
       const loginBtn = document.getElementById('tab-login-btn');
       const regBtn = document.getElementById('tab-register-btn');
-
-      dashSec.classList.add('hidden');
-      tabs.classList.remove('hidden');
 
       if (tab === 'login') {
         loginSec.classList.remove('hidden');
@@ -463,15 +350,21 @@
     // Check Duplicate Username
     async function isUsernameTaken(username) {
       const usersRef = ref(db, 'users');
-      const usernameQuery = query(usersRef, orderByChild('username'), equalTo(username.toLowerCase()));
-      const snapshot = await get(usernameQuery);
-      return snapshot.exists();
+      const snapshot = await get(usersRef);
+      if (!snapshot.exists()) return false;
+      let taken = false;
+      snapshot.forEach((child) => {
+        if (child.val().username && child.val().username.toLowerCase() === username.toLowerCase()) {
+          taken = true;
+        }
+      });
+      return taken;
     }
 
     // Find Referrer in Database
     async function findReferrer(refInput) {
       if (!refInput) return null;
-      const cleanInput = refInput.trim();
+      const cleanInput = refInput.trim().toLowerCase();
       const usersRef = ref(db, 'users');
       const snapshot = await get(usersRef);
 
@@ -483,8 +376,8 @@
       snapshot.forEach((childSnap) => {
         const val = childSnap.val();
         if (
-          (val.referralCode && val.referralCode.toLowerCase() === cleanInput.toLowerCase()) ||
-          (val.username && val.username.toLowerCase() === cleanInput.toLowerCase())
+          (val.referralCode && val.referralCode.toLowerCase() === cleanInput) ||
+          (val.username && val.username.toLowerCase() === cleanInput)
         ) {
           referrerKey = childSnap.key;
           referrerData = val;
@@ -557,12 +450,12 @@
             balance: currentBal + 5,
             totalReferrals: currentCount + 1
           });
-          
-          showToast(`Referral kamyab! Referrer ko 5 Rs mil gaye.`, 'success');
         }
 
         showToast('Sabii par registration kamyab ho gayi!', 'success');
-        document.getElementById('register-form').reset();
+        
+        // Direct redirect to dashboard.html
+        window.location.href = "dashboard.html";
 
       } catch (err) {
         console.error(err);
@@ -571,7 +464,6 @@
           errorMsg = 'Yeh email pehle se registered hai! Aap login karein.';
         }
         showToast(errorMsg, 'error');
-      } finally {
         btn.innerHTML = `<span>Register Account</span> <i class="fa-solid fa-user-check"></i>`;
         btn.disabled = false;
       }
@@ -590,85 +482,24 @@
       try {
         await signInWithEmailAndPassword(auth, email, password);
         showToast('Login Kamyab!', 'success');
-        document.getElementById('login-form').reset();
+        
+        // Direct redirect to dashboard.html
+        window.location.href = "dashboard.html";
       } catch (err) {
         console.error(err);
         showToast('Galat Email ya Password.', 'error');
-      } finally {
         btn.innerHTML = `<span>Login</span> <i class="fa-solid fa-arrow-right"></i>`;
         btn.disabled = false;
       }
     };
 
-    // Handle Logout
-    window.handleLogout = async function() {
-      try {
-        if (dbUnsubscribe) dbUnsubscribe();
-        await signOut(auth);
-        showToast('Logout ho gaya.', 'success');
-      } catch (err) {
-        showToast('Logout fail ho gaya.', 'error');
-      }
-    };
-
     // Auth state observer
     onAuthStateChanged(auth, (user) => {
-      const loginSec = document.getElementById('login-section');
-      const regSec = document.getElementById('register-section');
-      const dashSec = document.getElementById('dashboard-section');
-      const tabs = document.getElementById('auth-tabs');
-
       if (user) {
-        loginSec.classList.add('hidden');
-        regSec.classList.add('hidden');
-        tabs.classList.add('hidden');
-        dashSec.classList.remove('hidden');
-
-        const userDbRef = ref(db, 'users/' + user.uid);
-        dbUnsubscribe = onValue(userDbRef, (snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-
-            document.getElementById('dash-name').textContent = data.name || 'User';
-            document.getElementById('dash-balance').textContent = data.balance || 0;
-            document.getElementById('dash-referrals').textContent = data.totalReferrals || 0;
-            document.getElementById('dash-code').textContent = data.referralCode || 'N/A';
-
-            document.getElementById('dash-detail-name').textContent = data.name || '-';
-            document.getElementById('dash-detail-username').textContent = '@' + (data.username || '-');
-            document.getElementById('dash-detail-email').textContent = data.email || '-';
-            document.getElementById('dash-detail-phone').textContent = data.phone || '-';
-            document.getElementById('dash-detail-city').textContent = data.city || '-';
-            document.getElementById('dash-detail-referred-by').textContent = data.referredBy || 'Direct';
-
-            const shareUrl = window.location.origin + window.location.pathname + '?ref=' + (data.referralCode || data.username);
-            document.getElementById('dash-ref-link').value = shareUrl;
-          }
-        });
-
-      } else {
-        if (dbUnsubscribe) dbUnsubscribe();
-        dashSec.classList.add('hidden');
-        tabs.classList.remove('hidden');
-        switchTab('login');
+        // Agar user pehle se logged in hai to direct dashboard.html bhej dein
+        window.location.href = "dashboard.html";
       }
     });
-
-    // Copy Functions
-    window.copyReferralCode = function() {
-      const code = document.getElementById('dash-code').textContent;
-      navigator.clipboard.writeText(code).then(() => {
-        showToast('Referral Code copy ho gaya!', 'success');
-      });
-    };
-
-    window.copyReferralLink = function() {
-      const linkInput = document.getElementById('dash-ref-link');
-      navigator.clipboard.writeText(linkInput.value).then(() => {
-        showToast('Referral Link copy ho gaya!', 'success');
-      });
-    };
-
   </script>
 </body>
 </html>
