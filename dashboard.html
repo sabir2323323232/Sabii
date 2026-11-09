@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii - User Dashboard</title>
+  <title>Sabii - Dashboard</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -44,13 +45,11 @@
     }
     .sabii-card {
       background: #FFFFFF;
-      border: 1px solid rgba(197, 160, 89, 0.25);
+      border: 1px solid rgba(197, 160, 89, 0.3);
       box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
     }
-    .sabii-gold-text {
+    .gold-gradient {
       background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
     .sabii-button {
       background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
@@ -58,18 +57,15 @@
       color: #FFFFFF;
     }
     .sabii-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.4);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);
     }
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #FAF9F6; }
     ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
 </head>
-<body class="p-4 sm:p-6 md:p-8">
-
-  <!-- Toast Container -->
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+<body class="min-h-screen flex text-stone-800">
 
   <!-- Logout Confirmation Modal -->
   <div id="logout-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
@@ -86,149 +82,188 @@
     </div>
   </div>
 
-  <div class="max-w-5xl mx-auto space-y-6">
-
-    <!-- Top Header (User Name & Logout) -->
-    <header class="sabii-card p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-center gap-4 bg-white">
+  <!-- Sidebar Navigation -->
+  <aside class="w-64 bg-white border-r border-sabii-gold/20 hidden md:flex flex-col justify-between p-6">
+    <div class="space-y-8">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-full bg-amber-50 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold text-xl font-bold font-brand">
-          S
-        </div>
-        <div>
-          <h1 class="text-xl font-bold font-brand sabii-gold-text">Sabii Dashboard</h1>
-          <p class="text-xs text-stone-500">Khushamdeed, <span id="header-name" class="font-bold text-stone-700">Loading...</span></p>
-        </div>
+        <div class="w-10 h-10 rounded-full gold-gradient text-white flex items-center justify-center font-bold text-xl font-brand">S</div>
+        <span class="text-2xl font-bold tracking-wider font-brand text-amber-700">Sabii</span>
       </div>
-      
+      <nav class="space-y-1.5">
+        <a href="dashboard.html" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-amber-50 text-amber-700 font-semibold text-xs">
+          <i class="fa-solid fa-house"></i> Dashboard
+        </a>
+        <a href="freeads.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-rectangle-ad"></i> Free Ads
+        </a>
+        <a href="tasks.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-list-check"></i> Simple Task
+        </a>
+        <a href="payment.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-wallet"></i> Payment
+        </a>
+        <a href="profile.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-user"></i> Profile
+        </a>
+        <a href="socialpromo.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-share-nodes"></i> Promotion Social
+        </a>
+        <a href="support.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-headset"></i> Help Team
+        </a>
+        <a href="gmailsell.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-envelope-circle-check"></i> Gmail Sell
+        </a>
+        <a href="accountsell.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-user-shield"></i> Account Sell
+        </a>
+        <a href="productsell.html" class="flex items-center gap-3 px-4 py-3 rounded-xl text-stone-500 hover:bg-stone-50 text-xs font-medium">
+          <i class="fa-solid fa-shop"></i> Product Sell
+        </a>
+      </nav>
+    </div>
+    <button onclick="confirmLogout()" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 text-xs font-semibold">
+      <i class="fa-solid fa-right-from-bracket"></i> Logout
+    </button>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 p-4 sm:p-8 space-y-6 overflow-y-auto">
+
+    <!-- Top Header (Concept 6 Style with Gold Gradient) -->
+    <header class="gold-gradient text-white p-5 rounded-2xl shadow-lg flex justify-between items-center">
+      <div class="flex items-center gap-3 md:hidden">
+        <span class="text-xl font-bold font-brand">Sabii</span>
+      </div>
+      <div>
+        <h1 class="text-lg sm:text-xl font-bold">Dashboard</h1>
+        <p class="text-xs text-amber-100">Khushamdeed, <span id="header-name" class="font-bold">Loading...</span>!</p>
+      </div>
       <div class="flex items-center gap-4">
-        <div class="text-right hidden sm:block">
-          <p class="text-[10px] uppercase tracking-wider text-stone-400 font-semibold">Wallet Balance</p>
-          <p class="text-base font-bold text-stone-800"><span id="header-balance">0</span> <span class="text-xs text-sabii-darkgold font-normal">PKR</span></p>
+        <div class="hidden sm:flex items-center gap-2 bg-black/20 px-3 py-1.5 rounded-xl border border-white/20">
+          <i class="fa-solid fa-wallet text-amber-300"></i>
+          <span class="text-xs font-bold"><span id="header-balance">0</span> PKR</span>
         </div>
-        <button onclick="confirmLogout()" class="px-4 py-2.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold transition-all flex items-center gap-2">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
+        <button onclick="confirmLogout()" class="px-4 py-2 bg-stone-900 hover:bg-black text-white text-xs font-bold rounded-xl shadow transition-all flex items-center gap-2">
+          <i class="fa-solid fa-power-off text-amber-400"></i> LOGOUT
         </button>
       </div>
     </header>
 
-    <!-- Profile Data Card -->
+    <!-- Profile Details Card -->
     <section class="sabii-card p-6 rounded-2xl bg-white space-y-4">
-      <div class="flex items-center justify-between border-b border-sabii-gold/15 pb-3">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-stone-800 flex items-center gap-2">
-          <i class="fa-solid fa-id-card text-sabii-gold"></i> Profile Details
-        </h2>
-        <span class="text-xs px-3 py-1 rounded-full bg-amber-50 text-sabii-darkgold font-semibold border border-sabii-gold/20" id="profile-username">@username</span>
+      <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+        <h3 class="font-bold text-stone-800 text-xs uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-id-card text-amber-600"></i> User Profile Data
+        </h3>
+        <span id="profile-username" class="text-xs font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">@username</span>
       </div>
-
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
-        <div class="p-3 rounded-xl bg-stone-50 border border-stone-100">
+        <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
           <span class="text-stone-400 block mb-1">Full Name</span>
           <span id="profile-name" class="font-bold text-stone-800 text-sm">-</span>
         </div>
-        <div class="p-3 rounded-xl bg-stone-50 border border-stone-100">
+        <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
           <span class="text-stone-400 block mb-1">Email Address</span>
           <span id="profile-email" class="font-bold text-stone-800 text-sm truncate block">-</span>
         </div>
-        <div class="p-3 rounded-xl bg-stone-50 border border-stone-100">
+        <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
           <span class="text-stone-400 block mb-1">Mobile Number</span>
           <span id="profile-phone" class="font-bold text-stone-800 text-sm">-</span>
         </div>
-        <div class="p-3 rounded-xl bg-stone-50 border border-stone-100">
+        <div class="p-3 bg-stone-50 rounded-xl border border-stone-100">
           <span class="text-stone-400 block mb-1">City</span>
           <span id="profile-city" class="font-bold text-stone-800 text-sm">-</span>
         </div>
       </div>
     </section>
 
-    <!-- Navigation Menu Buttons Grid -->
-    <section class="space-y-4">
-      <h2 class="text-xs font-bold uppercase tracking-widest text-stone-400 px-1">Quick Navigation & Features</h2>
+    <!-- Quick Navigation Grid Buttons -->
+    <section class="space-y-3">
+      <h3 class="text-xs font-bold uppercase tracking-widest text-stone-400 px-1">Navigation Menu</h3>
       
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        
-        <a href="dashboard.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="dashboard.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-house"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Dashboard</span>
         </a>
 
-        <a href="freeads.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="freeads.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-rectangle-ad"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Free Ads</span>
         </a>
 
-        <a href="tasks.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="tasks.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-list-check"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Simple Task</span>
         </a>
 
-        <a href="payment.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="payment.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-wallet"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Payment</span>
         </a>
 
-        <a href="profile.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="profile.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-user"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Profile</span>
         </a>
 
-        <a href="socialpromo.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="socialpromo.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-share-nodes"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Promotion Social</span>
         </a>
 
-        <a href="support.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="support.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-headset"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Help Team</span>
         </a>
 
-        <a href="gmailsell.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="gmailsell.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-envelope-circle-check"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Gmail Sell</span>
         </a>
 
-        <a href="accountsell.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="accountsell.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-user-shield"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Account Sell</span>
         </a>
 
-        <a href="productsell.html" class="sabii-card p-4 rounded-xl bg-white hover:border-sabii-gold flex flex-col items-center text-center gap-2 transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-sabii-darkgold flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
+        <a href="productsell.html" class="sabii-card p-4 rounded-xl bg-white hover:border-amber-600 flex flex-col items-center text-center gap-2 transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
             <i class="fa-solid fa-shop"></i>
           </div>
           <span class="text-xs font-bold text-stone-800">Product Sell</span>
         </a>
-
       </div>
 
       <!-- Bara Button: Free Product -->
-      <div>
-        <a href="freeproduct.html" class="w-full py-4 px-6 rounded-2xl sabii-button font-bold text-sm tracking-wider uppercase flex items-center justify-center gap-3 shadow-lg">
-          <i class="fa-solid fa-gift text-xl"></i>
+      <div class="pt-2">
+        <a href="freeproduct.html" class="w-full py-4 px-6 rounded-2xl sabii-button font-bold text-xs tracking-widest uppercase flex items-center justify-center gap-3 shadow-lg">
+          <i class="fa-solid fa-gift text-lg"></i>
           <span>Free Product Claim Karein</span>
         </a>
       </div>
-
     </section>
 
-  </div>
+  </main>
 
   <!-- Firebase Scripts -->
   <script type="module">
@@ -250,7 +285,7 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Logout Modal Logic
+    // Logout Modal Actions
     window.confirmLogout = function() {
       document.getElementById('logout-modal').classList.remove('hidden');
     }
@@ -268,7 +303,7 @@
       }
     }
 
-    // Auth & Realtime Data Sync
+    // Realtime User Data Sync
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const userRef = ref(db, 'users/' + user.uid);
@@ -286,10 +321,9 @@
           }
         });
       } else {
-        // Agar user login nahi hai to index.html par bhej dein
         window.location.href = "index.html";
       }
     });
   </script>
 </body>
-    </html>
+</html>
