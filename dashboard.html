@@ -79,6 +79,55 @@
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
 
+  <!-- Profile Details Modal -->
+  <div id="profile-modal" class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center hidden p-4">
+    <div class="sabii-card max-w-md w-full rounded-2xl p-6 space-y-5 bg-white shadow-2xl relative animate-fade-in">
+      <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+        <h3 class="text-lg font-bold text-stone-800 font-brand flex items-center gap-2">
+          <i class="fa-solid fa-user-circle text-sabii-gold"></i> User Profile Details
+        </h3>
+        <button onclick="closeProfileModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+          <span class="text-stone-500 font-medium">Full Name:</span>
+          <span id="modal-name" class="font-bold text-stone-800">-</span>
+        </div>
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+          <span class="text-stone-500 font-medium">Username:</span>
+          <span id="modal-username" class="font-bold text-stone-800">-</span>
+        </div>
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+          <span class="text-stone-500 font-medium">Email Address:</span>
+          <span id="modal-email" class="font-bold text-stone-800">-</span>
+        </div>
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+          <span class="text-stone-500 font-medium">Mobile Number:</span>
+          <span id="modal-phone" class="font-bold text-stone-800">-</span>
+        </div>
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+          <span class="text-stone-500 font-medium">City:</span>
+          <span id="modal-city" class="font-bold text-stone-800">-</span>
+        </div>
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100">
+          <span class="text-stone-500 font-medium">Total Referrals:</span>
+          <span id="modal-referrals" class="font-bold text-sabii-darkgold">-</span>
+        </div>
+        <div class="flex justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100 items-center">
+          <span class="text-stone-500 font-medium">Referral Code:</span>
+          <span id="modal-refcode" class="font-bold text-sabii-darkgold bg-sabii-gold/10 px-2 py-1 rounded">-</span>
+        </div>
+      </div>
+
+      <button onclick="closeProfileModal()" class="w-full py-2.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider">
+        Band Karein
+      </button>
+    </div>
+  </div>
+
   <!-- Logout Permission Modal -->
   <div id="logout-modal" class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm flex items-center justify-center hidden p-4">
     <div class="sabii-card max-w-sm w-full rounded-2xl p-6 text-center space-y-4 shadow-2xl bg-white">
@@ -115,11 +164,22 @@
         </div>
       </a>
 
-      <!-- Right Side: User Profile, Logout Button & 3 Dots Automation Menu -->
+      <!-- Right Side: User Profile (Clickable), Chota Balance, Logout & 3 Dots Menu -->
       <div class="flex items-center gap-3 sm:gap-4">
         
-        <!-- User Profile Card -->
-        <div class="flex items-center gap-2.5 bg-stone-50 border border-sabii-gold/20 rounded-full py-1.5 px-3">
+        <!-- Chota Balance Widget with Hide/Show Toggle -->
+        <div class="flex items-center gap-2 bg-stone-50 border border-sabii-gold/25 rounded-xl py-1.5 px-3">
+          <div class="text-left">
+            <p class="text-[9px] text-stone-400 uppercase font-semibold leading-none">Balance</p>
+            <span id="header-balance" class="text-xs font-bold sabii-gold-text">Rs 0</span>
+          </div>
+          <button onclick="toggleBalanceVisibility()" title="Hide/Show Balance" class="text-stone-400 hover:text-sabii-darkgold text-xs transition">
+            <i id="balance-eye-icon" class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+
+        <!-- User Profile Card (Clickable to open details modal) -->
+        <div onclick="openProfileModal()" class="flex items-center gap-2.5 bg-stone-50 border border-sabii-gold/20 rounded-full py-1.5 px-3 cursor-pointer hover:bg-sabii-gold/5 transition">
           <div id="user-avatar" class="w-8 h-8 rounded-full sabii-button flex items-center justify-center text-xs font-bold uppercase shadow-sm">
             U
           </div>
@@ -129,7 +189,7 @@
           </div>
         </div>
 
-        <!-- Logout Button (Permission Modal Trigger) -->
+        <!-- Logout Button -->
         <button onclick="openLogoutModal()" title="Logout" class="py-2 px-3 sm:px-3.5 rounded-xl border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all text-xs font-bold flex items-center gap-1.5 shadow-sm">
           <i class="fa-solid fa-power-off"></i>
           <span class="hidden md:inline">Logout</span>
@@ -188,11 +248,54 @@
     </div>
   </header>
 
-  <!-- Main Area: Completely Empty and Clean as requested -->
-  <main class="flex-grow"></main>
+  <!-- Main Area: Live News Box & Free Apps / Links from Admin Panel -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    
+    <!-- Live News Box (Admin Panel Realtime Update) -->
+    <section class="sabii-card rounded-2xl p-4 bg-gradient-to-r from-sabii-gold/5 via-white to-sabii-gold/5 border-sabii-gold/30 flex items-center gap-4">
+      <div class="w-10 h-10 rounded-xl bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center shrink-0 text-lg">
+        <i class="fa-solid fa-bullhorn"></i>
+      </div>
+      <div class="overflow-hidden">
+        <h4 class="text-[11px] font-bold uppercase text-sabii-darkgold tracking-wider">Live Free Earning News</h4>
+        <p id="live-news-text" class="text-xs text-stone-700 font-medium truncate mt-0.5">Admin panel se live updates yahan show hongi...</p>
+      </div>
+    </section>
+
+    <!-- New Free Apps & Links (Admin Panel Realtime Update) -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="text-sm font-bold font-brand text-stone-800 uppercase tracking-wider flex items-center gap-2">
+          <i class="fa-solid fa-mobile-screen text-sabii-gold"></i> New Free Apps & Links
+        </h3>
+        <span class="text-[10px] text-stone-400 font-semibold">Admin Synced</span>
+      </div>
+
+      <!-- Apps Grid Container -->
+      <div id="apps-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <!-- Dynamic items will load here from Firebase -->
+        <div class="sabii-card rounded-xl p-4 text-center text-stone-400 text-xs">
+          Loading free apps...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fixed Bottom Buttons for Withdraw & Buy Free Product -->
+  <nav class="sticky bottom-0 bg-white/90 backdrop-blur-md border-t border-sabii-gold/20 py-3 px-4 z-30">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-4">
+      <a href="payment.html" class="flex-1 max-w-xs py-2.5 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm">
+        <i class="fa-solid fa-wallet"></i> Withdraw
+      </a>
+      <a href="buy-free-product.html" class="flex-1 max-w-xs py-2.5 rounded-xl sabii-button font-bold text-xs flex items-center justify-center gap-2 shadow-sm">
+        <i class="fa-solid fa-gift"></i> Buy Free Product
+      </a>
+    </div>
+  </nav>
 
   <!-- Footer -->
-  <footer class="p-4 text-center border-t border-sabii-gold/15 bg-white text-[11px] text-stone-400">
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400">
     &copy; Sabii Application. Powered by Firebase Realtime Database.
   </footer>
 
@@ -210,7 +313,7 @@
       onValue 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Firebase Configuration (Same as your register code)
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
       authDomain: "sabi-3ea84.firebaseapp.com",
@@ -224,6 +327,9 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
+
+    let isBalanceHidden = false;
+    let actualBalance = 0;
 
     // Toast Alert Utility
     window.showToast = function(message, type = 'success') {
@@ -258,13 +364,36 @@
       }, 4000);
     };
 
-    // 3 Dots Automation Menu Toggle
+    // Balance Hide/Show Toggle
+    window.toggleBalanceVisibility = function() {
+      isBalanceHidden = !isBalanceHidden;
+      const balanceEl = document.getElementById('header-balance');
+      const eyeIcon = document.getElementById('balance-eye-icon');
+
+      if (isBalanceHidden) {
+        balanceEl.innerText = "Rs *****";
+        eyeIcon.className = "fa-solid fa-eye-slash";
+      } else {
+        balanceEl.innerText = `Rs ${actualBalance}`;
+        eyeIcon.className = "fa-solid fa-eye";
+      }
+    };
+
+    // Profile Modal Open/Close
+    window.openProfileModal = function() {
+      document.getElementById('profile-modal').classList.remove('hidden');
+    };
+
+    window.closeProfileModal = function() {
+      document.getElementById('profile-modal').classList.add('hidden');
+    };
+
+    // 3 Dots Menu Toggle
     window.toggleDotsMenu = function() {
       const dropdown = document.getElementById('dots-dropdown');
       dropdown.classList.toggle('hidden');
     };
 
-    // Close Dropdown on clicking outside
     window.addEventListener('click', (e) => {
       const btn = document.getElementById('dots-menu-btn');
       const dropdown = document.getElementById('dots-dropdown');
@@ -273,7 +402,7 @@
       }
     });
 
-    // Logout Permission Modal Handlers
+    // Logout Permission Modal
     window.openLogoutModal = function() {
       document.getElementById('logout-modal').classList.remove('hidden');
       document.getElementById('dots-dropdown').classList.add('hidden');
@@ -286,25 +415,86 @@
     window.confirmLogout = async function() {
       try {
         await signOut(auth);
-        window.location.href = "index.html"; // Redirect to login/register page
+        window.location.href = "index.html";
       } catch (error) {
         showToast("Logout karne me masla aya!", "error");
         console.error(error);
       }
     };
 
-    // Real-time Authentication & Firebase Data Sync
+    // Real-time Authentication & Database Sync
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "index.html";
       } else {
+        // User Profile & Balance Sync
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
+            actualBalance = data.balance || 0;
+
+            // Header update
             document.getElementById('user-name').innerText = data.name || "User";
             document.getElementById('user-email').innerText = data.email || user.email;
             document.getElementById('user-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
+            
+            if (!isBalanceHidden) {
+              document.getElementById('header-balance').innerText = `Rs ${actualBalance}`;
+            }
+
+            // Modal details update
+            document.getElementById('modal-name').innerText = data.name || "-";
+            document.getElementById('modal-username').innerText = data.username || "-";
+            document.getElementById('modal-email').innerText = data.email || user.email;
+            document.getElementById('modal-phone').innerText = data.phone || "-";
+            document.getElementById('modal-city').innerText = data.city || "-";
+            document.getElementById('modal-referrals').innerText = data.totalReferrals || 0;
+            document.getElementById('modal-refcode').innerText = data.referralCode || "-";
+          }
+        });
+
+        // Live News Sync from Admin Panel (`admin/news`)
+        const newsRef = ref(db, 'admin/news');
+        onValue(newsRef, (snapshot) => {
+          if (snapshot.exists()) {
+            document.getElementById('live-news-text').innerText = snapshot.val();
+          } else {
+            document.getElementById('live-news-text').innerText = "Koi new update nahi hai filhal.";
+          }
+        });
+
+        // Free Apps & Links Sync from Admin Panel (`admin/freeApps`)
+        const appsRef = ref(db, 'admin/freeApps');
+        onValue(appsRef, (snapshot) => {
+          const container = document.getElementById('apps-container');
+          container.innerHTML = "";
+
+          if (snapshot.exists()) {
+            snapshot.forEach((childSnap) => {
+              const appData = childSnap.val();
+              const card = document.createElement('div');
+              card.className = "sabii-card rounded-2xl p-4 flex flex-col justify-between space-y-3";
+              card.innerHTML = `
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <h4 class="text-xs font-bold text-stone-800">${appData.name || "Free App"}</h4>
+                    <span class="text-[10px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-2 py-0.5 rounded-full">${appData.price || "Rs 0"}</span>
+                  </div>
+                  <p class="text-[11px] text-stone-500">${appData.description || "Task complete karein aur earn karein."}</p>
+                </div>
+                <a href="${appData.link || '#'}" target="_blank" class="w-full py-2 rounded-xl sabii-button font-bold text-[11px] text-center block shadow-sm">
+                  Visit Link / App <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                </a>
+              `;
+              container.appendChild(card);
+            });
+          } else {
+            container.innerHTML = `
+              <div class="col-span-full sabii-card rounded-xl p-6 text-center text-stone-400 text-xs">
+                Admin ne abhi koi free apps ya links add nahi kiye.
+              </div>
+            `;
           }
         });
       }
