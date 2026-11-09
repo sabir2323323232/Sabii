@@ -65,17 +65,8 @@
 
     .sabii-button:hover {
       background-position: right center;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
-    }
-
-    .nav-card {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .nav-card:hover {
-      transform: translateY(-4px);
-      border-color: #C5A059;
-      box-shadow: 0 12px 25px rgba(197, 160, 89, 0.18);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
     }
 
     ::-webkit-scrollbar { width: 5px; }
@@ -113,7 +104,7 @@
     </div>
   </div>
 
-  <!-- Top Navbar -->
+  <!-- Top Navbar / Header -->
   <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
       
@@ -128,50 +119,72 @@
         </div>
       </a>
 
-      <!-- User Profile & Action Controls -->
-      <div class="flex items-center gap-3 sm:gap-5">
+      <!-- Right Side: User Profile, 3 Dots Menu & Logout -->
+      <div class="flex items-center gap-3 sm:gap-4">
         
-        <!-- User Info Card -->
-        <div class="flex items-center gap-3 bg-stone-50 border border-sabii-gold/20 rounded-full py-1.5 px-3">
+        <!-- User Profile Card -->
+        <div class="flex items-center gap-2.5 bg-stone-50 border border-sabii-gold/20 rounded-full py-1.5 px-3">
           <div id="user-avatar" class="w-8 h-8 rounded-full sabii-button flex items-center justify-center text-xs font-bold uppercase shadow-sm">
             U
           </div>
-          <div class="hidden sm:block text-left pr-2">
+          <div class="hidden sm:block text-left pr-1">
             <h4 id="user-name" class="text-xs font-bold text-stone-800 leading-tight">Loading...</h4>
             <p id="user-email" class="text-[10px] text-stone-500">...</p>
           </div>
         </div>
 
-        <!-- Logout Button (Permission Trigger) -->
-        <button onclick="openLogoutModal()" title="Logout" class="py-2 px-3 sm:px-4 rounded-xl border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all text-xs font-bold flex items-center gap-2 shadow-sm">
+        <!-- Logout Button (Permission Modal Trigger) -->
+        <button onclick="openLogoutModal()" title="Logout" class="py-2 px-3 sm:px-3.5 rounded-xl border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all text-xs font-bold flex items-center gap-1.5 shadow-sm">
           <i class="fa-solid fa-power-off"></i>
-          <span class="hidden sm:inline">Logout</span>
+          <span class="hidden md:inline">Logout</span>
         </button>
 
-        <!-- 3 Dots Dropdown Menu Button -->
+        <!-- 3 Dots Dropdown Menu (All Automation Buttons inside) -->
         <div class="relative">
-          <button id="dots-menu-btn" onclick="toggleDotsMenu()" class="w-9 h-9 rounded-xl border border-sabii-gold/30 bg-white hover:bg-sabii-gold/10 text-sabii-darkgold flex items-center justify-center transition-all shadow-sm">
+          <button id="dots-menu-btn" onclick="toggleDotsMenu()" title="Automation Menu" class="w-10 h-10 rounded-xl border border-sabii-gold/30 bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold flex items-center justify-center transition-all shadow-sm">
             <i class="fa-solid fa-ellipsis-vertical text-base"></i>
           </button>
 
-          <!-- 3 Dots Dropdown List -->
-          <div id="dots-dropdown" class="absolute right-0 mt-2 w-52 bg-white border border-sabii-gold/25 rounded-2xl shadow-xl py-2 hidden z-50">
-            <div class="px-4 py-2 border-b border-stone-100">
-              <p class="text-[10px] text-stone-400 uppercase font-semibold">Quick Actions</p>
+          <!-- Dropdown List containing ALL buttons pointing to respective .html files -->
+          <div id="dots-dropdown" class="absolute right-0 mt-2 w-56 bg-white border border-sabii-gold/25 rounded-2xl shadow-2xl py-2 hidden z-50">
+            <div class="px-4 py-2 border-b border-stone-100 flex items-center justify-between">
+              <span class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Automation Menu</span>
+              <i class="fa-solid fa-robot text-sabii-gold text-xs"></i>
             </div>
-            <a href="your-balance.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 transition">
-              <i class="fa-solid fa-wallet text-sabii-gold"></i> View Balance
+            
+            <a href="free-ads.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-rectangle-ad text-sabii-gold w-4"></i> Free Ads
             </a>
-            <a href="referral.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 transition">
-              <i class="fa-solid fa-users text-sabii-gold"></i> Refer & Earn
+            <a href="simple-task.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-list-check text-sabii-gold w-4"></i> Simple Task
             </a>
-            <a href="help-centre.html" class="flex items-center gap-2.5 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 transition">
-              <i class="fa-solid fa-headset text-sabii-gold"></i> Help & Support
+            <a href="payment.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-credit-card text-sabii-gold w-4"></i> Payment
             </a>
-            <div class="border-t border-stone-100 my-1"></div>
-            <button onclick="openLogoutModal()" class="w-full text-left flex items-center gap-2.5 px-4 py-2.5 text-xs text-red-600 hover:bg-red-50 transition">
-              <i class="fa-solid fa-right-from-bracket"></i> Logout
-            </button>
+            <a href="your-balance.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-wallet text-sabii-gold w-4"></i> Your Balance
+            </a>
+            <a href="jobs.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-briefcase text-sabii-gold w-4"></i> Jobs
+            </a>
+            <a href="gmail-selling.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-envelope-open-text text-sabii-gold w-4"></i> Gmail Selling
+            </a>
+            <a href="help-centre.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-headset text-sabii-gold w-4"></i> Help Centre
+            </a>
+            <a href="buy-free-product.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-gift text-sabii-gold w-4"></i> Buy Free Product
+            </a>
+            <a href="referral.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-users text-sabii-gold w-4"></i> Referral
+            </a>
+            <a href="promotion.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-bullhorn text-sabii-gold w-4"></i> Promotion
+            </a>
+            <a href="product-selling.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
+              <i class="fa-solid fa-store text-sabii-gold w-4"></i> Product Selling
+            </a>
           </div>
         </div>
 
@@ -179,158 +192,22 @@
     </div>
   </header>
 
-  <!-- Main Dashboard Content Area -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-    
-    <!-- User Quick Stats Bar -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div class="sabii-card rounded-2xl p-5 flex items-center justify-between">
-        <div>
-          <p class="text-xs text-stone-500 font-medium uppercase tracking-wider">Your Balance</p>
-          <h3 id="stat-balance" class="text-2xl font-bold sabii-gold-text mt-1">Rs 0</h3>
-        </div>
-        <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 text-sabii-darkgold flex items-center justify-center text-xl">
-          <i class="fa-solid fa-coins"></i>
-        </div>
+  <!-- Main Content Area: Completely Clean as Requested -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center py-12">
+    <div class="text-center space-y-3 max-w-md">
+      <div class="w-16 h-16 bg-sabii-gold/10 border border-sabii-gold/30 rounded-2xl flex items-center justify-center mx-auto text-sabii-darkgold text-2xl shadow-sm">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
       </div>
-
-      <div class="sabii-card rounded-2xl p-5 flex items-center justify-between">
-        <div>
-          <p class="text-xs text-stone-500 font-medium uppercase tracking-wider">Total Referrals</p>
-          <h3 id="stat-referrals" class="text-2xl font-bold text-stone-800 mt-1">0</h3>
-        </div>
-        <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 text-sabii-darkgold flex items-center justify-center text-xl">
-          <i class="fa-solid fa-user-plus"></i>
-        </div>
-      </div>
-
-      <div class="sabii-card rounded-2xl p-5 flex items-center justify-between sm:col-span-2 lg:col-span-1">
-        <div>
-          <p class="text-xs text-stone-500 font-medium uppercase tracking-wider">Referral Code</p>
-          <h3 id="stat-refcode" class="text-base font-bold text-sabii-darkgold mt-1 tracking-wider">...</h3>
-        </div>
-        <button onclick="copyReferralCode()" class="px-3 py-2 text-xs rounded-xl sabii-button font-bold flex items-center gap-1.5">
-          <i class="fa-solid fa-copy"></i> Copy
-        </button>
-      </div>
-    </section>
-
-    <!-- Navigation Menu Grid (Buttons) -->
-    <section>
-      <div class="mb-5">
-        <h2 class="text-xl font-bold text-stone-800 font-brand">Dashboard Services</h2>
-        <p class="text-xs text-stone-500">Apne matlooba feature par click karke aage barhein</p>
-      </div>
-
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-        
-        <!-- 1. Free Ads -->
-        <a href="free-ads.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-rectangle-ad"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Free Ads</span>
-        </a>
-
-        <!-- 2. Simple Task -->
-        <a href="simple-task.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Simple Task</span>
-        </a>
-
-        <!-- 3. Payment -->
-        <a href="payment.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-credit-card"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Payment</span>
-        </a>
-
-        <!-- 4. Your Balance -->
-        <a href="your-balance.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Your Balance</span>
-        </a>
-
-        <!-- 5. Jobs -->
-        <a href="jobs.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-briefcase"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Jobs</span>
-        </a>
-
-        <!-- 6. Gmail Selling -->
-        <a href="gmail-selling.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-envelope-open-text"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Gmail Selling</span>
-        </a>
-
-        <!-- 7. Help Centre -->
-        <a href="help-centre.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-headset"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Help Centre</span>
-        </a>
-
-        <!-- 8. Buy Free Product -->
-        <a href="buy-free-product.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-gift"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Buy Free Product</span>
-        </a>
-
-        <!-- 9. Referral -->
-        <a href="referral.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-users"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Referral</span>
-        </a>
-
-        <!-- 10. Promotion -->
-        <a href="promotion.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-bullhorn"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Promotion</span>
-        </a>
-
-        <!-- 11. Product Selling -->
-        <a href="product-selling.html" class="sabii-card nav-card rounded-2xl p-4 text-center flex flex-col items-center justify-center group">
-          <div class="w-12 h-12 rounded-xl bg-sabii-gold/10 group-hover:bg-sabii-gold text-sabii-darkgold group-hover:text-white flex items-center justify-center text-xl transition-all mb-3">
-            <i class="fa-solid fa-store"></i>
-          </div>
-          <span class="text-xs font-bold text-stone-800 group-hover:text-sabii-darkgold transition">Product Selling</span>
-        </a>
-
-      </div>
-    </section>
-
-    <!-- Placeholder Section for Future Items (Aap Yahan Aur Cheezein Add Kar Sakte Hain) -->
-    <section class="sabii-card rounded-3xl p-8 border-dashed border-2 border-sabii-gold/40 text-center space-y-3">
-      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-sabii-gold/10 text-sabii-darkgold text-xl">
-        <i class="fa-solid fa-plus font-bold"></i>
-      </div>
-      <h3 class="text-lg font-bold text-stone-800 font-brand">Future Workspace / Cards Area</h3>
-      <p class="text-xs text-stone-500 max-w-md mx-auto">
-        Yeh jagah abhi khali rakhi gayi hai jese aapne instructions me manga tha. Aap yahan mazeed custom sections, graphs, ya updates easily add kar sakte hain.
+      <h2 class="text-xl font-bold font-brand text-stone-800">Dashboard Bilkul Khali Hai</h2>
+      <p class="text-xs text-stone-500 leading-relaxed">
+        Jese aapne kaha tha, screen ko bilkul clean rakha gaya hai. Upar right side par 3 dots (...) par click karke aap apni marzi ke saare automation options aur .html pages access kar sakte hain. Aap yahan mazeed cheezein baad me add kar sakte hain!
       </p>
-    </section>
-
+    </div>
   </main>
 
   <!-- Footer -->
   <footer class="p-4 text-center border-t border-sabii-gold/15 bg-white text-[11px] text-stone-400 mt-auto">
-    &copy; Sabii Application. Powered by Firebase Realtime Database. All Rights Reserved.
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
   </footer>
 
   <!-- Firebase Scripts & Logic -->
@@ -347,7 +224,7 @@
       onValue 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Firebase Configuration (Same as Register Code)
+    // Firebase Configuration (Connected with your register code)
     const firebaseConfig = {
       apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
       authDomain: "sabi-3ea84.firebaseapp.com",
@@ -361,8 +238,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getDatabase(app);
-
-    let currentReferralCode = "";
 
     // Toast Alert Utility
     window.showToast = function(message, type = 'success') {
@@ -397,13 +272,13 @@
       }, 4000);
     };
 
-    // 3 Dots Menu Toggle
+    // 3 Dots Automation Menu Toggle
     window.toggleDotsMenu = function() {
       const dropdown = document.getElementById('dots-dropdown');
       dropdown.classList.toggle('hidden');
     };
 
-    // Close Dropdown on outer click
+    // Close Dropdown on clicking outside
     window.addEventListener('click', (e) => {
       const btn = document.getElementById('dots-menu-btn');
       const dropdown = document.getElementById('dots-dropdown');
@@ -412,7 +287,7 @@
       }
     });
 
-    // Logout Modal Permission Controls
+    // Logout Permission Modal Handlers
     window.openLogoutModal = function() {
       document.getElementById('logout-modal').classList.remove('hidden');
       document.getElementById('dots-dropdown').classList.add('hidden');
@@ -427,43 +302,25 @@
         await signOut(auth);
         window.location.href = "index.html"; // Redirect to login/register page
       } catch (error) {
-        showToast("Logout me masla aya!", "error");
+        showToast("Logout karne me masla aya!", "error");
         console.error(error);
       }
     };
 
-    // Copy Referral Code Function
-    window.copyReferralCode = function() {
-      if (!currentReferralCode) return;
-      navigator.clipboard.writeText(currentReferralCode);
-      showToast("Referral Code copy ho gaya hai!", "success");
-    };
-
-    // Real-time Authentication & Database Listener
+    // Real-time Authentication & Firebase Data Sync
     onAuthStateChanged(auth, (user) => {
       if (!user) {
-        // User login nahi hai to register/login page par redirect karein
+        // Agar user login nahi hai toh login/register page par bhej dein
         window.location.href = "index.html";
       } else {
-        // Real-time user data load karein
+        // Firebase realtime database se user data fetch karein
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
-
-            // Populate User Header Profile
             document.getElementById('user-name').innerText = data.name || "User";
             document.getElementById('user-email').innerText = data.email || user.email;
             document.getElementById('user-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
-
-            // Populate Quick Stats
-            document.getElementById('stat-balance').innerText = `Rs ${data.balance || 0}`;
-            document.getElementById('stat-referrals').innerText = data.totalReferrals || 0;
-            
-            currentReferralCode = data.referralCode || "...";
-            document.getElementById('stat-refcode').innerText = currentReferralCode;
-          } else {
-            showToast("User profile nahi mila!", "error");
           }
         });
       }
