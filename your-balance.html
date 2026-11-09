@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - Your Balance & Earnings</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.05);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FFFFFF; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-sabii-gold/15 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Balance & Earnings</span>
+        </div>
+      </a>
+
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="py-1.5 px-3 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Top Total Balance Banner -->
+    <div class="sabii-card rounded-2xl p-6 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Total Available Balance</p>
+        <h2 id="total-balance" class="text-3xl sm:text-4xl font-bold sabii-gold-text mt-1">Rs 0</h2>
+        <p class="text-[11px] text-stone-500 mt-1">Yeh wohi balance hai jo aapke dashboard par real-time show hota hai.</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="payment.html" class="py-2.5 px-5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-sm">
+          <i class="fa-solid fa-wallet"></i> Withdraw Now
+        </a>
+      </div>
+    </div>
+
+    <!-- Earnings Breakdown & History Section -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold font-brand text-stone-800 flex items-center gap-2">
+            <i class="fa-solid fa-chart-line text-sabii-gold"></i> Earnings History & Source
+          </h3>
+          <p class="text-xs text-stone-400">Aap ne kis waqt aur kis task/referral se kitni kamai ki hai, sab yahan record hai.</p>
+        </div>
+        <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2.5 py-1 rounded-full">Live Synced</span>
+      </div>
+
+      <!-- History List Container -->
+      <div id="earnings-history-list" class="space-y-3">
+        <div class="sabii-card rounded-xl p-6 text-center text-stone-400 text-xs">
+          Earnings history load ho rahi hai...
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
+  </footer>
+
+  <!-- Firebase Scripts & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getDatabase, 
+      ref, 
+      onValue 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Toast Alert Utility
+    window.showToast = function(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColor = type === 'success' 
+        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' 
+        : 'bg-red-900 border-red-500 text-white';
+
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
+      
+      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
+
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          ${icon}
+          <span>${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    };
+
+    // Real-time Authentication & Data Sync
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        const uid = user.uid;
+
+        // 1. Live Balance Sync (Dashboard wala balance)
+        onValue(ref(db, 'users/' + uid), (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const balance = data.balance || 0;
+            document.getElementById('total-balance').innerText = `Rs ${balance}`;
+          }
+        });
+
+        // 2. Earnings History Sync (`user_earnings/{uid}`)
+        onValue(ref(db, `user_earnings/${uid}`), (snapshot) => {
+          const container = document.getElementById('earnings-history-list');
+          container.innerHTML = "";
+
+          if (snapshot.exists()) {
+            const earningsData = snapshot.val();
+            const keys = Object.keys(earningsData).reverse(); // Latest first
+
+            keys.forEach((key) => {
+              const item = earningsData[key];
+              
+              // Format Date & Time nicely
+              let formattedDate = "Pichle dino me";
+              if (item.timestamp) {
+                const d = new Date(item.timestamp);
+                formattedDate = `${d.toLocaleDateString()} ko ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+              }
+
+              const card = document.createElement('div');
+              card.className = "sabii-card rounded-xl p-4 flex items-center justify-between bg-stone-50/60";
+              card.innerHTML = `
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-sabii-gold/10 text-sabii-darkgold flex items-center justify-center text-lg shrink-0">
+                    <i class="fa-solid fa-coins"></i>
+                  </div>
+                  <div>
+                    <h4 class="text-xs font-bold text-stone-800">${item.source || "Task / Reward"}</h4>
+                    <p class="text-[10px] text-stone-400 mt-0.5"><i class="fa-regular fa-clock mr-1"></i> ${formattedDate}</p>
+                  </div>
+                </div>
+                <div class="text-right">
+                  <span class="text-xs font-bold sabii-gold-text bg-sabii-gold/10 px-2.5 py-1 rounded-full inline-block">
+                    + Rs ${item.amount || 0}
+                  </span>
+                </div>
+              `;
+              container.appendChild(card);
+            });
+          } else {
+            container.innerHTML = `
+              <div class="sabii-card rounded-xl p-8 text-center text-stone-400 text-xs space-y-2">
+                <i class="fa-solid fa-receipt text-2xl text-sabii-gold/40"></i>
+                <p>Abhi tak koi earnings history record nahi hui.</p>
+              </div>
+            `;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
