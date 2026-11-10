@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - Help Centre & Support</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.05);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    }
+
+    .sabii-input {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .sabii-input:focus {
+      border-color: #C5A059;
+      box-shadow: 0 0 8px rgba(197, 160, 89, 0.25);
+      outline: none;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FFFFFF; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-sabii-gold/15 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Help Centre & Support</span>
+        </div>
+      </a>
+
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="py-1.5 px-3 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Hero Greeting Banner -->
+    <div class="sabii-card rounded-2xl p-6 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 text-center space-y-2">
+      <div class="w-12 h-12 rounded-full bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center mx-auto text-xl shadow-sm">
+        <i class="fa-solid fa-headset"></i>
+      </div>
+      <h2 class="text-xl sm:text-2xl font-bold font-brand text-stone-800">Hamari Support Team Aapke Sath Hai</h2>
+      <p class="text-xs text-stone-500 max-w-md mx-auto">
+        Agar aapko withdrawal, Gmail selling ya kisi bhi task me koi bhi masla hai, toh aap niche diye gaye zariye se direct rabta kar sakte hain.
+      </p>
+    </div>
+
+    <!-- Direct Contact Cards Grid (WhatsApp & Email) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      
+      <!-- WhatsApp Support Card -->
+      <div class="sabii-card rounded-2xl p-5 flex items-center justify-between bg-white hover:border-sabii-gold transition-all shadow-sm">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+            <i class="fa-brands fa-whatsapp"></i>
+          </div>
+          <div>
+            <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">WhatsApp Support</span>
+            <h4 class="text-sm font-bold text-stone-800 mt-0.5">0321 6215503</h4>
+            <p class="text-[11px] text-emerald-600 font-medium">Online & Ready to Help</p>
+          </div>
+        </div>
+        <a href="https://wa.me/923216215503?text=Assalam-o-Alaikum%2C%20mujhe%20Sabii%20portal%20me%20help%20chahiye." target="_blank" class="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition">
+          <i class="fa-brands fa-whatsapp"></i> Chat Now
+        </a>
+      </div>
+
+      <!-- Email Support Card -->
+      <div class="sabii-card rounded-2xl p-5 flex items-center justify-between bg-white hover:border-sabii-gold transition-all shadow-sm">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-sabii-gold/10 border border-sabii-gold/30 text-sabii-darkgold flex items-center justify-center text-xl shrink-0">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div>
+            <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Email Support</span>
+            <h4 class="text-xs sm:text-sm font-bold text-stone-800 mt-0.5">sabirkhansadre@gmail.com</h4>
+            <p class="text-[11px] text-sabii-darkgold font-medium">Fast Response Time</p>
+          </div>
+        </div>
+        <a href="mailto:sabirkhansadre@gmail.com?subject=Sabii%20Portal%20Support" class="py-2.5 px-4 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider flex items-center gap-2 shadow-md transition">
+          <i class="fa-solid fa-paper-plane"></i> Email Us
+        </a>
+      </div>
+
+    </div>
+
+    <!-- FAQ Section (Common Questions) -->
+    <section class="sabii-card rounded-2xl p-6 space-y-4">
+      <div class="border-b border-stone-100 pb-3">
+        <h3 class="text-base font-bold font-brand text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-sabii-gold"></i> Frequently Asked Questions (FAQ)
+        </h3>
+        <p class="text-xs text-stone-400">Aam taur par puche jane wale sawalat aur unke jawabat.</p>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-100 space-y-1">
+          <h4 class="font-bold text-stone-800 flex items-center gap-2">
+            <i class="fa-solid fa-angle-right text-sabii-gold"></i> Withdrawal kitne waqt me approve hota hai?
+          </h4>
+          <p class="text-stone-500 pl-4">Withdrawal request admin check karne ke baad 24 ghante ke andar approve kar di jati hai, aur paise aapke Easypaisa ya JazzCash me transfer ho jate hain.</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-100 space-y-1">
+          <h4 class="font-bold text-stone-800 flex items-center gap-2">
+            <i class="fa-solid fa-angle-right text-sabii-gold"></i> Gmail selling ka password kya hona chahiye?
+          </h4>
+          <p class="text-stone-500 pl-4">Gmail ka password hamesha <span class="font-bold text-stone-800">aass1122</span> hona lazmi hai aur account fresh hona chahiye.</p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-stone-50 border border-stone-100 space-y-1">
+          <h4 class="font-bold text-stone-800 flex items-center gap-2">
+            <i class="fa-solid fa-angle-right text-sabii-gold"></i> Agar request reject ho jaye toh kya hota hai?
+          </h4>
+          <p class="text-stone-500 pl-4">Agar admin kisi wajah se request reject karta hai, toh aapke paise automatically aapke balance me wapis refund ho jate hain.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
+  </footer>
+</body>
+</html>
