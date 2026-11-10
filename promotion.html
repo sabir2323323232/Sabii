@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - Social & Brand Promotion</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.05);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    }
+
+    .sabii-input {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .sabii-input:focus {
+      border-color: #C5A059;
+      box-shadow: 0 0 8px rgba(197, 160, 89, 0.25);
+      outline: none;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FFFFFF; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-sabii-gold/15 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Promotion Hub</span>
+        </div>
+      </a>
+
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="py-1.5 px-3 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Top Balance & Quality Guarantee Banner -->
+    <div class="sabii-card rounded-2xl p-5 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="bg-emerald-100 text-emerald-700 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+            <i class="fa-solid fa-shield-check"></i> 100% Original & Real Promotion
+          </span>
+        </div>
+        <h2 class="text-xl font-bold font-brand text-stone-800">Apne Social Accounts & Brand Ko Grow Karein</h2>
+        <p class="text-xs text-stone-500">Order place karte hi aapka amount aapke main balance se cut ho jayega.</p>
+      </div>
+
+      <!-- Current Balance Badge -->
+      <div class="bg-white border border-sabii-gold/30 rounded-2xl p-3 px-5 text-right shadow-sm shrink-0">
+        <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Your Balance</span>
+        <h3 id="current-balance" class="text-xl font-bold sabii-gold-text">Rs 0</h3>
+      </div>
+    </div>
+
+    <!-- Pricing Rates Cards Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="sabii-card rounded-xl p-3 text-center bg-stone-50/60 border-sabii-gold/20">
+        <i class="fa-solid fa-eye text-sabii-gold text-base mb-1"></i>
+        <h4 class="text-xs font-bold text-stone-800">10 Views</h4>
+        <span class="text-[11px] font-bold sabii-gold-text">Rs 100</span>
+      </div>
+
+      <div class="sabii-card rounded-xl p-3 text-center bg-stone-50/60 border-sabii-gold/20">
+        <i class="fa-solid fa-thumbs-up text-sabii-gold text-base mb-1"></i>
+        <h4 class="text-xs font-bold text-stone-800">10 Likes</h4>
+        <span class="text-[11px] font-bold sabii-gold-text">Rs 100</span>
+      </div>
+
+      <div class="sabii-card rounded-xl p-3 text-center bg-stone-50/60 border-sabii-gold/20">
+        <i class="fa-solid fa-comments text-sabii-gold text-base mb-1"></i>
+        <h4 class="text-xs font-bold text-stone-800">5 Comments</h4>
+        <span class="text-[11px] font-bold sabii-gold-text">Rs 100</span>
+      </div>
+
+      <div class="sabii-card rounded-xl p-3 text-center bg-stone-50/60 border-sabii-gold/20">
+        <i class="fa-solid fa-user-plus text-sabii-gold text-base mb-1"></i>
+        <h4 class="text-xs font-bold text-stone-800">5 Followers</h4>
+        <span class="text-[11px] font-bold sabii-gold-text">Rs 100</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- Left Column: Social Media Order Form -->
+      <section class="sabii-card rounded-2xl p-5 space-y-4">
+        <div class="border-b border-stone-100 pb-3">
+          <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
+            <i class="fa-solid fa-bullhorn text-sabii-gold"></i> Fast Social Media Promotion
+          </h3>
+          <p class="text-xs text-stone-400">Platform select karein aur target link enter karein.</p>
+        </div>
+
+        <form id="social-promo-form" onsubmit="handleSocialPromoSubmit(event)" class="space-y-3.5">
+          
+          <!-- Social Account Platform -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Select Social Platform</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-share-nodes"></i></span>
+              <select id="platform-select" required class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800 bg-white">
+                <option value="YouTube">YouTube</option>
+                <option value="Instagram">Instagram</option>
+                <option value="Facebook">Facebook</option>
+                <option value="TikTok">TikTok</option>
+                <option value="Twitter/X">Twitter / X</option>
+                <option value="Website">Website Link</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Target Link -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Account / Post / Video Link</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-link"></i></span>
+              <input type="url" id="target-link" required placeholder="https://..." class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+            </div>
+          </div>
+
+          <!-- Service Type Selection -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Service Required</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-list-check"></i></span>
+                <select id="service-type" onchange="calculateTotalCost()" required class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800 bg-white">
+                  <option value="views">Views (10 per Rs 100)</option>
+                  <option value="likes">Likes (10 per Rs 100)</option>
+                  <option value="comments">Comments (5 per Rs 100)</option>
+                  <option value="followers">Followers / Subs (5 per Rs 100)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Multiplier Quantity -->
+            <div>
+              <label class="block text-xs font-semibold text-stone-700 mb-1">Pack Quantity (Units)</label>
+              <div class="relative">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-boxes-stacked"></i></span>
+                <input type="number" id="pack-quantity" min="1" value="1" oninput="calculateTotalCost()" required class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto Total Calculation Card -->
+          <div class="p-3 rounded-xl bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-between">
+            <span class="text-xs font-bold text-stone-700">Total Price:</span>
+            <span id="calculated-cost" class="text-sm font-bold sabii-gold-text">Rs 100</span>
+          </div>
+
+          <button type="submit" id="social-submit-btn" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
+            <span>Pay & Place Order</span>
+            <i class="fa-solid fa-rocket"></i>
+          </button>
+        </form>
+      </section>
+
+      <!-- Right Column: Promotion Orders Status & History -->
+      <section class="sabii-card rounded-2xl p-5 space-y-4">
+        <div class="border-b border-stone-100 pb-3 flex items-center justify-between">
+          <div>
+            <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-sabii-gold"></i> Your Active Promotions
+            </h3>
+            <p class="text-xs text-stone-400">Admin ke paas order ka real-time status update hoga.</p>
+          </div>
+          <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Live Synced</span>
+        </div>
+
+        <div id="promo-history-list" class="space-y-3 max-h-[360px] overflow-y-auto pr-1">
+          <div class="text-center py-6 text-stone-400 text-xs">Loading orders...</div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom Box: Big Brand / Shop Banner & Ad Campaign Form -->
+    <section class="sabii-card rounded-2xl p-6 bg-gradient-to-br from-stone-900 via-stone-800 to-stone-900 text-white space-y-4 shadow-xl">
+      <div class="border-b border-stone-700/60 pb-3">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="bg-sabii-gold/20 text-sabii-lightgold text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sabii-gold/30">
+            <i class="fa-solid fa-star"></i> Big Business & Ad Campaigns
+          </span>
+        </div>
+        <h3 class="text-lg font-bold font-brand text-sabii-lightgold">Bara Promotion, Brand Ads ya Dukan Promote Karein</h3>
+        <p class="text-xs text-stone-300">
+          Agar aap apna koi brand, dukan, website ya custom banner ad hamari application par chalana chahte hain, toh apni details bheinjen. Admin aap se direct rabta karega.
+        </p>
+      </div>
+
+      <form id="brand-form" onsubmit="handleBrandPromoSubmit(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone-300 mb-1">Phone / WhatsApp Number</label>
+          <input type="tel" id="brand-phone" required placeholder="03001234567" class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-stone-800 border border-stone-700 text-white focus:border-sabii-gold focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-300 mb-1">Email Address</label>
+          <input type="email" id="brand-email" required placeholder="yourname@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-stone-800 border border-stone-700 text-white focus:border-sabii-gold focus:outline-none">
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-xs font-semibold text-stone-300 mb-1">Promotion Details / Campaign Requirements</label>
+          <textarea id="brand-details" rows="3" required placeholder="Aap apni dukan, brand ya ad campaign ke baare me wazahat likhein..." class="w-full px-3.5 py-2.5 rounded-xl text-xs bg-stone-800 border border-stone-700 text-white focus:border-sabii-gold focus:outline-none"></textarea>
+        </div>
+
+        <div class="md:col-span-2">
+          <button type="submit" id="brand-submit-btn" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg">
+            <span>Send Brand Request to Admin</span>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </div>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
+  </footer>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getDatabase, 
+      ref, 
+      set, 
+      push, 
+      onValue, 
+      update 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    let currentUserId = null;
+    let currentUserBalance = 0;
+
+    // Toast Alert Utility
+    window.showToast = function(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColor = type === 'success' 
+        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' 
+        : 'bg-red-900 border-red-500 text-white';
+
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
+      
+      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
+
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          ${icon}
+          <span>${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    };
+
+    // Calculate Total Price
+    window.calculateTotalCost = function() {
+      const packQty = parseInt(document.getElementById('pack-quantity').value) || 1;
+      const totalCost = packQty * 100;
+      document.getElementById('calculated-cost').innerText = `Rs ${totalCost}`;
+      return totalCost;
+    };
+
+    // Handle Social Promotion Submission
+    window.handleSocialPromoSubmit = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('social-submit-btn');
+      const platform = document.getElementById('platform-select').value;
+      const targetLink = document.getElementById('target-link').value.trim();
+      const service = document.getElementById('service-type').value;
+      const packQty = parseInt(document.getElementById('pack-quantity').value) || 1;
+      const totalCost = calculateTotalCost();
+
+      if (totalCost > currentUserBalance) {
+        showToast("Aap ke paas balance kam hai!", "error");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing Order...`;
+
+      try {
+        // 1. Deduct Balance
+        const newBalance = currentUserBalance - totalCost;
+        await update(ref(db, 'users/' + currentUserId), {
+          balance: newBalance
+        });
+
+        // 2. Add to Firebase Node (`admin/socialPromotions` & `user_promotions/{uid}`)
+        const newPromoRef = push(ref(db, 'admin/socialPromotions'));
+        const promoId = newPromoRef.key;
+
+        const promoData = {
+          id: promoId,
+          uid: currentUserId,
+          platform: platform,
+          link: targetLink,
+          service: service,
+          quantity: packQty,
+          amountPaid: totalCost,
+          status: 'Accepted', // Accepted, Approved/Completed, Rejected
+          timestamp: new Date().toISOString()
+        };
+
+        await set(newPromoRef, promoData);
+        await set(ref(db, `user_promotions/${currentUserId}/${promoId}`), promoData);
+
+        // Record Earnings/Spending Entry
+        const earnRef = push(ref(db, `user_earnings/${currentUserId}`));
+        await set(earnRef, {
+          source: `Social Promotion Order (${platform})`,
+          amount: -totalCost,
+          timestamp: new Date().toISOString()
+        });
+
+        showToast("Order Accept ho gaya hai aur status update ho gaya!", "success");
+        document.getElementById('social-promo-form').reset();
+        calculateTotalCost();
+
+      } catch (err) {
+        console.error(err);
+        showToast("Order place karte waqt masla aya!", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Pay & Place Order</span> <i class="fa-solid fa-rocket"></i>`;
+      }
+    };
+
+    // Handle Big Brand Promotion Submission
+    window.handleBrandPromoSubmit = async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('brand-submit-btn');
+      const phone = document.getElementById('brand-phone').value.trim();
+      const email = document.getElementById('brand-email').value.trim();
+      const details = document.getElementById('brand-details').value.trim();
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Sending Request...`;
+
+      try {
+        const brandRef = push(ref(db, 'admin/brandPromotions'));
+        await set(brandRef, {
+          uid: currentUserId,
+          phone: phone,
+          email: email,
+          details: details,
+          timestamp: new Date().toISOString()
+        });
+
+        showToast("Aap ka Brand Request admin ko kamyabi se bhej diya gaya!", "success");
+        document.getElementById('brand-form').reset();
+
+      } catch (err) {
+        console.error(err);
+        showToast("Request bhejte waqt masla aya!", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Send Brand Request to Admin</span> <i class="fa-solid fa-paper-plane"></i>`;
+      }
+    };
+
+    // Auth Observer & Real-time Listeners
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUserId = user.uid;
+
+        // User Balance Listener
+        onValue(ref(db, 'users/' + currentUserId), (snapshot) => {
+          if (snapshot.exists()) {
+            currentUserBalance = snapshot.val().balance || 0;
+            document.getElementById('current-balance').innerText = `Rs ${currentUserBalance}`;
+          }
+        });
+
+        // Orders History Listener
+        onValue(ref(db, `user_promotions/${currentUserId}`), (snapshot) => {
+          const container = document.getElementById('promo-history-list');
+          container.innerHTML = "";
+
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const keys = Object.keys(data).reverse();
+
+            keys.forEach((key) => {
+              const item = data[key];
+
+              let statusBadge = `<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-check"></i> Accepted & In Progress</span>`;
+              if (item.status === 'Completed') {
+                statusBadge = `<span class="bg-blue-50 text-blue-600 border border-blue-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-check"></i> Completed</span>`;
+              }
+
+              const card = document.createElement('div');
+              card.className = "sabii-card rounded-xl p-3 flex items-center justify-between bg-stone-50/50";
+              card.innerHTML = `
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-stone-800">${item.platform}</span>
+                    <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-1.5 py-0.5 rounded">${item.service}</span>
+                  </div>
+                  <p class="text-[10px] text-stone-400 mt-0.5 truncate max-w-[180px]">${item.link}</p>
+                </div>
+                <div class="text-right">
+                  <span class="font-bold text-xs sabii-gold-text block mb-1">Rs ${item.amountPaid}</span>
+                  ${statusBadge}
+                </div>
+              `;
+              container.appendChild(card);
+            });
+          } else {
+            container.innerHTML = `
+              <div class="text-center py-6 text-stone-400 text-xs">
+                Abhi tak koi promotion order place nahi kiya gaya.
+              </div>
+            `;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
