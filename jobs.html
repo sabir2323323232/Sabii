@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - Jobs Portal</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FFFFFF;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.05);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.3);
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FFFFFF; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white border-b border-sabii-gold/15 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Jobs Portal</span>
+        </div>
+      </a>
+
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="py-1.5 px-3 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+    <!-- Top Hero Banner -->
+    <div class="sabii-card rounded-2xl p-6 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="space-y-1">
+        <div class="flex items-center gap-2">
+          <span class="bg-sabii-gold/20 text-sabii-darkgold text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sabii-gold/30">
+            <i class="fa-solid fa-briefcase"></i> Career & Job Opportunities
+          </span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-bold font-brand text-stone-800">Latest Offline & Online Jobs</h2>
+        <p class="text-xs text-stone-500">Admin panel se update hone wali tamam naye jobs yahan real-time show hoti hain.</p>
+      </div>
+    </div>
+
+    <!-- Section 1: Offline Jobs -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between border-b border-stone-100 pb-2">
+        <h3 class="text-base font-bold font-brand text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-location-dot text-sabii-gold"></i> Offline Jobs (Field / Local)
+        </h3>
+        <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2.5 py-1 rounded-full">Real-time Synced</span>
+      </div>
+
+      <!-- Offline Jobs Grid -->
+      <div id="offline-jobs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Default Job as requested -->
+        <div class="sabii-card rounded-2xl p-5 flex flex-col justify-between space-y-4 bg-stone-50/50">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                Offline Duty
+              </span>
+              <span class="text-xs font-bold sabii-gold-text">Rs 20,000 / Month</span>
+            </div>
+            <h4 class="text-sm font-bold text-stone-800">Salesman & Supplying</h4>
+            <p class="text-xs text-stone-500"><i class="fa-solid fa-location-dot text-sabii-gold mr-1"></i> <strong>Locations:</strong> Peshawar, Mardan, Swabi, Shabqadar</p>
+            <p class="text-xs text-stone-500"><i class="fa-solid fa-clock text-sabii-gold mr-1"></i> <strong>Timing:</strong> Full Time (8 Hours Duty)</p>
+          </div>
+          <button onclick="applyJob('Salesman & Supplying - Peshawar/Mardan/Swabi/Shabqadar')" class="w-full py-2.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider shadow-sm">
+            Apply For Job <i class="fa-solid fa-arrow-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Online Jobs (Coming Soon) -->
+    <section class="space-y-4 pt-4">
+      <div class="flex items-center justify-between border-b border-stone-100 pb-2">
+        <h3 class="text-base font-bold font-brand text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-laptop text-stone-400"></i> Online Jobs (Remote)
+        </h3>
+        <span class="text-[10px] text-amber-700 bg-amber-100 border border-amber-300 font-bold px-2.5 py-1 rounded-full">Coming Soon</span>
+      </div>
+
+      <!-- Coming Soon Card -->
+      <div class="sabii-card rounded-2xl p-8 text-center bg-stone-50/40 border-dashed border-2 border-sabii-gold/30 space-y-3">
+        <div class="w-12 h-12 rounded-full bg-sabii-gold/10 text-sabii-darkgold flex items-center justify-center mx-auto text-xl">
+          <i class="fa-solid fa-hourglass-half fa-spin"></i>
+        </div>
+        <h4 class="text-base font-bold text-stone-800 font-brand">Online Remote Jobs Are Coming Soon!</h4>
+        <p class="text-xs text-stone-500 max-w-md mx-auto">
+          Hum jald hi online digital tasks aur work-from-home jobs is portal par introduce karne wale hain. Stay tuned!
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
+  </footer>
+
+  <!-- Firebase Integration -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getAuth, 
+      onAuthStateChanged 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { 
+      getDatabase, 
+      ref, 
+      onValue,
+      push,
+      set 
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    let currentUserId = null;
+
+    // Toast Alert Function
+    window.showToast = function(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      
+      const bgColor = type === 'success' 
+        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' 
+        : 'bg-red-900 border-red-500 text-white';
+
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
+      
+      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
+
+      toast.innerHTML = `
+        <div class="flex items-center gap-2">
+          ${icon}
+          <span>${message}</span>
+        </div>
+        <button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
+      `;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
+      }, 10);
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    };
+
+    // Apply Job Function
+    window.applyJob = async function(jobTitle) {
+      if (!currentUserId) return;
+      try {
+        const applyRef = push(ref(db, 'admin/jobApplications'));
+        await set(applyRef, {
+          uid: currentUserId,
+          jobTitle: jobTitle,
+          timestamp: new Date().toISOString()
+        });
+        showToast("Aapki job application admin ko bhej di gayi hai! Jald rabita hoga.", "success");
+      } catch (err) {
+        console.error(err);
+        showToast("Application bhejte waqt masla aya!", "error");
+      }
+    };
+
+    // Auth Observer & Real-time Jobs Sync from Admin Panel (`admin/jobs/offline`)
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUserId = user.uid;
+
+        onValue(ref(db, 'admin/jobs/offline'), (snapshot) => {
+          const container = document.getElementById('offline-jobs-container');
+          
+          if (snapshot.exists()) {
+            container.innerHTML = "";
+            snapshot.forEach((childSnap) => {
+              const job = childSnap.val();
+              const card = document.createElement('div');
+              card.className = "sabii-card rounded-2xl p-5 flex flex-col justify-between space-y-4 bg-stone-50/50";
+              card.innerHTML = `
+                <div class="space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                      Offline Duty
+                    </span>
+                    <span class="text-xs font-bold sabii-gold-text">${job.salary || 'Rs 20,000'}</span>
+                  </div>
+                  <h4 class="text-sm font-bold text-stone-800">${job.title || 'Salesman & Supplying'}</h4>
+                  <p class="text-xs text-stone-500"><i class="fa-solid fa-location-dot text-sabii-gold mr-1"></i> <strong>Locations:</strong> ${job.location || 'Peshawar, Mardan, Swabi, Shabqadar'}</p>
+                  <p class="text-xs text-stone-500"><i class="fa-solid fa-clock text-sabii-gold mr-1"></i> <strong>Timing:</strong> ${job.timing || 'Full Time (8 Hours)'}</p>
+                </div>
+                <button onclick="applyJob('${job.title || 'Job'} - ${job.location || 'Local'}')" class="w-full py-2.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider shadow-sm">
+                  Apply For Job <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+              `;
+              container.appendChild(card);
+            });
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
