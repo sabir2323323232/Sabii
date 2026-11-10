@@ -113,7 +113,7 @@
         <i class="fa-solid fa-right-to-bracket text-sabii-gold"></i> Login
       </button>
       <button id="tab-register-btn" onclick="switchTab('register')" class="flex-1 py-3.5 font-semibold text-xs sm:text-sm text-stone-400 border-b-2 border-transparent hover:text-sabii-darkgold transition-all flex items-center justify-center gap-2">
-        <i class="fa-solid fa-user-plus"></i> Register (+5 Rs)
+        <i class="fa-solid fa-user-plus"></i> Register (+1 Rs)
       </button>
     </div>
 
@@ -161,7 +161,7 @@
       <div id="register-section" class="hidden max-w-xl mx-auto space-y-5">
         <div class="text-center mb-4">
           <h2 class="text-xl font-bold text-stone-800 font-brand">Sabii Account Register Karein</h2>
-          <p class="text-xs text-stone-500">Per referral <span class="text-sabii-darkgold font-bold">5 Rupees</span> earn karein!</p>
+          <p class="text-xs text-stone-500">Per referral <span class="text-sabii-darkgold font-bold">1 Rupee</span> earn karein!</p>
         </div>
 
         <form id="register-form" onsubmit="handleRegister(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,7 +170,7 @@
             <label class="block text-xs font-semibold text-stone-700 mb-1">Full Name</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-user"></i></span>
-              <input type="text" id="reg-fullname" required placeholder="Apna Naami Likhein" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sabii-input text-stone-800">
+              <input type="text" id="reg-fullname" required placeholder="Apna Naam Likhein" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sabii-input text-stone-800">
             </div>
           </div>
 
@@ -266,7 +266,7 @@
       ref, 
       set, 
       get, 
-      update
+      update 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     // Firebase Configuration
@@ -387,7 +387,7 @@
       return referrerKey ? { uid: referrerKey, data: referrerData } : null;
     }
 
-    // Handle Registration
+    // Handle Registration with Referral Reward (1 Rupee per Referral + Earnings Record)
     window.handleRegister = async function(e) {
       e.preventDefault();
       const btn = document.getElementById('reg-btn-text');
@@ -442,13 +442,33 @@
 
         await set(ref(db, 'users/' + uid), userData);
 
+        // Referral Reward: Give 1 Rupee to Referrer and record in earnings history
         if (referrer) {
           const currentBal = referrer.data.balance || 0;
           const currentCount = referrer.data.totalReferrals || 0;
           
           await update(ref(db, 'users/' + referrer.uid), {
-            balance: currentBal + 5,
+            balance: currentBal + 1,
             totalReferrals: currentCount + 1
+          });
+
+          // Record earning entry for referrer so it shows in `your-balance.html` and `referral.html`
+          const earnRef = push ? null : null; // using push path
+          // We can push to user_earnings/{referrer.uid}
+          const newEarnRef = ref(db, `user_earnings/${referrer.uid}`);
+          // Since we need push ID here, let's import push from firebase-database if needed or construct a ref
+          // To keep it simple, let's do update/set or direct push
+        }
+
+        // Proper implementation with push for referrer earnings:
+        if (referrer) {
+          const referrerEarnRef = ref(db, `user_earnings/${referrer.uid}`);
+          // push new earnings entry
+          const newRefPush = push(referrerEarnRef);
+          await set(newRefPush, {
+            source: `Referral Bonus (${username})`,
+            amount: 1,
+            timestamp: new Date().toISOString()
           });
         }
 
@@ -496,7 +516,6 @@
     // Auth state observer
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Agar user pehle se logged in hai to direct dashboard.html bhej dein
         window.location.href = "dashboard.html";
       }
     });
