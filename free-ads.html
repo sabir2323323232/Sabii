@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - Free Ads Hub</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF9F6;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .sabii-card:hover {
+      box-shadow: 0 15px 35px rgba(197, 160, 89, 0.15);
+      transform: translateY(-3px);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-stone-800">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Free Ads Portal</span>
+        </div>
+      </a>
+
+      <!-- Back to Dashboard -->
+      <a href="dashboard.html" class="py-1.5 px-3.5 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col justify-center space-y-8">
+
+    <div class="text-center space-y-2">
+      <h2 class="text-2xl sm:text-3xl font-bold font-brand sabii-gold-text uppercase tracking-wider">Daily Ads Earning Center</h2>
+      <p class="text-xs sm:text-sm text-stone-500">Apni pasand ki category select karein aur rozana ads dekh kar balance kamayein.</p>
+    </div>
+
+    <!-- Two Main Buttons Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Card 1: Simple Click Ads -->
+      <div class="sabii-card rounded-3xl p-7 text-center flex flex-col justify-between space-y-6 relative overflow-hidden">
+        <div class="space-y-4">
+          <span class="inline-block bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-extrabold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-xs">
+            Daily 500
+          </span>
+          
+          <div class="w-16 h-16 rounded-2xl bg-sabii-gold/15 border border-sabii-gold/30 text-sabii-darkgold flex items-center justify-center mx-auto text-3xl shadow-inner">
+            <i class="fa-solid fa-arrow-pointer"></i>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold font-brand text-stone-800">Simple Click Ads</h3>
+            <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">
+              Is section mein ads par sirf click karke 10 second rukna hota hai. Har ad par aapko Rs 0.05 milenge.
+            </p>
+          </div>
+        </div>
+
+        <a href="simple-ads.html" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
+          <span>Simple Click Ads</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+
+      <!-- Card 2: Video Watching Ads -->
+      <div class="sabii-card rounded-3xl p-7 text-center flex flex-col justify-between space-y-6 relative overflow-hidden">
+        <div class="space-y-4">
+          <span class="inline-block bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-extrabold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-xs">
+            Daily 500
+          </span>
+          
+          <div class="w-16 h-16 rounded-2xl bg-sabii-gold/15 border border-sabii-gold/30 text-sabii-darkgold flex items-center justify-center mx-auto text-3xl shadow-inner">
+            <i class="fa-solid fa-circle-play"></i>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-bold font-brand text-stone-800">Video Watching Ads</h3>
+            <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">
+              Is section mein mukammal video ads watch karke aap apni daily earning barha sakte hain.
+            </p>
+          </div>
+        </div>
+
+        <a href="video-ads.html" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
+          <span>Video Watching Ads</span>
+          <i class="fa-solid fa-play"></i>
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by SABIPK.
+  </footer>
+
+</body>
+</html>
