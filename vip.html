@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -221,7 +222,6 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Wahin 30 links
     const adLinks = [
       "https://uplcm.com/4/10475294", "https://uplcm.com/4/10475279", "https://uplcm.com/4/10475296",
       "https://uplcm.com/4/10475282", "https://uplcm.com/4/10475278", "https://uplcm.com/4/10475291",
@@ -242,7 +242,6 @@
     let adStartTime = null;
     let countdownInterval = null;
 
-    // Toast Utility
     window.showToast = function(message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -278,9 +277,10 @@
       return `${h}h ${m}m`;
     }
 
-    // Render 30 VIP Ads Grid
+    // Render 30 VIP Ads Grid immediately upon load
     function renderVipAdsGrid() {
       const grid = document.getElementById('vip-ads-grid');
+      if (!grid) return;
       grid.innerHTML = "";
       const now = Date.now();
       const LOCK_DURATION = 24 * 60 * 60 * 1000;
@@ -288,7 +288,7 @@
       adLinks.forEach((link, index) => {
         const adKey = `vip_ad_${index + 1}`;
         const sub = userVipSubmissions[adKey] || {};
-        const status = sub.status; // 'Pending', 'Approved', 'Rejected'
+        const status = sub.status; 
         const timestamp = sub.timestamp || 0;
         
         let isLocked = false;
@@ -329,7 +329,6 @@
       });
     }
 
-    // Start VIP Ad & 30-Second Strict Timer
     window.startVipAd = function(index, link) {
       if (activeAdIndex !== null) return;
 
@@ -356,7 +355,6 @@
       }, 500);
     };
 
-    // When user returns to tab after 30 seconds
     window.addEventListener('focus', () => {
       if (activeAdIndex === null || adStartTime === null) return;
 
@@ -376,7 +374,6 @@
         return;
       }
 
-      // Open Proof Upload Modal
       document.getElementById('modal-ad-index').value = completedIndex;
       document.getElementById('modal-ad-title').innerText = `VIP Ad #${completedIndex + 1} Screenshot Upload`;
       document.getElementById('vip-proof-file').value = "";
@@ -396,7 +393,6 @@
       });
     }
 
-    // Submit VIP Proof
     window.submitVipProof = async function(e) {
       e.preventDefault();
       const btn = document.getElementById('modal-submit-btn');
@@ -420,12 +416,11 @@
           adNumber: adIndex + 1,
           uid: currentUserId,
           photo: photoBase64,
-          status: 'Pending', // Pending, Approved, Rejected
+          status: 'Pending', 
           rewardCredited: false,
           timestamp: Date.now()
         };
 
-        // Save to admin submissions & user vip submissions
         const subRef = push(ref(db, 'admin/vipAdSubmissions'));
         const subId = subRef.key;
 
@@ -443,6 +438,11 @@
       }
     };
 
+    // Initialize Grid Immediately on Load
+    document.addEventListener("DOMContentLoaded", () => {
+      renderVipAdsGrid();
+    });
+
     // Auth & Real-Time Sync
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -450,10 +450,11 @@
       } else {
         currentUserId = user.uid;
 
-        // Sync Balance
+        // Sync Balance real-time with correct path (`users/${currentUserId}/balance`)
         onValue(ref(db, `users/${currentUserId}/balance`), (snapshot) => {
           const bal = parseFloat(snapshot.val() || 0).toFixed(2);
-          document.getElementById('user-bal').innerText = `Rs ${bal}`;
+          const balEl = document.getElementById('user-bal');
+          if (balEl) balEl.innerText = `Rs ${bal}`;
         });
 
         // Sync User Submissions & Auto Credit on Approval
@@ -466,3 +467,36 @@
               const item = data[adKey];
 
               if (item.status === 'Approved' && !item.rewardCredited) {
+                await update(ref(db, `user_vip_submissions/${currentUserId}/${adKey}`), { rewardCredited: true });
+                if (item.id) {
+                  await update(ref(db, `admin/vipAdSubmissions/${item.id}`), { rewardCredited: true });
+                }
+
+                const userRef = ref(db, `users/${currentUserId}`);
+                const snap = await get(userRef);
+                if (snap.exists()) {
+                  const oldBal = parseFloat(snap.val().balance || 0);
+                  const newBal = parseFloat((oldBal + 0.20).toFixed(2));
+                  await update(userRef, { balance: newBal });
+
+                  const earnRef = push(ref(db, `user_earnings/${currentUserId}`));
+                  await set(earnRef, {
+                    source: `VIP Ad #${item.adNumber} Reward`,
+                    amount: 0.20,
+                    timestamp: new Date().toISOString()
+                  });
+                }
+
+                showToast(`Mubarak ho! VIP Ad #${item.adNumber} approve ho gaya hai, Rs 0.20 aapke balance mein add ho gaye hain!`, "success");
+              }
+            }
+          } else {
+            userVipSubmissions = {};
+          }
+          renderVipAdsGrid();
+        });
+      }
+    });
+  </script>
+</body>
+</html>
