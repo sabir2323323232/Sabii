@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii - Buy Free Product</title>
+  <title>Sabii - Buy Product & Earn Rs 40</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -100,7 +99,7 @@
         </div>
         <div>
           <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
-          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Buy Free Product Portal</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Cashback Portal</span>
         </div>
       </a>
 
@@ -114,121 +113,88 @@
   <!-- Main Area -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <!-- Top Rules & Balance Banner -->
-    <div class="sabii-card rounded-2xl p-5 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 flex flex-col md:flex-row items-center justify-between gap-4">
-      <div class="space-y-2">
-        <h3 class="text-base font-bold font-brand text-stone-800 flex items-center gap-2">
-          <i class="fa-solid fa-circle-exclamation text-sabii-gold"></i> Product Order Rules & Guidelines
-        </h3>
-        <ul class="text-xs text-stone-600 space-y-1 list-disc list-inside">
-          <li>Hamesha aisi product ki photo gallery se select karein <span class="font-bold text-stone-800">jespe ID Number clear likha ho</span>.</li>
-          <li>Aapka registered email aur complete delivery address hona lazmi hai.</li>
-          <li>Admin approval ke baad product price ke mutabiq aapke balance se paise cut jayenge.</li>
-        </ul>
+    <!-- Big Rules Banner -->
+    <div class="sabii-card rounded-2xl p-6 bg-gradient-to-r from-sabii-gold/15 via-white to-sabii-gold/10 border-2 border-sabii-gold/40 shadow-md space-y-2 text-center sm:text-left">
+      <div class="flex items-center justify-center sm:justify-start gap-2 text-sabii-darkgold">
+        <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+        <h3 class="text-base sm:text-lg font-bold font-brand uppercase tracking-wider">Zaroori Rules & Instructions</h3>
       </div>
-
-      <!-- Current Balance Badge -->
-      <div class="bg-white border border-sabii-gold/30 rounded-2xl p-3 px-5 text-right shadow-sm shrink-0">
-        <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Your Balance</span>
-        <h3 id="current-balance" class="text-xl font-bold sabii-gold-text">Rs 0</h3>
-      </div>
+      <p class="text-xs sm:text-sm font-semibold text-stone-700 leading-relaxed">
+        Jo product aapne buy ki hai, uski <span class="font-bold text-sabii-darkgold underline">photo gallery se lazmi upload karein</span>, sath me <span class="font-bold text-sabii-darkgold underline">Product ID</span> aur <span class="font-bold text-sabii-darkgold underline">Purchase Date</span> bilkul sahi darj karein. Admin approval ke baad aapko <span class="font-bold sabii-gold-text text-sm">Rs 40</span> mil jayenge!
+      </p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-      <!-- Left Column: Order Form -->
+      <!-- Left Column: Submit Purchase Form -->
       <section class="sabii-card rounded-2xl p-5 space-y-4">
         <div class="border-b border-stone-100 pb-3">
           <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
-            <i class="fa-solid fa-gift text-sabii-gold"></i> Select & Order Product
+            <i class="fa-solid fa-file-arrow-up text-sabii-gold"></i> Submit Purchase Proof for Rs 40
           </h3>
-          <p class="text-xs text-stone-400">Apni details aur gallery se product ki tasveer darj karein.</p>
+          <p class="text-xs text-stone-400">Apni khareedari ki tafseel yahan submit karein.</p>
         </div>
 
-        <form id="product-order-form" onsubmit="handleProductOrderSubmit(event)" class="space-y-3.5">
+        <form id="cashback-form" onsubmit="handleCashbackSubmit(event)" class="space-y-3.5">
           
-          <!-- Registered Email -->
-          <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Registered Email Address</label>
-            <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-envelope"></i></span>
-              <input type="email" id="user-email" required placeholder="name@example.com" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
-            </div>
-          </div>
-
           <!-- Product Name -->
           <div>
             <label class="block text-xs font-semibold text-stone-700 mb-1">Product Name</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-box"></i></span>
-              <input type="text" id="product-name" required placeholder="Product ka naam likhein" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+              <input type="text" id="prod-name" required placeholder="Product ka naam likhein" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
             </div>
           </div>
 
-          <!-- Product Price -->
+          <!-- Product ID / Order ID -->
           <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Product Price (PKR)</label>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Product ID / Daraz Order ID</label>
             <div class="relative">
-              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-coins"></i></span>
-              <input type="number" id="product-price" min="1" required placeholder="Product ki qeemat" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-hashtag"></i></span>
+              <input type="text" id="prod-id" required placeholder="Order ID ya Product ID likhein" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
             </div>
           </div>
 
-          <!-- Product Photo Gallery Upload -->
+          <!-- Purchase Date -->
           <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Select Product Photo from Gallery (ID Number wali)</label>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Kab Buy Kiya Tha? (Purchase Date)</label>
+            <div class="relative">
+              <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-calendar-days"></i></span>
+              <input type="date" id="prod-date" required class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800 bg-white">
+            </div>
+          </div>
+
+          <!-- Product Photo from Gallery -->
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Product Photo (Gallery se select karein)</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-image"></i></span>
-              <input type="file" id="product-photo-file" accept="image/*" required class="w-full pl-10 pr-4 py-2 rounded-xl text-xs sabii-input text-stone-800 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-sabii-gold/10 file:text-sabii-darkgold hover:file:bg-sabii-gold/20">
+              <input type="file" id="prod-photo-file" accept="image/*" required class="w-full pl-10 pr-4 py-2 rounded-xl text-xs sabii-input text-stone-800 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-sabii-gold/10 file:text-sabii-darkgold hover:file:bg-sabii-gold/20">
             </div>
-          </div>
-
-          <!-- City & WhatsApp -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-stone-700 mb-1">City</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-city"></i></span>
-                <input type="text" id="user-city" required placeholder="Aapka shehar" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-stone-700 mb-1">WhatsApp Number</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-phone"></i></span>
-                <input type="tel" id="user-whatsapp" required placeholder="03001234567" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800">
-              </div>
-            </div>
-          </div>
-
-          <!-- Full Address -->
-          <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Full Delivery Address</label>
-            <textarea id="user-address" rows="2" required placeholder="Ghar ka mukammal pata likhein..." class="w-full px-3.5 py-2.5 rounded-xl text-xs sabii-input text-stone-800 focus:outline-none"></textarea>
+            <p class="text-[10px] text-stone-400 mt-1">Safi tasveer upload karein jispe ID clear nazar aaye.</p>
           </div>
 
           <button type="submit" id="submit-btn" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-md">
-            <span>Submit Product Order</span>
+            <span>Submit Proof (Get Rs 40)</span>
             <i class="fa-solid fa-paper-plane"></i>
           </button>
         </form>
       </section>
 
-      <!-- Right Column: Orders History & Live Status -->
+      <!-- Right Column: Submission History & Status -->
       <section class="sabii-card rounded-2xl p-5 space-y-4">
         <div class="border-b border-stone-100 pb-3 flex items-center justify-between">
           <div>
             <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
-              <i class="fa-solid fa-clock-rotate-left text-sabii-gold"></i> Order History & Status
+              <i class="fa-solid fa-clock-rotate-left text-sabii-gold"></i> Your Cashback History & Status
             </h3>
-            <p class="text-xs text-stone-400">Yahan aapke product order ka real-time status show hoga.</p>
+            <p class="text-xs text-stone-400">Admin approval ke baad Rs 40 aapke balance me add ho jayenge.</p>
           </div>
           <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Real-time</span>
         </div>
 
-        <div id="orders-history-list" class="space-y-3 max-h-[420px] overflow-y-auto pr-1">
-          <div class="text-center py-6 text-stone-400 text-xs">Loading orders history...</div>
+        <div id="cashback-history-list" class="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+          <div class="text-center py-6 text-stone-400 text-xs">Loading history...</div>
         </div>
       </section>
 
@@ -253,7 +219,7 @@
       ref, 
       set, 
       push, 
-      onValue, 
+      onValue,
       get,
       update 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -274,8 +240,7 @@
     const db = getDatabase(app);
 
     let currentUserId = null;
-    let currentUserBalance = 0;
-    let processedApprovals = new Set(); // Prevent double deductions
+    let processedApprovals = new Set(); // Prevent double crediting
 
     // Toast Alert Function
     window.showToast = function(message, type = 'success') {
@@ -320,83 +285,66 @@
       });
     }
 
-    // Product Order Submission
-    window.handleProductOrderSubmit = async function(e) {
+    // Handle Form Submission
+    window.handleCashbackSubmit = async function(e) {
       e.preventDefault();
       const btn = document.getElementById('submit-btn');
-      const email = document.getElementById('user-email').value.trim();
-      const productName = document.getElementById('product-name').value.trim();
-      const productPrice = parseFloat(document.getElementById('product-price').value);
-      const fileInput = document.getElementById('product-photo-file').files[0];
-      const city = document.getElementById('user-city').value.trim();
-      const whatsapp = document.getElementById('user-whatsapp').value.trim();
-      const address = document.getElementById('user-address').value.trim();
+      const prodName = document.getElementById('prod-name').value.trim();
+      const prodId = document.getElementById('prod-id').value.trim();
+      const prodDate = document.getElementById('prod-date').value;
+      const fileInput = document.getElementById('prod-photo-file').files[0];
 
-      if (productPrice > currentUserBalance) {
-        showToast("Aapke paas product price ke mutabiq balance nahi hai!", "error");
+      if (!fileInput) {
+        showToast("Baraye meharbani product ki tasveer select karein!", "error");
         return;
       }
 
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading & Submitting...`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Uploading Proof...`;
 
       try {
-        let photoBase64 = "";
-        if (fileInput) {
-          photoBase64 = await convertFileToBase64(fileInput);
-        }
+        const photoBase64 = await convertFileToBase64(fileInput);
 
-        const newOrderRef = push(ref(db, 'admin/productOrders'));
-        const orderId = newOrderRef.key;
+        const newProofRef = push(ref(db, 'admin/buyProductProofs'));
+        const proofId = newProofRef.key;
 
-        const orderData = {
-          id: orderId,
+        const proofData = {
+          id: proofId,
           uid: currentUserId,
-          email: email,
-          productName: productName,
-          productPrice: productPrice,
-          productPhoto: photoBase64,
-          city: city,
-          whatsapp: whatsapp,
-          address: address,
+          productName: prodName,
+          productId: prodId,
+          purchaseDate: prodDate,
+          photo: photoBase64,
           status: 'Pending', // Pending, Approved, Rejected
-          deducted: false,
+          rewardCredited: false,
           timestamp: new Date().toISOString()
         };
 
-        await set(newOrderRef, orderData);
-        await set(ref(db, `user_product_orders/${currentUserId}/${orderId}`), orderData);
+        await set(newProofRef, proofData);
+        await set(ref(db, `user_buy_proofs/${currentUserId}/${proofId}`), proofData);
 
-        showToast("Product order admin ko kamyabi se bhej diya gaya hai!", "success");
-        document.getElementById('product-order-form').reset();
+        showToast("Proof submit ho gaya hai! Please tora wait karein, admin approve hone par Rs 40 mil jayenge.", "success");
+        document.getElementById('cashback-form').reset();
 
       } catch (err) {
         console.error(err);
-        showToast("Order submit karte waqt masla aya!", "error");
+        showToast("Proof submit karte waqt masla aya!", "error");
       } finally {
         btn.disabled = false;
-        btn.innerHTML = `<span>Submit Product Order</span> <i class="fa-solid fa-paper-plane"></i>`;
+        btn.innerHTML = `<span>Submit Proof (Get Rs 40)</span> <i class="fa-solid fa-paper-plane"></i>`;
       }
     };
 
-    // Auth Observer & Real-time Listener
+    // Auth Observer & Real-time Sync
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "index.html";
       } else {
         currentUserId = user.uid;
 
-        // Sync Balance
-        onValue(ref(db, 'users/' + currentUserId), (snapshot) => {
-          if (snapshot.exists()) {
-            currentUserBalance = snapshot.val().balance || 0;
-            document.getElementById('current-balance').innerText = `Rs ${currentUserBalance}`;
-          }
-        });
-
-        // Realtime Orders Listener
-        onValue(ref(db, `user_product_orders/${currentUserId}`), async (snapshot) => {
-          const container = document.getElementById('orders-history-list');
+        // Realtime Submissions Listener
+        onValue(ref(db, `user_buy_proofs/${currentUserId}`), async (snapshot) => {
+          const container = document.getElementById('cashback-history-list');
           container.innerHTML = "";
 
           if (snapshot.exists()) {
@@ -406,37 +354,43 @@
             for (const key of keys) {
               const item = data[key];
 
-              // Check if Admin Approved and needs balance deduction
-              if (item.status === 'Approved' && !item.deducted && !processedApprovals.has(key)) {
+              // Check if Admin Approved and needs Rs 40 credit
+              if (item.status === 'Approved' && !item.rewardCredited && !processedApprovals.has(key)) {
                 processedApprovals.add(key);
 
                 const userRef = ref(db, 'users/' + currentUserId);
                 const userSnap = await get(userRef);
                 if (userSnap.exists()) {
                   const currentBal = userSnap.val().balance || 0;
-                  if (currentBal >= item.productPrice) {
-                    await update(userRef, { balance: currentBal - item.productPrice });
-                  }
+                  // Add Rs 40 reward
+                  await update(userRef, { balance: currentBal + 40 });
+
+                  // Record earning in user_earnings
+                  const earnRef = push(ref(db, `user_earnings/${currentUserId}`));
+                  await set(earnRef, {
+                    source: `Product Cashback (${item.productName})`,
+                    amount: 40,
+                    timestamp: new Date().toISOString()
+                  });
                 }
 
-                await update(ref(db, `user_product_orders/${currentUserId}/${key}`), { deducted: true });
-                await update(ref(db, `admin/productOrders/${key}`), { deducted: true });
+                await update(ref(db, `user_buy_proofs/${currentUserId}/${key}`), { rewardCredited: true });
+                await update(ref(db, `admin/buyProductProofs/${key}`), { rewardCredited: true });
 
-                showToast(`Mubarak ho! Order approve ho gaya, Rs ${item.productPrice} website balance se cut gaye!`, "success");
+                showToast("Mubarak ho! Admin ne proof approve kar diya hai, Rs 40 aapke account me add ho gaye hain!", "success");
               }
 
-              // Status Badge UI
               let statusBadge = "";
               let statusDesc = "";
               if (item.status === 'Pending') {
-                statusBadge = `<span class="bg-amber-50 text-amber-600 border border-amber-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock"></i> Pending Admin Approval</span>`;
-                statusDesc = "Aapka order review ho raha hai.";
+                statusBadge = `<span class="bg-amber-50 text-amber-600 border border-amber-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock"></i> Pending (Please Wait)</span>`;
+                statusDesc = "Admin approval ka wait karein...";
               } else if (item.status === 'Approved') {
-                statusBadge = `<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-check"></i> Approved</span>`;
-                statusDesc = `Delivery 3-4 din me mil jayegi! (Rs ${item.productPrice} cut gaye hain)`;
+                statusBadge = `<span class="bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-check"></i> Approved (+Rs 40 Added)</span>`;
+                statusDesc = "Rs 40 successfully balance me add ho chuke hain!";
               } else if (item.status === 'Rejected') {
                 statusBadge = `<span class="bg-red-50 text-red-600 border border-red-200 px-2 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>`;
-                statusDesc = "Balance kam hai ya order reject ho gaya hai.";
+                statusDesc = "Proof ghalat ya na-qabil-e-qabool tha.";
               }
 
               const card = document.createElement('div');
@@ -444,14 +398,14 @@
               card.innerHTML = `
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-2.5">
-                    <img src="${item.productPhoto || 'https://via.placeholder.com/150'}" alt="Product" class="w-10 h-10 rounded-lg object-cover border border-sabii-gold/30">
+                    <img src="${item.photo || 'https://via.placeholder.com/150'}" alt="Product" class="w-10 h-10 rounded-lg object-cover border border-sabii-gold/30">
                     <div>
                       <h4 class="font-bold text-xs text-stone-800">${item.productName}</h4>
-                      <p class="text-[10px] text-stone-400">${item.city} | Ph: ${item.whatsapp}</p>
+                      <p class="text-[10px] text-stone-400">ID: ${item.productId} | Date: ${item.purchaseDate}</p>
                     </div>
                   </div>
                   <div class="text-right">
-                    <span class="font-bold text-xs sabii-gold-text block mb-1">Rs ${item.productPrice}</span>
+                    <span class="font-bold text-xs sabii-gold-text block mb-1">Reward: Rs 40</span>
                     ${statusBadge}
                   </div>
                 </div>
@@ -465,7 +419,7 @@
           } else {
             container.innerHTML = `
               <div class="text-center py-6 text-stone-400 text-xs">
-                Abhi tak koi product order nahi kiya gaya.
+                Abhi tak koi purchase proof submit nahi kiya gaya.
               </div>
             `;
           }
