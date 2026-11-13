@@ -73,7 +73,7 @@
     ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
 </head>
-<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800 pb-16">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
@@ -269,11 +269,11 @@
       </div>
     </div>
 
-    <!-- Products Section (Replacing Free Apps) -->
+    <!-- Products Section -->
     <section class="space-y-4">
       <div class="flex items-center justify-between border-b border-sabii-gold/15 pb-2">
         <h3 class="text-sm font-bold font-brand text-stone-800 uppercase tracking-wider flex items-center gap-2">
-          <i class="fa-solid fa-bag-shopping text-sabii-gold"></i> Special Daraz Cashback Products (20% OFF + Rs 40 Cash Back)
+          <i class="fa-solid fa-bag-shopping text-sabii-gold"></i> Special Daraz Cashback Products
         </h3>
         <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Live Synced</span>
       </div>
@@ -289,20 +289,26 @@
 
   </main>
 
-  <!-- Fixed Bottom Buttons -->
-  <nav class="sticky bottom-0 bg-white/90 backdrop-blur-md border-t border-sabii-gold/20 py-2.5 px-4 z-30">
-    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
-      <a href="buy-free-product.html" class="flex-1 max-w-xs py-2.5 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm">
-        <i class="fa-solid fa-gift"></i> Buy Product & Earn 40
+  <!-- Fixed Bottom 4 Buttons Bar -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/25 py-2.5 px-3 z-30 shadow-lg">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2">
+      <a href="buy-free-product.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-gift shrink-0"></i> Buy & Earn 40
       </a>
-      <a href="simple-task.html" class="flex-1 max-w-xs py-2.5 rounded-xl sabii-button font-bold text-xs flex items-center justify-center gap-2 shadow-sm">
-        <i class="fa-solid fa-list-check"></i> Reviews Work
+      <a href="simple-task.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-list-check shrink-0"></i> Reviews Work
+      </a>
+      <a href="payment.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-wallet shrink-0"></i> Withdraw
+      </a>
+      <a href="buy-free-product.html" class="py-2 px-2 rounded-xl sabii-button font-bold text-[11px] text-center flex items-center justify-center gap-1.5 shadow-sm truncate">
+        <i class="fa-solid fa-box-open shrink-0"></i> Free Product
       </a>
     </div>
   </nav>
 
   <!-- Footer -->
-  <footer class="p-2.5 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400">
+  <footer class="p-2.5 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-14">
     &copy; Sabii Application. Powered by Firebase Realtime Database.
   </footer>
 
@@ -482,10 +488,10 @@
               card.className = "sabii-card rounded-2xl overflow-hidden flex flex-col justify-between bg-stone-50/40 p-4 space-y-3";
               card.innerHTML = `
                 <div class="space-y-3">
-                  <!-- Top Notice Text -->
+                  <!-- Top Notice Text as Requested -->
                   <div class="bg-sabii-gold/10 border border-sabii-gold/30 rounded-xl p-2.5 text-center">
                     <p class="text-[11px] font-bold text-sabii-darkgold leading-snug">
-                      Yeh product buy karne par apko 40 rupe wapis is website me milge jese ap withdraw kar sakte ho aur product bhi 20% off milega!
+                      Product buy karne par 40 rupe is website me wapis milenge jo ap withdraw kar sakte ho aur 20% off bhi hoga!
                     </p>
                   </div>
 
