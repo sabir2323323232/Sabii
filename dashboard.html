@@ -49,12 +49,12 @@
       background: #FFFFFF;
       border: 1px solid rgba(197, 160, 89, 0.25);
       box-shadow: 0 10px 30px rgba(197, 160, 89, 0.06);
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
 
     .sabii-card:hover {
       box-shadow: 0 15px 35px rgba(197, 160, 89, 0.12);
-      transform: translateY(-2px);
+      transform: scale(1.01);
     }
 
     .sabii-gold-text {
@@ -89,14 +89,10 @@
   <!-- New User Step-by-Step Guide Modal -->
   <div id="onboarding-modal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center hidden p-4">
     <div class="sabii-card max-w-md w-full rounded-3xl p-6 space-y-5 bg-white shadow-2xl relative text-center">
-      
-      <!-- Top Step Indicator -->
       <div class="flex items-center justify-between border-b border-sabii-gold/20 pb-3">
         <span id="step-counter" class="text-[10px] font-bold uppercase tracking-widest text-sabii-darkgold bg-sabii-gold/10 px-2.5 py-1 rounded-full">Step 1 of 3</span>
         <button onclick="closeOnboarding()" class="text-stone-400 hover:text-stone-700 text-xs font-bold">Skip</button>
       </div>
-
-      <!-- Step Content Area -->
       <div id="step-content" class="py-4 space-y-3">
         <div class="w-14 h-14 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-2xl shadow-inner">
           <i id="step-icon" class="fa-solid fa-ellipsis-vertical"></i>
@@ -106,8 +102,6 @@
           Top right par maujood <strong>3 dots menu</strong> par click karke aap Free Ads, Simple Tasks, Gmail Selling aur baaki tamam features tak asani se pohch sakte hain.
         </p>
       </div>
-
-      <!-- Modal Action Buttons -->
       <div class="flex items-center gap-3 pt-2">
         <button onclick="prevStep()" id="prev-btn" class="flex-1 py-2.5 rounded-xl border border-stone-200 text-stone-600 text-xs font-semibold hover:bg-stone-50 transition hidden">
           Back
@@ -130,7 +124,6 @@
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
-
       <div class="space-y-3 text-xs">
         <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
           <span class="text-stone-500 font-medium">Full Name:</span>
@@ -161,7 +154,6 @@
           <span id="modal-refcode" class="font-bold text-sabii-darkgold bg-sabii-gold/10 px-2 py-1 rounded">-</span>
         </div>
       </div>
-
       <button onclick="closeProfileModal()" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md">
         Band Karein
       </button>
@@ -192,8 +184,6 @@
   <!-- Top Header Bar -->
   <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-      
-      <!-- Brand Logo -->
       <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
         <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold shadow-inner">
           <span class="font-brand font-bold text-xl sm:text-2xl">S</span>
@@ -204,10 +194,7 @@
         </div>
       </a>
 
-      <!-- Right Side: Profile, Logout & Automation Menu -->
       <div class="flex items-center gap-2 sm:gap-3">
-        
-        <!-- User Profile Card (Clickable) -->
         <div onclick="openProfileModal()" class="flex items-center gap-2 bg-stone-50 border border-sabii-gold/25 rounded-full py-1.5 px-3 cursor-pointer hover:bg-sabii-gold/10 transition shadow-sm">
           <div id="user-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full sabii-button flex items-center justify-center text-[10px] sm:text-xs font-bold uppercase shadow-sm">
             U
@@ -218,24 +205,19 @@
           </div>
         </div>
 
-        <!-- Logout Button -->
         <button onclick="openLogoutModal()" title="Logout" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all text-xs font-bold flex items-center justify-center shadow-sm">
           <i class="fa-solid fa-power-off text-sm"></i>
         </button>
 
-        <!-- 3 Dots Automation Menu Button -->
         <div class="relative">
           <button id="dots-menu-btn" onclick="toggleDotsMenu()" title="Automation Menu" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-sabii-gold/30 bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold flex items-center justify-center transition-all shadow-sm">
             <i class="fa-solid fa-ellipsis-vertical text-sm sm:text-base"></i>
           </button>
-
-          <!-- Dropdown List -->
           <div id="dots-dropdown" class="absolute right-0 mt-2 w-56 bg-white border border-sabii-gold/30 rounded-2xl shadow-2xl py-2 hidden z-50">
             <div class="px-4 py-2 border-b border-stone-100 flex items-center justify-between">
               <span class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Automation Menu</span>
               <i class="fa-solid fa-robot text-sabii-gold text-xs"></i>
             </div>
-            
             <a href="free-ads.html" class="flex items-center justify-between px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
               <span class="flex items-center gap-2"><i class="fa-solid fa-rectangle-ad text-sabii-gold w-4"></i> Free Ads</span>
               <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">Ads 200</span>
@@ -274,7 +256,6 @@
             </a>
           </div>
         </div>
-
       </div>
     </div>
   </header>
@@ -297,7 +278,6 @@
         </button>
       </div>
 
-      <!-- Live News Box -->
       <div class="sabii-card rounded-2xl p-3.5 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 border-sabii-gold/30 flex items-center gap-3.5 w-full sm:w-auto flex-grow sm:max-w-xl shadow-sm">
         <div class="w-9 h-9 rounded-xl bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center shrink-0 text-base shadow-inner">
           <i class="fa-solid fa-bullhorn"></i>
@@ -309,7 +289,7 @@
       </div>
     </div>
 
-    <!-- Products Section (Clean, Compact & Mobile Responsive Notice Banner) -->
+    <!-- Products Section -->
     <section class="space-y-4">
       <div class="bg-sabii-gold/10 border border-sabii-gold/30 rounded-2xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
         <div class="flex items-center gap-2.5 text-center sm:text-left">
@@ -324,19 +304,26 @@
         <span class="text-[10px] text-sabii-darkgold font-bold bg-white px-2.5 py-1 rounded-full border border-sabii-gold/30 shrink-0">Live Synced</span>
       </div>
 
+      <!-- Chota sa Product Search Bar -->
+      <div class="relative max-w-sm mx-auto sm:mx-0">
+        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-stone-400">
+          <i class="fa-solid fa-search"></i>
+        </span>
+        <input type="text" id="product-search" oninput="filterProducts()" placeholder="Product search karein..." class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-sabii-gold/30 bg-white focus:outline-none focus:border-sabii-gold shadow-xs">
+      </div>
+
       <!-- Products Grid Container -->
       <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Default Loading State -->
         <div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">
           <i class="fa-solid fa-spinner fa-spin text-sabii-gold text-lg mb-2"></i>
-          <p>Loading products from admin panel...</p>
+          <p>Loading products...</p>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Fixed Bottom 4 Buttons Bar (Mobile Optimized & Responsive) -->
+  <!-- Fixed Bottom 4 Buttons Bar -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl">
     <div class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2">
       <a href="buy-free-product.html" class="py-2 px-2.5 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] sm:text-xs text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
@@ -359,21 +346,12 @@
     &copy; Sabii Application. Powered by SABIPK.
   </footer>
 
-  <!-- Firebase Scripts & Onboarding Logic -->
+  <!-- Firebase Scripts & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      onAuthStateChanged, 
-      signOut 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { 
-      getDatabase, 
-      ref, 
-      onValue 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
       authDomain: "sabi-3ea84.firebaseapp.com",
@@ -390,10 +368,9 @@
 
     let isBalanceHidden = false;
     let actualBalance = 0;
-
-    // Step-by-Step New User Guide Logic
     let currentStep = 1;
     const totalSteps = 3;
+    let allProducts = []; // To store products for search filtering
 
     function showOnboardingStep(step) {
       const counter = document.getElementById('step-counter');
@@ -404,7 +381,6 @@
       const nextBtn = document.getElementById('next-btn');
 
       counter.innerText = `Step ${step} of ${totalSteps}`;
-
       if (step === 1) {
         prevBtn.classList.add('hidden');
         icon.className = "fa-solid fa-ellipsis-vertical";
@@ -447,7 +423,6 @@
       localStorage.setItem('sabii_onboarded_new', 'true');
     };
 
-    // Check if First Time User
     function checkNewUserOnboarding(uid) {
       const hasSeen = localStorage.getItem(`sabii_onboarded_${uid}`);
       if (!hasSeen) {
@@ -458,45 +433,25 @@
       }
     }
 
-    // Toast Alert Utility
     window.showToast = function(message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      
-      const bgColor = type === 'success' 
-        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' 
-        : 'bg-red-900 border-red-500 text-white';
-
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
       toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
-      
       const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
-
-      toast.innerHTML = `
-        <div class="flex items-center gap-2">
-          ${icon}
-          <span>${message}</span>
-        </div>
-        <button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>
-      `;
-
+      toast.innerHTML = `<div class="flex items-center gap-2">${icon}<span>${message}</span></div><button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>`;
       container.appendChild(toast);
-
-      setTimeout(() => {
-        toast.classList.remove('translate-y-[-10px]', 'opacity-0');
-      }, 10);
-
+      setTimeout(() => toast.classList.remove('translate-y-[-10px]', 'opacity-0'), 10);
       setTimeout(() => {
         toast.classList.add('opacity-0');
         setTimeout(() => toast.remove(), 300);
       }, 4000);
     };
 
-    // Balance Hide/Show Toggle
     window.toggleBalanceVisibility = function() {
       isBalanceHidden = !isBalanceHidden;
       const balanceEl = document.getElementById('header-balance');
       const eyeIcon = document.getElementById('balance-eye-icon');
-
       if (isBalanceHidden) {
         balanceEl.innerText = "Rs *****";
         eyeIcon.className = "fa-solid fa-eye-slash";
@@ -506,20 +461,9 @@
       }
     };
 
-    // Profile Modal Open/Close
-    window.openProfileModal = function() {
-      document.getElementById('profile-modal').classList.remove('hidden');
-    };
-
-    window.closeProfileModal = function() {
-      document.getElementById('profile-modal').classList.add('hidden');
-    };
-
-    // 3 Dots Menu Toggle
-    window.toggleDotsMenu = function() {
-      const dropdown = document.getElementById('dots-dropdown');
-      dropdown.classList.toggle('hidden');
-    };
+    window.openProfileModal = function() { document.getElementById('profile-modal').classList.remove('hidden'); };
+    window.closeProfileModal = function() { document.getElementById('profile-modal').classList.add('hidden'); };
+    window.toggleDotsMenu = function() { document.getElementById('dots-dropdown').classList.toggle('hidden'); };
 
     window.addEventListener('click', (e) => {
       const btn = document.getElementById('dots-menu-btn');
@@ -529,15 +473,11 @@
       }
     });
 
-    // Logout Permission Modal
     window.openLogoutModal = function() {
       document.getElementById('logout-modal').classList.remove('hidden');
       document.getElementById('dots-dropdown').classList.add('hidden');
     };
-
-    window.closeLogoutModal = function() {
-      document.getElementById('logout-modal').classList.add('hidden');
-    };
+    window.closeLogoutModal = function() { document.getElementById('logout-modal').classList.add('hidden'); };
 
     window.confirmLogout = async function() {
       try {
@@ -545,33 +485,72 @@
         window.location.href = "index.html";
       } catch (error) {
         showToast("Logout karne me masla aya!", "error");
-        console.error(error);
       }
     };
 
-    // Real-time Authentication & Database Sync
+    // Render Products Function with Search & Admin Rating Sort
+    window.renderProductsList = function(productsToDisplay) {
+      const container = document.getElementById('products-container');
+      container.innerHTML = "";
+
+      if (!productsToDisplay || productsToDisplay.length === 0) {
+        container.innerHTML = `<div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">Koi product nahi mila.</div>`;
+        return;
+      }
+
+      productsToDisplay.forEach((p) => {
+        const card = document.createElement('div');
+        card.className = "sabii-card rounded-3xl overflow-hidden flex flex-col justify-between bg-white p-5 space-y-4 border border-sabii-gold/20 shadow-md";
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="w-full h-48 rounded-2xl overflow-hidden border border-sabii-gold/20 bg-stone-50 shadow-inner">
+              <img src="${p.image || 'https://via.placeholder.com/300'}" alt="Product" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-300">
+            </div>
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <h4 class="font-brand font-bold text-base text-stone-800">${p.name || 'Special Product'}</h4>
+                ${p.rating ? `<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-star text-amber-500 mr-0.5"></i> ${p.rating}</span>` : ''}
+              </div>
+              <p class="text-xs text-stone-500 leading-relaxed line-clamp-2">${p.details || 'High quality product.'}</p>
+              <div class="flex items-center gap-2 pt-2">
+                <span class="text-xs text-stone-400 line-through">Rs ${p.oldPrice || '0'}</span>
+                <span class="text-base font-bold sabii-gold-text">Rs ${p.newPrice || '0'}</span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full ml-auto shadow-xs">20% OFF</span>
+              </div>
+            </div>
+          </div>
+          <a href="${p.darazLink || '#'}" target="_blank" class="w-full py-3 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider text-center block shadow-md">
+            Buy Now & Earn Cashback <i class="fa-solid fa-arrow-right ml-1"></i>
+          </a>
+        `;
+        container.appendChild(card);
+      });
+    };
+
+    // Filter Products on Search Input
+    window.filterProducts = function() {
+      const query = document.getElementById('product-search').value.toLowerCase().trim();
+      const filtered = allProducts.filter(p => (p.name && p.name.toLowerCase().includes(query)) || (p.details && p.details.toLowerCase().includes(query)));
+      renderProductsList(filtered);
+    };
+
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "index.html";
       } else {
-        // Check New User Onboarding Guide
         checkNewUserOnboarding(user.uid);
 
-        // User Profile & Balance Sync
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
             actualBalance = data.balance || 0;
-
             document.getElementById('user-name').innerText = data.name || "User";
             document.getElementById('user-email').innerText = data.email || user.email;
             document.getElementById('user-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
-            
             if (!isBalanceHidden) {
               document.getElementById('header-balance').innerText = `Rs ${actualBalance}`;
             }
-
             document.getElementById('modal-name').innerText = data.name || "-";
             document.getElementById('modal-username').innerText = data.username || "-";
             document.getElementById('modal-email').innerText = data.email || user.email;
@@ -582,7 +561,6 @@
           }
         });
 
-        // Live News Sync
         const newsRef = ref(db, 'admin/news');
         onValue(newsRef, (snapshot) => {
           if (snapshot.exists()) {
@@ -592,57 +570,25 @@
           }
         });
 
-        // Products Sync from Admin Panel (`admin/dashboardProducts`)
+        // Fast Sync & Admin Rating/Priority Sorting
         const productsRef = ref(db, 'admin/dashboardProducts');
         onValue(productsRef, (snapshot) => {
-          const container = document.getElementById('products-container');
-          container.innerHTML = "";
-
+          allProducts = [];
           if (snapshot.exists()) {
             snapshot.forEach((childSnap) => {
-              const p = childSnap.val();
-              const card = document.createElement('div');
-              card.className = "sabii-card rounded-3xl overflow-hidden flex flex-col justify-between bg-white p-5 space-y-4 border border-sabii-gold/20 shadow-md";
-              card.innerHTML = `
-                <div class="space-y-3">
-                  <!-- Product Image -->
-                  <div class="w-full h-52 rounded-2xl overflow-hidden border border-sabii-gold/20 bg-stone-50 shadow-inner">
-                    <img src="${p.image || 'https://via.placeholder.com/300'}" alt="Product" class="w-full h-full object-cover hover:scale-105 transition duration-500">
-                  </div>
-
-                  <!-- Product Details & Price -->
-                  <div class="space-y-1">
-                    <h4 class="font-brand font-bold text-lg text-stone-800">${p.name || 'Daraz Special Product'}</h4>
-                    <p class="text-xs text-stone-500 leading-relaxed">${p.details || 'Luxurious product with high quality.'}</p>
-                    
-                    <div class="flex items-center gap-2 pt-2">
-                      <span class="text-xs text-stone-400 line-through">Rs ${p.oldPrice || '0'}</span>
-                      <span class="text-base font-bold sabii-gold-text">Rs ${p.newPrice || '0'}</span>
-                      <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full ml-auto shadow-xs">20% OFF</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Daraz Buy Button -->
-                <a href="${p.darazLink || '#'}" target="_blank" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider text-center block shadow-lg flex items-center justify-center gap-2">
-                  <span>Buy Product From My Daraz Account</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-              `;
-              container.appendChild(card);
+              allProducts.push({ id: childSnap.key, ...childSnap.val() });
             });
+            
+            // Sort by admin rating or priority (Higher rating/priority on top)
+            allProducts.sort((a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0));
+            
+            renderProductsList(allProducts);
           } else {
-            container.innerHTML = `
-              <div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">
-                <i class="fa-solid fa-box-open text-sabii-gold text-2xl mb-2"></i>
-                <p>Admin ne abhi tak koi products add nahi kiye hain.</p>
-              </div>
-            `;
+            document.getElementById('products-container').innerHTML = `<div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">Abhi tak koi product available nahi hai.</div>`;
           }
         });
       }
     });
   </script>
-  <!-- Bidvertiser2108156 -->
 </body>
 </html>
