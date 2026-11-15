@@ -240,10 +240,10 @@
   </header>
 
   <!-- Main Area -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
     
-    <!-- Quick Horizontal Scrollable Menu with Clear Swipe Indicator -->
-    <div class="bg-white border border-sabii-gold/30 rounded-2xl p-3 shadow-sm space-y-2 relative">
+    <!-- Quick Horizontal Scrollable Menu (Free Ads -> Simple Task -> Gmail Sell in sequence, with swipe hint) -->
+    <div class="bg-white border border-sabii-gold/30 rounded-2xl p-2.5 shadow-sm space-y-1.5 relative">
       <div class="flex items-center justify-between px-1">
         <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1.5">
           <i class="fa-solid fa-bolt text-sabii-gold"></i> All Features Menu
@@ -254,54 +254,57 @@
       </div>
 
       <div class="relative">
-        <div id="quick-menu-scroll" class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1 pr-6 scroll-smooth">
-          <a href="free-ads.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+        <div id="quick-menu-scroll" class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 pr-6 scroll-smooth">
+          <!-- 1. Free Ads -->
+          <a href="free-ads.html" class="shrink-0 flex items-center justify-between gap-3 py-1.5 px-3 rounded-xl bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <span class="flex items-center gap-1.5"><i class="fa-solid fa-rectangle-ad text-sabii-gold"></i> Free Ads</span>
             <span class="text-[9px] font-bold text-sabii-darkgold bg-white px-1.5 py-0.5 rounded">200</span>
           </a>
-          <a href="simple-task.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <!-- 2. Simple Task -->
+          <a href="simple-task.html" class="shrink-0 flex items-center justify-between gap-3 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-check text-sabii-gold"></i> Simple Task</span>
             <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">300</span>
           </a>
-          <a href="payment.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-            <i class="fa-solid fa-credit-card text-sabii-gold"></i> Payment
-          </a>
-          <a href="your-balance.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-            <i class="fa-solid fa-wallet text-sabii-gold"></i> Balance
-          </a>
-          <a href="jobs.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-            <i class="fa-solid fa-briefcase text-sabii-gold"></i> Jobs
-          </a>
-          <a href="gmail-selling.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <!-- 3. Gmail Sell -->
+          <a href="gmail-selling.html" class="shrink-0 flex items-center justify-between gap-3 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <span class="flex items-center gap-1.5"><i class="fa-solid fa-envelope-open-text text-sabii-gold"></i> Gmail Sell</span>
             <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">40</span>
           </a>
-          <a href="help-centre.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <!-- Other Menu Items -->
+          <a href="payment.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-credit-card text-sabii-gold"></i> Payment
+          </a>
+          <a href="your-balance.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-wallet text-sabii-gold"></i> Balance
+          </a>
+          <a href="jobs.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-briefcase text-sabii-gold"></i> Jobs
+          </a>
+          <a href="help-centre.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <i class="fa-solid fa-headset text-sabii-gold"></i> Help
           </a>
-          <a href="buy-free-product.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <a href="buy-free-product.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <i class="fa-solid fa-gift text-sabii-gold"></i> Free Gift
           </a>
-          <a href="referral.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <a href="referral.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <i class="fa-solid fa-users text-sabii-gold"></i> Referral
           </a>
-          <a href="promotion.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <a href="promotion.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <i class="fa-solid fa-bullhorn text-sabii-gold"></i> Promotion
           </a>
-          <a href="product-selling.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+          <a href="product-selling.html" class="shrink-0 flex items-center gap-2 py-1.5 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
             <i class="fa-solid fa-store text-sabii-gold"></i> Sell Product
           </a>
         </div>
-        <!-- Right edge subtle visual fade & scroll arrow button -->
         <button onclick="document.getElementById('quick-menu-scroll').scrollBy({left: 160, behavior: 'smooth'})" aria-label="Scroll Right" class="absolute right-0 top-1/2 -translate-y-1/2 h-8 w-7 bg-gradient-to-l from-white via-white/95 to-transparent flex items-center justify-end pr-0.5 text-sabii-darkgold">
           <i class="fa-solid fa-chevron-right text-xs animate-swipe-hint"></i>
         </button>
       </div>
     </div>
 
-    <!-- Balance Widget & Live News Box -->
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="inline-flex items-center gap-3 bg-white border border-sabii-gold/30 rounded-2xl py-2.5 px-4 shadow-sm w-full sm:w-auto">
+    <!-- Wallet Balance Widget (News Box Completely Removed) -->
+    <div class="flex items-center justify-between">
+      <div class="inline-flex items-center gap-3 bg-white border border-sabii-gold/30 rounded-2xl py-2 px-4 shadow-sm w-full sm:w-auto">
         <div class="w-8 h-8 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-xs shadow-inner">
           <i class="fa-solid fa-wallet"></i>
         </div>
@@ -313,31 +316,21 @@
           <i id="balance-eye-icon" class="fa-solid fa-eye"></i>
         </button>
       </div>
-
-      <div class="sabii-card rounded-2xl p-3.5 bg-gradient-to-r from-sabii-gold/10 via-white to-sabii-gold/5 border-sabii-gold/30 flex items-center gap-3.5 w-full sm:w-auto flex-grow sm:max-w-xl shadow-sm">
-        <div class="w-9 h-9 rounded-xl bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center shrink-0 text-base shadow-inner">
-          <i class="fa-solid fa-bullhorn"></i>
-        </div>
-        <div class="overflow-hidden">
-          <h4 class="text-[10px] font-bold uppercase text-sabii-darkgold tracking-widest">Live Earning News</h4>
-          <p id="live-news-text" class="text-xs text-stone-700 font-medium truncate mt-0.5">Admin panel se live updates yahan show hongi...</p>
-        </div>
-      </div>
     </div>
 
     <!-- Products Section -->
-    <section class="space-y-4">
-      <div class="bg-sabii-gold/10 border border-sabii-gold/30 rounded-2xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-        <div class="flex items-center gap-2.5 text-center sm:text-left">
-          <div class="w-8 h-8 rounded-xl bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center shrink-0 text-sm">
+    <section class="space-y-3">
+      <!-- Minimized Product Cashback Offer Banner -->
+      <div class="bg-sabii-gold/10 border border-sabii-gold/35 rounded-xl py-2 px-3 flex items-center justify-between gap-2 shadow-2xs">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center shrink-0 text-xs">
             <i class="fa-solid fa-bag-shopping"></i>
           </div>
-          <div>
-            <h4 class="text-xs font-bold text-stone-800 uppercase tracking-wide">Product Cashback Offer</h4>
-            <p class="text-[11px] text-stone-600">Product buy karne par <strong class="text-sabii-darkgold">Rs 40 wapis</strong> aur har product par <strong class="text-emerald-700">20% Off</strong> milega!</p>
-          </div>
+          <p class="text-[11px] text-stone-700">
+            Cashback: <strong class="text-sabii-darkgold">Rs 40 wapis</strong> &amp; <strong class="text-emerald-700">20% Off</strong>
+          </p>
         </div>
-        <span class="text-[10px] text-sabii-darkgold font-bold bg-white px-2.5 py-1 rounded-full border border-sabii-gold/30 shrink-0">Live Synced</span>
+        <span class="text-[9px] text-sabii-darkgold font-bold bg-white px-2 py-0.5 rounded-full border border-sabii-gold/30 shrink-0">Live</span>
       </div>
 
       <!-- Chota sa Product Search Bar -->
@@ -345,11 +338,11 @@
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-stone-400">
           <i class="fa-solid fa-search"></i>
         </span>
-        <input type="text" id="product-search" oninput="filterProducts()" placeholder="Product search karein..." class="w-full pl-9 pr-4 py-2 text-xs rounded-xl border border-sabii-gold/30 bg-white focus:outline-none focus:border-sabii-gold shadow-xs">
+        <input type="text" id="product-search" oninput="filterProducts()" placeholder="Product search karein..." class="w-full pl-9 pr-4 py-1.5 text-xs rounded-xl border border-sabii-gold/30 bg-white focus:outline-none focus:border-sabii-gold shadow-2xs">
       </div>
 
       <!-- Products Grid Container -->
-      <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">
           <i class="fa-solid fa-spinner fa-spin text-sabii-gold text-lg mb-2"></i>
           <p>Loading products...</p>
@@ -534,26 +527,26 @@
 
       productsToDisplay.forEach((p) => {
         const card = document.createElement('div');
-        card.className = "sabii-card rounded-3xl overflow-hidden flex flex-col justify-between bg-white p-5 space-y-4 border border-sabii-gold/20 shadow-md";
+        card.className = "sabii-card rounded-3xl overflow-hidden flex flex-col justify-between bg-white p-4 space-y-3 border border-sabii-gold/20 shadow-md";
         card.innerHTML = `
-          <div class="space-y-3">
-            <div class="w-full h-48 rounded-2xl overflow-hidden border border-sabii-gold/20 bg-stone-50 shadow-inner">
+          <div class="space-y-2.5">
+            <div class="w-full h-40 rounded-2xl overflow-hidden border border-sabii-gold/20 bg-stone-50 shadow-inner">
               <img src="${p.image || 'https://via.placeholder.com/300'}" alt="Product" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-300">
             </div>
             <div class="space-y-1">
               <div class="flex items-center justify-between">
-                <h4 class="font-brand font-bold text-base text-stone-800">${p.name || 'Special Product'}</h4>
+                <h4 class="font-brand font-bold text-sm text-stone-800">${p.name || 'Special Product'}</h4>
                 ${p.rating ? `<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-star text-amber-500 mr-0.5"></i> ${p.rating}</span>` : ''}
               </div>
               <p class="text-xs text-stone-500 leading-relaxed line-clamp-2">${p.details || 'High quality product.'}</p>
-              <div class="flex items-center gap-2 pt-2">
+              <div class="flex items-center gap-2 pt-1">
                 <span class="text-xs text-stone-400 line-through">Rs ${p.oldPrice || '0'}</span>
-                <span class="text-base font-bold sabii-gold-text">Rs ${p.newPrice || '0'}</span>
-                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full ml-auto shadow-xs">20% OFF</span>
+                <span class="text-sm font-bold sabii-gold-text">Rs ${p.newPrice || '0'}</span>
+                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full ml-auto shadow-xs">20% OFF</span>
               </div>
             </div>
           </div>
-          <a href="${p.darazLink || '#'}" target="_blank" class="w-full py-3 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider text-center block shadow-md">
+          <a href="${p.darazLink || '#'}" target="_blank" class="w-full py-2.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider text-center block shadow-md">
             Buy Now & Earn Cashback <i class="fa-solid fa-arrow-right ml-1"></i>
           </a>
         `;
@@ -591,13 +584,6 @@
             document.getElementById('modal-city').innerText = data.city || "-";
             document.getElementById('modal-referrals').innerText = data.totalReferrals || 0;
             document.getElementById('modal-refcode').innerText = data.referralCode || "-";
-          }
-        });
-
-        const newsRef = ref(db, 'admin/news');
-        onValue(newsRef, (snapshot) => {
-          if (snapshot.exists()) {
-            document.getElementById('live-news-text').innerText = snapshot.val();
           }
         });
 
