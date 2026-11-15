@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - VIP Direct Ads Portal</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FAF9F6',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #FAF9F6;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.06);
+    }
+
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      background-size: 200% auto;
+      transition: all 0.3s ease;
+      color: #FFFFFF;
+    }
+
+    .sabii-button:hover {
+      background-position: right center;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #FAF9F6; }
+    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Active Timer & Screenshot Submission Modal -->
+  <div id="ad-task-modal" class="fixed inset-0 z-50 bg-stone-900/75 backdrop-blur-sm flex items-center justify-center hidden p-4">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 space-y-5 bg-white shadow-2xl relative text-center">
+      
+      <div class="flex items-center justify-between border-b border-sabii-gold/20 pb-3">
+        <span id="modal-ad-badge" class="text-[10px] font-bold uppercase tracking-widest text-sabii-darkgold bg-sabii-gold/10 px-3 py-1 rounded-full">VIP Ad #1</span>
+        <button onclick="cancelAdSession()" class="text-stone-400 hover:text-red-500 text-xs font-bold flex items-center gap-1">
+          <i class="fa-solid fa-xmark"></i> Close
+        </button>
+      </div>
+
+      <!-- Timer Running State -->
+      <div id="timer-running-box" class="py-4 space-y-3">
+        <div class="w-16 h-16 rounded-full bg-sabii-gold/15 border-2 border-sabii-gold text-sabii-darkgold flex items-center justify-center mx-auto text-xl font-bold shadow-inner">
+          <span id="countdown-seconds">50</span>s
+        </div>
+        <h3 class="text-base font-bold font-brand text-stone-800">Ad Task Chal Raha Hai...</h3>
+        <p class="text-xs text-stone-500 leading-relaxed px-2">
+          Ad wale tab mein <strong>50 seconds</strong> ruk kar task mukammal karein (Website aaye toh register karein, App aaye toh download karein). Time poora hone se pehle wapis na aayein!
+        </p>
+        <div class="pt-2">
+          <a id="reopen-ad-link" href="#" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-bold text-sabii-darkgold underline">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Ad Dubara Open Karein
+          </a>
+        </div>
+      </div>
+
+      <!-- Incomplete Time Warning State -->
+      <div id="timer-failed-box" class="py-4 space-y-3 hidden">
+        <div class="w-14 h-14 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto text-2xl">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 class="text-base font-bold font-brand text-red-600">Time Poora Nahi Hua!</h3>
+        <p class="text-xs text-stone-600 leading-relaxed">
+          Aap 50 seconds poore hone se pehle hi wapis aa gaye hain. Is ad ka <strong>ek rupya bhi nahi milega</strong>. Reward hasil karne ke liye ad ko pooray 50 second tak open rakhein aur task complete karein.
+        </p>
+        <button onclick="retryCurrentAd()" class="w-full py-3 rounded-xl bg-stone-900 text-sabii-lightgold font-bold text-xs uppercase tracking-wider shadow-md">
+          Dobara Ad Dekhein (50s)
+        </button>
+      </div>
+
+      <!-- Completed Timer -> Screenshot Upload State -->
+      <div id="screenshot-upload-box" class="space-y-4 hidden text-left">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 text-center">
+          <p class="text-xs font-bold text-emerald-800"><i class="fa-solid fa-circle-check mr-1"></i> 50 Seconds Mukammal Ho Gaye!</p>
+          <p class="text-[11px] text-emerald-700 mt-0.5">Ab apna task complete karne ka screenshot upload karein.</p>
+        </div>
+
+        <form id="ad-proof-form" onsubmit="submitAdProof(event)" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Upload Screenshot Proof (Gallery se)</label>
+            <input type="file" id="ad-proof-file" accept="image/*" onchange="previewAdScreenshot(event)" required class="w-full px-3 py-2 rounded-xl text-xs border border-sabii-gold/30 bg-stone-50 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-sabii-gold/20 file:text-sabii-darkgold cursor-pointer">
+          </div>
+
+          <div id="ad-preview-container" class="hidden">
+            <img id="ad-preview-img" src="" alt="Preview" class="h-32 w-full object-cover rounded-xl border border-sabii-gold/30">
+          </div>
+
+          <button type="submit" id="submit-ad-proof-btn" class="w-full py-3.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
+            <span>Submit Screenshot (Rs 5)</span>
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
+          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
+        </div>
+        <div>
+          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
+          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">VIP Direct Ads (Rs 5 / Ad)</span>
+        </div>
+      </a>
+
+      <a href="dashboard.html" class="py-2 px-3.5 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Strict Rules & Guidelines Banner -->
+    <div class="sabii-card rounded-3xl p-5 bg-gradient-to-r from-sabii-gold/15 via-white to-sabii-gold/5 border-sabii-gold/35 space-y-3">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h2 class="text-base sm:text-lg font-bold font-brand text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-sabii-gold"></i> Zaroori Rules (Lazmi Parhein)
+        </h2>
+        <span class="bg-emerald-100 text-emerald-800 border border-emerald-200 text-[10px] font-bold px-3 py-1 rounded-full">
+          Har Approved Ad = Rs 5
+        </span>
+      </div>
+
+      <ul class="text-xs text-stone-700 space-y-1.5 list-disc list-inside leading-relaxed">
+        <li>Har ad par kam az kam <strong>50 seconds</strong> rukna lazmi hai. Agar time poora kiye baghair wapis aaye toh <strong>1 rupya bhi nahi milega</strong>.</li>
+        <li>Ad open hone par agar koi <strong>Website</strong> aaye toh us par <strong>Register / Sign Up</strong> karna lazmi hai.</li>
+        <li>Agar ad mein koi <strong>App</strong> aaye toh usay <strong>Download / Install</strong> karna lazmi hai.</li>
+        <li>Task mukammal karne ke baad uska <strong>Screenshot</strong> le kar wapis aayein aur submit karein. Admin approval ke baad <strong>Rs 5</strong> aapke balance mein add ho jayenge.</li>
+        <li>Har ad submit karne ke baad <strong>24 ghante (24 Hours)</strong> ke liye lock ho jayega.</li>
+      </ul>
+    </div>
+
+    <!-- Ads Grid Header -->
+    <div class="flex items-center justify-between border-b border-sabii-gold/20 pb-2">
+      <h3 class="text-base font-bold font-brand text-stone-800 uppercase tracking-wider flex items-center gap-2">
+        <i class="fa-solid fa-crown text-sabii-gold"></i> Available VIP Ads (<span id="available-ads-count">20</span>)
+      </h3>
+      <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2.5 py-1 rounded-full">24h Lock System</span>
+    </div>
+
+    <!-- 20 Direct Links Ads Grid -->
+    <div id="vip-ads-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="col-span-full text-center py-10 text-stone-400 text-xs">
+        <i class="fa-solid fa-spinner fa-spin text-sabii-gold text-xl mb-2"></i>
+        <p>Loading VIP Ads...</p>
+      </div>
+    </div>
+
+    <!-- User Submissions History Section -->
+    <div class="sabii-card rounded-3xl p-5 bg-white space-y-4 mt-8">
+      <div class="flex items-center justify-between border-b border-stone-100 pb-3">
+        <h3 class="text-base font-bold font-brand text-stone-800 flex items-center gap-2">
+          <i class="fa-solid fa-clock-rotate-left text-sabii-gold"></i> Aapki Ads Submissions & Status
+        </h3>
+        <span class="text-[10px] text-stone-400 font-semibold">Live Status</span>
+      </div>
+      <div id="user-ads-history" class="space-y-2.5 max-h-80 overflow-y-auto pr-1">
+        <p class="text-center text-xs text-stone-400 py-4">Abhi tak koi ad submit nahi kiya gaya.</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
+    &copy; Sabii Application. Powered by Firebase Realtime Database.
+  </footer>
+
+  <!-- Firebase & Anti-Cheat Timer Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, set, push, onValue, get, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Aapke Diye Gaye Tamam HilltopAds Direct Links
+    const directAdLinks = [
+      "https://idolizedoffice.com/Z9ehDM",
+      "https://idolizedoffice.com/VLgPvK",
+      "https://idolizedoffice.com/K2soPF",
+      "https://idolizedoffice.com/LvI3ME",
+      "https://idolizedoffice.com/Ee0WG6",
+      "https://idolizedoffice.com/PNcC9s",
+      "https://idolizedoffice.com/ar2tXj",
+      "https://idolizedoffice.com/cSUhoZ",
+      "https://idolizedoffice.com/ZydcBA",
+      "https://idolizedoffice.com/RvQGPc",
+      "https://idolizedoffice.com/ozl3hi",
+      "https://idolizedoffice.com/f8Dr7W",
+      "https://idolizedoffice.com/8FXnrk",
+      "https://idolizedoffice.com/iQaPpd",
+      "https://idolizedoffice.com/PijzJp",
+      "https://idolizedoffice.com/EDfQsW",
+      "https://idolizedoffice.com/TDlK9W",
+      "https://idolizedoffice.com/a6uMZH",
+      "https://idolizedoffice.com/41sKyu",
+      "https://idolizedoffice.com/xASOrw"
+    ];
+
+    let currentUserId = null;
+    let userLocksData = {};
+    let activeAdIndex = null;
+    let activeAdUrl = "";
+    let adStartTime = null;
+    let timerInterval = null;
+    let isTimerCompleted = false;
+    let base64Screenshot = "";
+    let processedApprovals = new Set();
+
+    const LOCK_DURATION_MS = 24 * 60 * 60 * 1000; // 24 Hours in milliseconds
+    const REQUIRED_SECONDS = 50;
+
+    // Toast Alert Function
+    window.showToast = function(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transition-all duration-300`;
+      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
+      toast.innerHTML = `<div class="flex items-center gap-2">${icon}<span>${message}</span></div><button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 5000);
+    };
+
+    // Format Remaining 24h Lock Time
+    function formatRemainingTime(ms) {
+      const totalSeconds = Math.floor(ms / 1000);
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return `${String(hours).padStart(2, '0')}h ${String(minutes).padStart(2, '0')}m ${String(seconds).padStart(2, '0')}s`;
+    }
+
+    // Render All 20 Ads with 24h Lock Check
+    function renderAdsGrid() {
+      const grid = document.getElementById('vip-ads-grid');
+      grid.innerHTML = "";
+      const now = Date.now();
+
+      directAdLinks.forEach((url, index) => {
+        const adId = `ad_${index + 1}`;
+        const lockedUntil = userLocksData[adId] || 0;
+        const isLocked = lockedUntil > now;
+
+        const card = document.createElement('div');
+        card.className = `sabii-card rounded-2xl p-4 flex flex-col justify-between space-y-4 ${isLocked ? 'bg-stone-100/80 opacity-85' : 'bg-white'}`;
+
+        if (isLocked) {
+          const remainingMs = lockedUntil - now;
+          card.innerHTML = `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="bg-stone-200 text-stone-600 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                  <i class="fa-solid fa-lock mr-1"></i> Locked (24h)
+                </span>
+                <span class="text-xs font-bold text-stone-400">Rs 5</span>
+              </div>
+              <h4 class="text-sm font-bold text-stone-600">VIP Direct Ad #${index + 1}</h4>
+              <p class="text-[11px] text-stone-500">Yeh ad 24 ghante ke liye lock hai. Dobara dekhne ke liye intezar karein.</p>
+            </div>
+            <button disabled class="w-full py-2.5 rounded-xl bg-stone-300 text-stone-600 font-bold text-xs cursor-not-allowed">
+              <i class="fa-solid fa-hourglass-half mr-1"></i> ${formatRemainingTime(remainingMs)}
+            </button>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="bg-sabii-gold/15 text-sabii-darkgold text-[10px] font-bold px-2.5 py-0.5 rounded-full border border-sabii-gold/30">
+                  <i class="fa-solid fa-bolt mr-1"></i> Active Task
+                </span>
+                <span class="text-xs font-bold sabii-gold-text">Rs 5.00</span>
+              </div>
+              <h4 class="text-sm font-bold text-stone-800">VIP Direct Ad #${index + 1}</h4>
+              <p class="text-[11px] text-stone-500">50s rukein + Register/Download karke screenshot dein.</p>
+            </div>
+            <button onclick="startAdTask(${index + 1}, '${url}')" class="w-full py-2.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider shadow-sm">
+              Watch Ad & Earn Rs 5 <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+            </button>
+          `;
+        }
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Update lock timers every second
+    setInterval(() => {
+      if (currentUserId && Object.keys(userLocksData).length > 0) {
+        renderAdsGrid();
+      }
+    }, 1000);
+
+    // Start Ad Task & 50-Second Timer
+    window.startAdTask = function(adNum, url) {
+      activeAdIndex = adNum;
+      activeAdUrl = url;
+      adStartTime = Date.now();
+      isTimerCompleted = false;
+      base64Screenshot = "";
+
+      // Open Ad Link in New Tab
+      window.open(url, '_blank');
+
+      // Setup Modal UI
+      document.getElementById('modal-ad-badge').innerText = `VIP Direct Ad #${adNum}`;
+      document.getElementById('reopen-ad-link').href = url;
+      document.getElementById('timer-running-box').classList.remove('hidden');
+      document.getElementById('timer-failed-box').classList.add('hidden');
+      document.getElementById('screenshot-upload-box').classList.add('hidden');
+      document.getElementById('ad-preview-container').classList.add('hidden');
+      document.getElementById('ad-proof-form').reset();
+
+      document.getElementById('ad-task-modal').classList.remove('hidden');
+      startCountdown();
+    };
+
+    function startCountdown() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        const elapsedSeconds = Math.floor((Date.now() - adStartTime) / 1000);
+        const remaining = REQUIRED_SECONDS - elapsedSeconds;
+
+        if (remaining > 0) {
+          document.getElementById('countdown-seconds').innerText = remaining;
+        } else {
+          clearInterval(timerInterval);
+          isTimerCompleted = true;
+          document.getElementById('timer-running-box').classList.add('hidden');
+          document.getElementById('timer-failed-box').classList.add('hidden');
+          document.getElementById('screenshot-upload-box').classList.remove('hidden');
+          showToast("50 seconds poore ho gaye! Ab task ka screenshot upload karein.", "success");
+        }
+      }, 500);
+    }
+
+    // Detect if user returns early before 50 seconds
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && activeAdIndex !== null && !isTimerCompleted) {
+        const elapsedSeconds = Math.floor((Date.now() - adStartTime) / 1000);
+        if (elapsedSeconds < REQUIRED_SECONDS) {
+          clearInterval(timerInterval);
+          document.getElementById('timer-running-box').classList.add('hidden');
+          document.getElementById('screenshot-upload-box').classList.add('hidden');
+          document.getElementById('timer-failed-box').classList.remove('hidden');
+          showToast("Aap 50 seconds se pehle wapis aa gaye hain! Ek rupya bhi nahi milega.", "error");
+        }
+      }
+    });
+
+    window.retryCurrentAd = function() {
+      if (activeAdIndex && activeAdUrl) {
+        startAdTask(activeAdIndex, activeAdUrl);
+      }
+    };
+
+    window.cancelAdSession = function() {
+      clearInterval(timerInterval);
+      activeAdIndex = null;
+      activeAdUrl = "";
+      isTimerCompleted = false;
+      document.getElementById('ad-task-modal').classList.add('hidden');
+    };
+
+    // Preview Screenshot
+    window.previewAdScreenshot = function(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          base64Screenshot = e.target.result;
+          document.getElementById('ad-preview-img').src = base64Screenshot;
+          document.getElementById('ad-preview-container').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    // Submit Ad Proof to Admin & Lock Ad for 24 Hours
+    window.submitAdProof = async function(e) {
+      e.preventDefault();
+      if (!isTimerCompleted) {
+        showToast("Pehle 50 seconds poore karein!", "error");
+        return;
+      }
+      if (!base64Screenshot) {
+        showToast("Screenshot select karna lazmi hai!", "error");
+        return;
+      }
+
+      const btn = document.getElementById('submit-ad-proof-btn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Submitting...`;
+
+      try {
+        const adId = `ad_${activeAdIndex}`;
+        const subRef = push(ref(db, 'admin/vipAdsSubmissions'));
+        const subId = subRef.key;
+
+        const submissionData = {
+          id: subId,
+          uid: currentUserId,
+          adNumber: activeAdIndex,
+          adUrl: activeAdUrl,
+          reward: 5,
+          photo: base64Screenshot,
+          status: 'Pending',
+          rewardCredited: false,
+          timestamp: new Date().toISOString()
+        };
+
+        // Save to Admin & User History
+        await set(subRef, submissionData);
+        await set(ref(db, `user_vip_ads_submissions/${currentUserId}/${subId}`), submissionData);
+
+        // Lock this Ad for 24 Hours
+        const lockUntilTime = Date.now() + LOCK_DURATION_MS;
+        await update(ref(db, `user_ads_locks/${currentUserId}`), {
+          [adId]: lockUntilTime
+        });
+
+        cancelAdSession();
+        showToast("Please wait 1 hour! Aapka screenshot admin ko bhej diya gaya hai. Approval par Rs 5 mil jayenge.", "success");
+
+      } catch (err) {
+        console.error(err);
+        showToast("Screenshot submit karne me masla aya!", "error");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>Submit Screenshot (Rs 5)</span> <i class="fa-solid fa-paper-plane"></i>`;
+      }
+    };
+
+    // Auth Observer & Real-time Firebase Listeners
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUserId = user.uid;
+
+        // Listen to User's 24-Hour Ad Locks
+        onValue(ref(db, `user_ads_locks/${currentUserId}`), (snapshot) => {
+          userLocksData = snapshot.exists() ? snapshot.val() : {};
+          renderAdsGrid();
+        });
+
+        // Listen to User's Submissions History & Auto-Credit Rs 5 on Admin Approval
+        onValue(ref(db, `user_vip_ads_submissions/${currentUserId}`), async (snapshot) => {
+          const historyContainer = document.getElementById('user-ads-history');
+          historyContainer.innerHTML = "";
+
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            const keys = Object.keys(data).reverse();
+
+            for (const key of keys) {
+              const item = data[key];
+
+              // Auto credit Rs 5 if Admin Approved
+              if (item.status === 'Approved' && !item.rewardCredited && !processedApprovals.has(key)) {
+                processedApprovals.add(key);
+
+                const userRef = ref(db, `users/${currentUserId}`);
+                const userSnap = await get(userRef);
+                if (userSnap.exists()) {
+                  const currentBal = parseFloat(userSnap.val().balance || 0);
+                  await update(userRef, { balance: currentBal + 5 });
+
+                  const earnRef = push(ref(db, `user_earnings/${currentUserId}`));
+                  await set(earnRef, {
+                    source: `VIP Direct Ad #${item.adNumber} Approved`,
+                    amount: 5,
+                    timestamp: new Date().toISOString()
+                  });
+                }
+
+                await update(ref(db, `user_vip_ads_submissions/${currentUserId}/${key}`), { rewardCredited: true });
+                await update(ref(db, `admin/vipAdsSubmissions/${key}`), { rewardCredited: true });
+                showToast(`Mubarak ho! VIP Ad #${item.adNumber} approve ho gaya, Rs 5 balance me add ho gaye!`, "success");
+              }
+
+              let badgeHtml = `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Pending (Wait 1 hr)</span>`;
+              if (item.status === 'Approved') {
+                badgeHtml = `<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Approved (+Rs 5)</span>`;
+              } else if (item.status === 'Rejected') {
+                badgeHtml = `<span class="bg-red-100 text-red-800 px-2 py-0.5 rounded-full text-[10px] font-bold">Rejected (Rs 0)</span>`;
+              }
+
+              const row = document.createElement('div');
+              row.className = "flex items-center justify-between p-3 rounded-xl bg-stone-50 border border-stone-100 text-xs";
+              row.innerHTML = `
+                <div>
+                  <span class="font-bold text-stone-800">VIP Direct Ad #${item.adNumber}</span>
+                  <p class="text-[10px] text-stone-400">${new Date(item.timestamp).toLocaleString()}</p>
+                </div>
+                <div class="text-right">
+                  <span class="font-bold sabii-gold-text block mb-0.5">Rs 5</span>
+                  ${badgeHtml}
+                </div>
+              `;
+              historyContainer.appendChild(row);
+            }
+          } else {
+            historyContainer.innerHTML = `<p class="text-center text-xs text-stone-400 py-4">Abhi tak koi ad submit nahi kiya gaya.</p>`;
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
