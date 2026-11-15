@@ -95,7 +95,15 @@
       transform: scale(1.02);
     }
 
-    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    @keyframes swipe-nudge {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(4px); }
+    }
+    .animate-swipe-hint {
+      animation: swipe-nudge 1.2s infinite ease-in-out;
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 4px; }
     ::-webkit-scrollbar-track { background: #FAF9F6; }
     ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
@@ -234,52 +242,60 @@
   <!-- Main Area -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
     
-    <!-- Quick Horizontal Scrollable Menu (Clean & Responsive without overlapping dashboard) -->
-    <div class="bg-white border border-sabii-gold/30 rounded-2xl p-3 shadow-sm space-y-2">
+    <!-- Quick Horizontal Scrollable Menu with Clear Swipe Indicator -->
+    <div class="bg-white border border-sabii-gold/30 rounded-2xl p-3 shadow-sm space-y-2 relative">
       <div class="flex items-center justify-between px-1">
-        <span class="text-[10px] font-bold text-stone-400 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-bolt text-sabii-gold"></i> Quick Navigation Menu
+        <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1.5">
+          <i class="fa-solid fa-bolt text-sabii-gold"></i> All Features Menu
         </span>
-        <span class="text-[9px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Swipe ➔</span>
+        <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/15 border border-sabii-gold/30 px-2.5 py-0.5 rounded-full flex items-center gap-1 animate-swipe-hint">
+          <i class="fa-solid fa-hand-pointer text-[9px]"></i> Left / Right Swipe Karein <i class="fa-solid fa-angles-right"></i>
+        </span>
       </div>
 
-      <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
-        <a href="free-ads.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <span class="flex items-center gap-1.5"><i class="fa-solid fa-rectangle-ad text-sabii-gold"></i> Free Ads</span>
-          <span class="text-[9px] font-bold text-sabii-darkgold bg-white px-1.5 py-0.5 rounded">200</span>
-        </a>
-        <a href="simple-task.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-check text-sabii-gold"></i> Simple Task</span>
-          <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">300</span>
-        </a>
-        <a href="payment.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-credit-card text-sabii-gold"></i> Payment
-        </a>
-        <a href="your-balance.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-wallet text-sabii-gold"></i> Balance
-        </a>
-        <a href="jobs.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-briefcase text-sabii-gold"></i> Jobs
-        </a>
-        <a href="gmail-selling.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <span class="flex items-center gap-1.5"><i class="fa-solid fa-envelope-open-text text-sabii-gold"></i> Gmail Sell</span>
-          <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">40</span>
-        </a>
-        <a href="help-centre.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-headset text-sabii-gold"></i> Help
-        </a>
-        <a href="buy-free-product.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-gift text-sabii-gold"></i> Free Gift
-        </a>
-        <a href="referral.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-users text-sabii-gold"></i> Referral
-        </a>
-        <a href="promotion.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-bullhorn text-sabii-gold"></i> Promotion
-        </a>
-        <a href="product-selling.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
-          <i class="fa-solid fa-store text-sabii-gold"></i> Sell Product
-        </a>
+      <div class="relative">
+        <div id="quick-menu-scroll" class="flex items-center gap-2 overflow-x-auto pb-1.5 pt-1 pr-6 scroll-smooth">
+          <a href="free-ads.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-rectangle-ad text-sabii-gold"></i> Free Ads</span>
+            <span class="text-[9px] font-bold text-sabii-darkgold bg-white px-1.5 py-0.5 rounded">200</span>
+          </a>
+          <a href="simple-task.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-list-check text-sabii-gold"></i> Simple Task</span>
+            <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">300</span>
+          </a>
+          <a href="payment.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-credit-card text-sabii-gold"></i> Payment
+          </a>
+          <a href="your-balance.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-wallet text-sabii-gold"></i> Balance
+          </a>
+          <a href="jobs.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-briefcase text-sabii-gold"></i> Jobs
+          </a>
+          <a href="gmail-selling.html" class="shrink-0 flex items-center justify-between gap-3 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-envelope-open-text text-sabii-gold"></i> Gmail Sell</span>
+            <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">40</span>
+          </a>
+          <a href="help-centre.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-headset text-sabii-gold"></i> Help
+          </a>
+          <a href="buy-free-product.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-gift text-sabii-gold"></i> Free Gift
+          </a>
+          <a href="referral.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-users text-sabii-gold"></i> Referral
+          </a>
+          <a href="promotion.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-bullhorn text-sabii-gold"></i> Promotion
+          </a>
+          <a href="product-selling.html" class="shrink-0 flex items-center gap-2 py-2 px-3 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-xs transition shadow-2xs border border-sabii-gold/20">
+            <i class="fa-solid fa-store text-sabii-gold"></i> Sell Product
+          </a>
+        </div>
+        <!-- Right edge subtle visual fade & scroll arrow button -->
+        <button onclick="document.getElementById('quick-menu-scroll').scrollBy({left: 160, behavior: 'smooth'})" aria-label="Scroll Right" class="absolute right-0 top-1/2 -translate-y-1/2 h-8 w-7 bg-gradient-to-l from-white via-white/95 to-transparent flex items-center justify-end pr-0.5 text-sabii-darkgold">
+          <i class="fa-solid fa-chevron-right text-xs animate-swipe-hint"></i>
+        </button>
       </div>
     </div>
 
@@ -343,11 +359,11 @@
 
   </main>
 
-  <!-- Fixed Bottom Area (VIP Ads Golden Animated Button + Original 4 Bottom Buttons) -->
+  <!-- Fixed Bottom Area (VIP Big Ads Golden Animated Button + Original 4 Bottom Buttons) -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl space-y-2">
     <div class="max-w-7xl mx-auto">
-      <!-- Golden Animated VIP Ads Button -->
-      <a href="free-ads.html" class="w-full py-2.5 px-4 rounded-xl vip-animated-btn font-bold text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg">
+      <!-- Golden Animated VIP Big Ads Button (Opens vip-big-ads.html) -->
+      <a href="vip-big-ads.html" class="w-full py-2.5 px-4 rounded-xl vip-animated-btn font-bold text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg">
         <i class="fa-solid fa-bolt text-amber-200"></i> VIP Direct Ads (Rs 5 per Ad) <i class="fa-solid fa-arrow-right text-amber-200"></i>
       </a>
     </div>
