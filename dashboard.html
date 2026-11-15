@@ -5,7 +5,7 @@
   <!-- Bidvertiser2108156 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="hilltopads-site-verification" content="e8f803437def5c9b2af7" />
+  <meta name="hilltopads-site-verification" content="e8f803437def5c9b2af7" />
   
   <title>Sabii - Dashboard</title>
 
@@ -78,12 +78,29 @@
       box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
     }
 
+    @keyframes pulse-gold {
+      0%, 100% { box-shadow: 0 0 10px rgba(197, 160, 89, 0.4); }
+      50% { box-shadow: 0 0 20px rgba(197, 160, 89, 0.8), 0 0 30px rgba(212, 175, 55, 0.5); }
+    }
+
+    .vip-animated-btn {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 40%, #D4AF37 70%, #A37F38 100%);
+      background-size: 200% auto;
+      color: #FFFFFF;
+      animation: pulse-gold 2s infinite ease-in-out;
+      transition: all 0.3s ease;
+    }
+    .vip-animated-btn:hover {
+      background-position: right center;
+      transform: scale(1.02);
+    }
+
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #FAF9F6; }
     ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
 </head>
-<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800 pb-20">
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800 pb-28">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
@@ -97,11 +114,11 @@
       </div>
       <div id="step-content" class="py-4 space-y-3">
         <div class="w-14 h-14 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-2xl shadow-inner">
-          <i id="step-icon" class="fa-solid fa-ellipsis-vertical"></i>
+          <i id="step-icon" class="fa-solid fa-bolt"></i>
         </div>
         <h3 id="step-title" class="text-lg font-bold font-brand text-stone-800">Welcome to Sabii!</h3>
         <p id="step-desc" class="text-xs text-stone-600 leading-relaxed px-2">
-          Top right par maujood <strong>3 dots menu</strong> par click karke aap Free Ads, Simple Tasks, Gmail Selling aur baaki tamam features tak asani se pohch sakte hain.
+          Ab aap right side par maujood quick feature buttons aur VIP Ads se mazeed behtareen earning kar sakte hain!
         </p>
       </div>
       <div class="flex items-center gap-3 pt-2">
@@ -210,60 +227,62 @@
         <button onclick="openLogoutModal()" title="Logout" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 text-red-600 bg-red-50 hover:bg-red-100 transition-all text-xs font-bold flex items-center justify-center shadow-sm">
           <i class="fa-solid fa-power-off text-sm"></i>
         </button>
-
-        <div class="relative">
-          <button id="dots-menu-btn" onclick="toggleDotsMenu()" title="Automation Menu" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-sabii-gold/30 bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold flex items-center justify-center transition-all shadow-sm">
-            <i class="fa-solid fa-ellipsis-vertical text-sm sm:text-base"></i>
-          </button>
-          <div id="dots-dropdown" class="absolute right-0 mt-2 w-56 bg-white border border-sabii-gold/30 rounded-2xl shadow-2xl py-2 hidden z-50">
-            <div class="px-4 py-2 border-b border-stone-100 flex items-center justify-between">
-              <span class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Automation Menu</span>
-              <i class="fa-solid fa-robot text-sabii-gold text-xs"></i>
-            </div>
-            <a href="free-ads.html" class="flex items-center justify-between px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-rectangle-ad text-sabii-gold w-4"></i> Free Ads</span>
-              <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">Ads 200</span>
-            </a>
-            <a href="simple-task.html" class="flex items-center justify-between px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-list-check text-sabii-gold w-4"></i> Simple Task</span>
-              <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">Task 300</span>
-            </a>
-            <a href="payment.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-credit-card text-sabii-gold w-4"></i> Payment
-            </a>
-            <a href="your-balance.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-wallet text-sabii-gold w-4"></i> Your Balance
-            </a>
-            <a href="jobs.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-briefcase text-sabii-gold w-4"></i> Jobs
-            </a>
-            <a href="gmail-selling.html" class="flex items-center justify-between px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <span class="flex items-center gap-2"><i class="fa-solid fa-envelope-open-text text-sabii-gold w-4"></i> Gmail Selling</span>
-              <span class="text-[9px] font-bold text-sabii-darkgold bg-sabii-gold/10 px-1.5 py-0.5 rounded">Gmail 40 Earn</span>
-            </a>
-            <a href="help-centre.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-headset text-sabii-gold w-4"></i> Help Centre
-            </a>
-            <a href="buy-free-product.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-gift text-sabii-gold w-4"></i> Buy Free Product
-            </a>
-            <a href="referral.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-users text-sabii-gold w-4"></i> Referral
-            </a>
-            <a href="promotion.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-bullhorn text-sabii-gold w-4"></i> Promotion
-            </a>
-            <a href="product-selling.html" class="flex items-center gap-3 px-4 py-2.5 text-xs text-stone-700 hover:bg-sabii-gold/10 hover:text-sabii-darkgold transition">
-              <i class="fa-solid fa-store text-sabii-gold w-4"></i> Product Selling
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   </header>
 
+  <!-- Right Side Floating Responsive Quick Buttons (Extracted from Dots Menu) -->
+  <aside class="fixed right-2 top-24 z-30 flex flex-col gap-1.5 bg-white/80 backdrop-blur-md p-1.5 rounded-2xl border border-sabii-gold/30 shadow-xl max-w-[46px] sm:max-w-[140px] transition-all">
+    <span class="text-[8px] font-bold text-stone-400 uppercase tracking-wider text-center hidden sm:block pb-0.5">Quick Menu</span>
+    
+    <a href="free-ads.html" title="Free Ads" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs">
+      <i class="fa-solid fa-rectangle-ad text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Free Ads</span>
+    </a>
+    <a href="simple-task.html" title="Simple Task" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-list-check text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Simple Task</span>
+    </a>
+    <a href="payment.html" title="Payment" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-credit-card text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Payment</span>
+    </a>
+    <a href="your-balance.html" title="Your Balance" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-wallet text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Balance</span>
+    </a>
+    <a href="jobs.html" title="Jobs" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-briefcase text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Jobs</span>
+    </a>
+    <a href="gmail-selling.html" title="Gmail Selling" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-envelope-open-text text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Gmail Sell</span>
+    </a>
+    <a href="help-centre.html" title="Help Centre" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-headset text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Help</span>
+    </a>
+    <a href="buy-free-product.html" title="Buy Free Product" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-gift text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Free Gift</span>
+    </a>
+    <a href="referral.html" title="Referral" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-users text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Referral</span>
+    </a>
+    <a href="promotion.html" title="Promotion" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-bullhorn text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Promotion</span>
+    </a>
+    <a href="product-selling.html" title="Product Selling" class="w-8 sm:w-full h-8 sm:h-auto sm:py-1.5 sm:px-2 rounded-xl bg-white hover:bg-sabii-gold hover:text-white text-stone-700 font-bold text-[10px] flex items-center justify-center sm:justify-start gap-1.5 transition shadow-xs border border-sabii-gold/20">
+      <i class="fa-solid fa-store text-sabii-gold shrink-0"></i>
+      <span class="hidden sm:inline truncate">Sell Product</span>
+    </a>
+  </aside>
+
   <!-- Main Area -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 pr-14 sm:pr-20">
     
     <!-- Balance Widget & Live News Box -->
     <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -325,8 +344,16 @@
 
   </main>
 
-  <!-- Fixed Bottom 4 Buttons Bar -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl">
+  <!-- Fixed Bottom Area (VIP Ads Golden Animated Button + Original 4 Bottom Buttons) -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl space-y-2">
+    <div class="max-w-7xl mx-auto">
+      <!-- Golden Animated VIP Ads Button (Added right above 4 buttons) -->
+      <a href="free-ads.html" class="w-full py-2.5 px-4 rounded-xl vip-animated-btn font-bold text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg">
+        <i class="fa-solid fa-bolt text-amber-200"></i> VIP Direct Ads (Rs 5 per Ad) <i class="fa-solid fa-arrow-right text-amber-200"></i>
+      </a>
+    </div>
+
+    <!-- Original Bottom 4 Buttons Bar -->
     <div class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2">
       <a href="buy-free-product.html" class="py-2 px-2.5 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] sm:text-xs text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
         <i class="fa-solid fa-gift shrink-0 text-sabii-gold"></i> Buy & Earn 40
@@ -344,7 +371,7 @@
   </nav>
 
   <!-- Footer -->
-  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-16 shadow-inner">
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-24 shadow-inner">
     &copy; Sabii Application. Powered by SABIPK.
   </footer>
 
@@ -372,7 +399,7 @@
     let actualBalance = 0;
     let currentStep = 1;
     const totalSteps = 3;
-    let allProducts = []; // To store products for search filtering
+    let allProducts = [];
 
     function showOnboardingStep(step) {
       const counter = document.getElementById('step-counter');
@@ -385,9 +412,9 @@
       counter.innerText = `Step ${step} of ${totalSteps}`;
       if (step === 1) {
         prevBtn.classList.add('hidden');
-        icon.className = "fa-solid fa-ellipsis-vertical";
-        title.innerText = "Automation Menu (3 Dots)";
-        desc.innerHTML = "Top right par maujood <strong>3 dots icon</strong> par click karke aap Free Ads, Simple Tasks, Gmail Selling aur baaki tamam features tak asani se pohch sakte hain.";
+        icon.className = "fa-solid fa-bolt";
+        title.innerText = "VIP Direct Ads (Rs 5)";
+        desc.innerHTML = "Nechay fixed menu mein mojood golden animated button par click karke aap VIP Ads dekh kar Rs 5 earn kar sakte hain.";
         nextBtn.innerHTML = `Next Step <i class="fa-solid fa-arrow-right ml-1"></i>`;
       } else if (step === 2) {
         prevBtn.classList.remove('hidden');
@@ -465,19 +492,9 @@
 
     window.openProfileModal = function() { document.getElementById('profile-modal').classList.remove('hidden'); };
     window.closeProfileModal = function() { document.getElementById('profile-modal').classList.add('hidden'); };
-    window.toggleDotsMenu = function() { document.getElementById('dots-dropdown').classList.toggle('hidden'); };
-
-    window.addEventListener('click', (e) => {
-      const btn = document.getElementById('dots-menu-btn');
-      const dropdown = document.getElementById('dots-dropdown');
-      if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
 
     window.openLogoutModal = function() {
       document.getElementById('logout-modal').classList.remove('hidden');
-      document.getElementById('dots-dropdown').classList.add('hidden');
     };
     window.closeLogoutModal = function() { document.getElementById('logout-modal').classList.add('hidden'); };
 
@@ -490,7 +507,7 @@
       }
     };
 
-    // Render Products Function with Search & Admin Rating Sort
+    // Render Products Function
     window.renderProductsList = function(productsToDisplay) {
       const container = document.getElementById('products-container');
       container.innerHTML = "";
@@ -510,7 +527,7 @@
             </div>
             <div class="space-y-1">
               <div class="flex items-center justify-between">
-                <h4 class="font-brand font-bold text-base text-stone-800">${p.name || 'Special Product'}</h4>
+                <h4 class="font-brand font-brand font-bold text-base text-stone-800">${p.name || 'Special Product'}</h4>
                 ${p.rating ? `<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-star text-amber-500 mr-0.5"></i> ${p.rating}</span>` : ''}
               </div>
               <p class="text-xs text-stone-500 leading-relaxed line-clamp-2">${p.details || 'High quality product.'}</p>
@@ -529,7 +546,6 @@
       });
     };
 
-    // Filter Products on Search Input
     window.filterProducts = function() {
       const query = document.getElementById('product-search').value.toLowerCase().trim();
       const filtered = allProducts.filter(p => (p.name && p.name.toLowerCase().includes(query)) || (p.details && p.details.toLowerCase().includes(query)));
@@ -567,27 +583,20 @@
         onValue(newsRef, (snapshot) => {
           if (snapshot.exists()) {
             document.getElementById('live-news-text').innerText = snapshot.val();
-          } else {
-            document.getElementById('live-news-text').innerText = "Koi new update nahi hai filhal.";
           }
         });
 
-        // Fast Sync & Admin Rating/Priority Sorting
         const productsRef = ref(db, 'admin/dashboardProducts');
         onValue(productsRef, (snapshot) => {
           allProducts = [];
           if (snapshot.exists()) {
             snapshot.forEach((childSnap) => {
-              allProducts.push({ id: childSnap.key, ...childSnap.val() });
+              allProducts.push(childSnap.val());
             });
-            
-            // Sort by admin rating or priority (Higher rating/priority on top)
+            // Sort by rating if available
             allProducts.sort((a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0));
-            
-            renderProductsList(allProducts);
-          } else {
-            document.getElementById('products-container').innerHTML = `<div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">Abhi tak koi product available nahi hai.</div>`;
           }
+          renderProductsList(allProducts);
         });
       }
     });
