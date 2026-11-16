@@ -177,10 +177,9 @@
   <!-- Main Area -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
 
-    <!-- Wallet Balance Widget & Referral Code Widget -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <!-- Wallet Balance -->
-      <div class="flex items-center justify-between bg-gradient-to-r from-white via-amber-50/40 to-white border border-sabii-gold/30 rounded-2xl py-3 px-4 shadow-sm">
+    <!-- Wallet Balance Widget -->
+    <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between bg-gradient-to-r from-white via-amber-50/40 to-white border border-sabii-gold/30 rounded-2xl py-3 px-4 shadow-sm w-full sm:w-80">
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-sabii-darkgold text-white flex items-center justify-center">
             <i class="fa-solid fa-wallet"></i>
@@ -192,22 +191,6 @@
         </div>
         <button onclick="toggleBalanceVisibility()" title="Hide/Show Balance" class="text-stone-400 hover:text-stone-600 pl-2">
           <i id="balance-eye-icon" class="fa-solid fa-eye"></i>
-        </button>
-      </div>
-
-      <!-- Referral Code Widget -->
-      <div class="flex items-center justify-between bg-gradient-to-r from-white via-amber-50/40 to-white border border-sabii-gold/30 rounded-2xl py-3 px-4 shadow-sm">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-sabii-gold text-white flex items-center justify-center">
-            <i class="fa-solid fa-share-nodes"></i>
-          </div>
-          <div class="text-left">
-            <p class="text-[9px] text-stone-400 uppercase font-bold tracking-wider leading-none">Referral Code</p>
-            <span id="dashboard-refcode" class="text-sm font-bold sabii-gold-text">Loading...</span>
-          </div>
-        </div>
-        <button onclick="copyDashboardRefCode()" title="Copy Referral Link" class="py-1.5 px-3 rounded-xl bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white text-sabii-darkgold border border-sabii-gold/30 font-bold text-xs transition-all flex items-center gap-1.5">
-          <i class="fa-solid fa-copy"></i> Copy
         </button>
       </div>
     </div>
@@ -362,7 +345,6 @@
 
     let isBalanceHidden = false;
     let actualBalance = 0;
-    let userReferralCode = "";
 
     window.showToast = function (message, type = 'success') {
       const container = document.getElementById('toast-container');
@@ -392,16 +374,6 @@
       }
     };
 
-    window.copyDashboardRefCode = function() {
-      if (!userReferralCode) {
-        showToast("Referral code abhi load nahi hua!", "error");
-        return;
-      }
-      const fullLink = `https://Sabii-seven.vercel.app/?ref=${userReferralCode}`;
-      navigator.clipboard.writeText(fullLink);
-      showToast("Referral link copy ho gaya hai!", "success");
-    };
-
     window.openProfileModal = function() { document.getElementById('profile-modal').classList.remove('hidden'); };
     window.closeProfileModal = function() { document.getElementById('profile-modal').classList.add('hidden'); };
     window.openLogoutModal = function() { document.getElementById('logout-modal').classList.remove('hidden'); };
@@ -425,12 +397,10 @@
           if (snapshot.exists()) {
             const data = snapshot.val();
             actualBalance = data.balance || 0;
-            userReferralCode = data.username || data.referralCode || user.uid;
             
             document.getElementById('user-name').innerText = data.name || "User";
             document.getElementById('user-email').innerText = data.email || user.email;
             document.getElementById('user-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
-            document.getElementById('dashboard-refcode').innerText = userReferralCode;
 
             if (!isBalanceHidden) {
               document.getElementById('header-balance').innerText = `Rs ${actualBalance}`;
