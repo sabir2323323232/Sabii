@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii - VIP Gold Ads (Rs 5)</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
+    }
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      color: #FFFFFF;
+      transition: all 0.3s ease;
+    }
+    .sabii-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-stone-800 pb-12">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <h1 class="font-brand text-xl font-bold sabii-gold-text">VIP Gold Ads (Rs 5)</h1>
+      <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-full">Rs 0</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
+    
+    <!-- Rules Box -->
+    <div class="sabii-card rounded-2xl p-4 bg-amber-50/50 border border-sabii-gold/30 text-xs space-y-2">
+      <h4 class="font-bold text-amber-900 flex items-center gap-1.5 text-sm">
+        <i class="fa-solid fa-shield-halved text-amber-600"></i> VIP Gold Task Rules:
+      </h4>
+      <ul class="list-disc list-inside space-y-1 text-stone-700">
+        <li>Har ad par <b>Rs 5</b> milenge (Selected Tiers ke mutabiq).</li>
+        <li>Ads par kam az kam <b>1 minute (60 seconds)</b> rokna lazmi hai.</li>
+        <li>Jo website ya app aaye use lazmi download ya visit karein.</li>
+        <li>Admin check karne ke baad <b>5 minutes mein payment</b> balance mein add ho jayegi.</li>
+        <li>Har ad <b>24 hours (1 Day)</b> ke baad dobara unlock hoga.</li>
+      </ul>
+    </div>
+
+    <!-- Ad List Container -->
+    <div id="ads-container" class="space-y-3">
+      <!-- Dynamic 50 Ads will load here -->
+    </div>
+
+  </main>
+
+  <!-- Ad Task Modal / Screen -->
+  <div id="task-modal" class="fixed inset-0 z-50 bg-stone-900/70 backdrop-blur-sm flex items-center justify-center hidden p-4">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
+      <div id="modal-content" class="space-y-4">
+        <h3 id="modal-title" class="font-brand text-xl font-bold text-stone-800">Ad Task in Progress</h3>
+        <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur 1 minute tak page par ruken.</p>
+        
+        <div id="timer-box" class="py-4 bg-amber-50 rounded-2xl border border-sabii-gold/30">
+          <p class="text-[10px] uppercase font-bold text-stone-400">Rukne ka Waqt (Timer)</p>
+          <span id="countdown-timer" class="text-3xl font-bold sabii-gold-text">60</span> Seconds
+        </div>
+
+        <div id="action-area" class="space-y-3">
+          <a id="ad-link-btn" href="#" target="_blank" onclick="startTimer()" class="block w-full py-3 rounded-xl sabii-button font-bold text-xs shadow-md">
+            <i class="fa-solid fa-external-link-alt mr-1"></i> Visit Ad Link & Start Timer
+          </a>
+        </div>
+
+        <div id="screenshot-area" class="hidden space-y-3 pt-2 border-t border-stone-100">
+          <p class="text-xs text-stone-600 font-semibold">Screenshot Upload Karein (Admin Verification)</p>
+          <input type="file" id="screenshot-input" accept="image/*" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sabii-gold/10 file:text-sabii-darkgold hover:file:bg-sabii-gold/20">
+          <button onclick="submitAdProof()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md">
+            Submit Proof (5 Min mein Payment Mil Jayegi)
+          </button>
+        </div>
+      </div>
+      
+      <button onclick="closeTaskModal()" class="text-xs text-stone-400 hover:text-stone-600 pt-2">Cancel / Close</button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // 50 Monetization Links (Aapke 40 + 10 repeated links)
+    const adLinks = [
+      "https://uplcm.com/4/12277374", "https://uplcm.com/4/12277379", "https://uplcm.com/4/12277380", "https://uplcm.com/4/12277381", "https://uplcm.com/4/12277382",
+      "https://uplcm.com/4/12277389", "https://uplcm.com/4/12277400", "https://uplcm.com/4/12277406", "https://uplcm.com/4/12277412", "https://uplcm.com/4/12277422",
+      "https://uplcm.com/4/12277473", "https://uplcm.com/4/12277512", "https://uplcm.com/4/12277511", "https://uplcm.com/4/12277514", "https://uplcm.com/4/12277515",
+      "https://uplcm.com/4/12277519", "https://uplcm.com/4/12277524", "https://uplcm.com/4/12277525", "https://uplcm.com/4/12277527", "https://uplcm.com/4/12277532",
+      "https://uplcm.com/4/12277542", "https://uplcm.com/4/12277552", "https://uplcm.com/4/12277554", "https://uplcm.com/4/12277558", "https://uplcm.com/4/12277569",
+      "https://uplcm.com/4/12277585", "https://uplcm.com/4/12277586", "https://uplcm.com/4/12277591", "https://uplcm.com/4/12278423", "https://uplcm.com/4/12278422",
+      "https://uplcm.com/4/12278424", "https://uplcm.com/4/12278425", "https://uplcm.com/4/12278426", "https://uplcm.com/4/12278427", "https://uplcm.com/4/12278428",
+      "https://uplcm.com/4/12278429", "https://uplcm.com/4/12278432", "https://uplcm.com/4/12278436", "https://uplcm.com/4/12278437", "https://uplcm.com/4/12278438",
+      "https://uplcm.com/4/12277374", "https://uplcm.com/4/12277379", "https://uplcm.com/4/12277380", "https://uplcm.com/4/12277381", "https://uplcm.com/4/12277382",
+      "https://uplcm.com/4/12277389", "https://uplcm.com/4/12277400", "https://uplcm.com/4/12277406", "https://uplcm.com/4/12277412", "https://uplcm.com/4/12277422"
+    ];
+
+    let currentUser = null;
+    let activeAdIndex = null;
+    let timerInterval = null;
+
+    window.showToast = function(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto`;
+      toast.innerHTML = `<div class="flex items-center gap-2"><span>${message}</span></div>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4000);
+    };
+
+    // Render 50 Ads with Payout Pattern (1st=Rs5, 2nd,3rd=Rs0, 4th=Rs5, 5th,6th=Rs0, 7th=Rs5...)
+    function renderAds(completedAds = {}) {
+      const container = document.getElementById('ads-container');
+      container.innerHTML = "";
+
+      for (let i = 0; i < 50; i++) {
+        let adNum = i + 1;
+        
+        // Payout calculation rule: 1st gives 5, next 2 give 0, 4th gives 5, etc.
+        let isPaid = (adNum % 3 === 1); 
+        let reward = isPaid ? 5 : 0;
+
+        let isLocked = false;
+        let lockText = `Earn Rs ${reward}`;
+
+        if (completedAds[i]) {
+          let lastTime = completedAds[i];
+          let diffHours = (Date.now() - lastTime) / (1000 * 60 * 60);
+          if (diffHours < 24) {
+            isLocked = true;
+            let timeLeft = Math.ceil(24 - diffHours);
+            lockText = `Locked (${timeLeft}h left)`;
+          }
+        }
+
+        const card = document.createElement('div');
+        card.className = `sabii-card rounded-2xl p-3.5 flex items-center justify-between bg-white ${isLocked ? 'opacity-60' : 'hover:border-sabii-gold'}`;
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs">
+              #${adNum}
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-stone-800">VIP Gold Ad #${adNum}</h4>
+              <p class="text-[10px] text-stone-500">${isPaid ? 'Reward: <span class="text-sabii-darkgold font-bold">Rs 5</span>' : 'Reward: <span class="text-stone-400">Rs 0 (Bonus Flow)</span>'} • 1 Min Timer</p>
+            </div>
+          </div>
+          <button onclick="${isLocked ? '' : `openTaskModal(${i}, '${adLinks[i]}', ${reward})`}" 
+            class="text-xs font-bold px-3 py-1.5 rounded-xl ${isLocked ? 'bg-stone-200 text-stone-400 cursor-not-allowed' : 'sabii-button'}">
+            ${lockText}
+          </button>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    window.openTaskModal = function(index, link, reward) {
+      activeAdIndex = index;
+      document.getElementById('task-modal').classList.remove('hidden');
+      document.getElementById('ad-link-btn').href = link;
+      document.getElementById('countdown-timer').innerText = "60";
+      document.getElementById('timer-box').classList.remove('hidden');
+      document.getElementById('screenshot-area').classList.add('hidden');
+    };
+
+    window.closeTaskModal = function() {
+      document.getElementById('task-modal').classList.add('hidden');
+      clearInterval(timerInterval);
+    };
+
+    window.startTimer = function() {
+      let timeLeft = 60;
+      clearInterval(timerInterval);
+      
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('countdown-timer').innerText = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById('timer-box').classList.add('hidden');
+          document.getElementById('screenshot-area').classList.remove('hidden');
+          showToast("Timer poora ho gaya! Ab screenshot upload karein.", "success");
+        }
+      }, 1000);
+    };
+
+    window.submitAdProof = async function() {
+      const fileInput = document.getElementById('screenshot-input');
+      if (fileInput.files.length === 0) {
+        showToast("Barah-e-karam screenshot upload karein!", "error");
+        return;
+      }
+
+      let adNum = activeAdIndex + 1;
+      let reward = (adNum % 3 === 1) ? 5 : 0;
+
+      // Update Firebase Balance & Completed Ads
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      const snapshot = await get(userRef);
+      if (snapshot.exists()) {
+        let data = snapshot.val();
+        let currentBalance = data.balance || 0;
+        let completedAds = data.vipGoldAds || {};
+
+        completedAds[activeAdIndex] = Date.now();
+        let newBalance = currentBalance + reward;
+
+        await update(userRef, {
+          balance: newBalance,
+          vipGoldAds: completedAds
+        });
+
+        showToast(`Task verified! ${reward > 0 ? 'Rs ' + reward + ' added to balance.' : 'Task completed successfully.'}`, "success");
+        closeTaskModal();
+      }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUser = user;
+        const userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            document.getElementById('header-balance').innerText = `Rs ${data.balance || 0}`;
+            renderAds(data.vipGoldAds || {});
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
