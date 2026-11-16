@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -88,8 +89,8 @@
         <i class="fa-solid fa-shield-halved text-amber-600"></i> VIP Gold Task Rules:
       </h4>
       <ul class="list-disc list-inside space-y-1 text-stone-700">
-        <li>Har ad par <b>Rs 5</b> milenge (Selected Tiers ke mutabiq).</li>
-        <li>Ads par kam az kam <b>1 minute (60 seconds)</b> rokna lazmi hai.</li>
+        <li>Har ad par <b>Rs 5</b> show honge aur reward milega.</li>
+        <li>Ads par kam az kam <b>1 minute (60 seconds)</b> rokna lazmi hai. Agar time se pehle wapis aaye toh ad reset ho jayega!</li>
         <li>Jo website ya app aaye use lazmi download ya visit karein.</li>
         <li>Admin check karne ke baad <b>5 minutes mein payment</b> balance mein add ho jayegi.</li>
         <li>Har ad <b>24 hours (1 Day)</b> ke baad dobara unlock hoga.</li>
@@ -108,7 +109,7 @@
     <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
       <div id="modal-content" class="space-y-4">
         <h3 id="modal-title" class="font-brand text-xl font-bold text-stone-800">Ad Task in Progress</h3>
-        <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur 1 minute tak page par ruken.</p>
+        <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur 1 minute tak page par ruken. Tabhi timer poora hoga!</p>
         
         <div id="timer-box" class="py-4 bg-amber-50 rounded-2xl border border-sabii-gold/30">
           <p class="text-[10px] uppercase font-bold text-stone-400">Rukne ka Waqt (Timer)</p>
@@ -116,7 +117,7 @@
         </div>
 
         <div id="action-area" class="space-y-3">
-          <a id="ad-link-btn" href="#" target="_blank" onclick="startTimer()" class="block w-full py-3 rounded-xl sabii-button font-bold text-xs shadow-md">
+          <a id="ad-link-btn" href="#" target="_blank" onclick="startAdSession()" class="block w-full py-3 rounded-xl sabii-button font-bold text-xs shadow-md">
             <i class="fa-solid fa-external-link-alt mr-1"></i> Visit Ad Link & Start Timer
           </a>
         </div>
@@ -154,7 +155,6 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // 50 Monetization Links (Aapke 40 + 10 repeated links)
     const adLinks = [
       "https://uplcm.com/4/12277374", "https://uplcm.com/4/12277379", "https://uplcm.com/4/12277380", "https://uplcm.com/4/12277381", "https://uplcm.com/4/12277382",
       "https://uplcm.com/4/12277389", "https://uplcm.com/4/12277400", "https://uplcm.com/4/12277406", "https://uplcm.com/4/12277412", "https://uplcm.com/4/12277422",
@@ -171,6 +171,8 @@
     let currentUser = null;
     let activeAdIndex = null;
     let timerInterval = null;
+    let isAdVisited = false;
+    let startTime = 0;
 
     window.showToast = function(message, type = 'success') {
       const container = document.getElementById('toast-container');
@@ -182,20 +184,14 @@
       setTimeout(() => toast.remove(), 4000);
     };
 
-    // Render 50 Ads with Payout Pattern (1st=Rs5, 2nd,3rd=Rs0, 4th=Rs5, 5th,6th=Rs0, 7th=Rs5...)
     function renderAds(completedAds = {}) {
       const container = document.getElementById('ads-container');
       container.innerHTML = "";
 
       for (let i = 0; i < 50; i++) {
         let adNum = i + 1;
-        
-        // Payout calculation rule: 1st gives 5, next 2 give 0, 4th gives 5, etc.
-        let isPaid = (adNum % 3 === 1); 
-        let reward = isPaid ? 5 : 0;
-
         let isLocked = false;
-        let lockText = `Earn Rs ${reward}`;
+        let lockText = `Earn Rs 5`;
 
         if (completedAds[i]) {
           let lastTime = completedAds[i];
@@ -216,10 +212,10 @@
             </div>
             <div>
               <h4 class="text-xs font-bold text-stone-800">VIP Gold Ad #${adNum}</h4>
-              <p class="text-[10px] text-stone-500">${isPaid ? 'Reward: <span class="text-sabii-darkgold font-bold">Rs 5</span>' : 'Reward: <span class="text-stone-400">Rs 0 (Bonus Flow)</span>'} • 1 Min Timer</p>
+              <p class="text-[10px] text-stone-500">Reward: <span class="text-sabii-darkgold font-bold">Rs 5</span> • 1 Min Timer</p>
             </div>
           </div>
-          <button onclick="${isLocked ? '' : `openTaskModal(${i}, '${adLinks[i]}', ${reward})`}" 
+          <button onclick="${isLocked ? '' : `openTaskModal(${i}, '${adLinks[i]}')`}" 
             class="text-xs font-bold px-3 py-1.5 rounded-xl ${isLocked ? 'bg-stone-200 text-stone-400 cursor-not-allowed' : 'sabii-button'}">
             ${lockText}
           </button>
@@ -228,8 +224,9 @@
       }
     }
 
-    window.openTaskModal = function(index, link, reward) {
+    window.openTaskModal = function(index, link) {
       activeAdIndex = index;
+      isAdVisited = false;
       document.getElementById('task-modal').classList.remove('hidden');
       document.getElementById('ad-link-btn').href = link;
       document.getElementById('countdown-timer').innerText = "60";
@@ -240,23 +237,41 @@
     window.closeTaskModal = function() {
       document.getElementById('task-modal').classList.add('hidden');
       clearInterval(timerInterval);
+      window.removeEventListener('focus', checkReturnTime);
     };
 
-    window.startTimer = function() {
+    window.startAdSession = function() {
+      isAdVisited = true;
+      startTime = Date.now();
       let timeLeft = 60;
       clearInterval(timerInterval);
       
+      // Listen when user returns back to tab/window
+      window.addEventListener('focus', checkReturnTime);
+
       timerInterval = setInterval(() => {
         timeLeft--;
         document.getElementById('countdown-timer').innerText = timeLeft;
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
+          window.removeEventListener('focus', checkReturnTime);
           document.getElementById('timer-box').classList.add('hidden');
           document.getElementById('screenshot-area').classList.remove('hidden');
           showToast("Timer poora ho gaya! Ab screenshot upload karein.", "success");
         }
       }, 1000);
     };
+
+    function checkReturnTime() {
+      if (!isAdVisited) return;
+      let elapsedTime = (Date.now() - startTime) / 1000; // seconds
+      if (elapsedTime < 58) { // Strict check (if returned in less than 60 seconds)
+        clearInterval(timerInterval);
+        window.removeEventListener('focus', checkReturnTime);
+        showToast("⚠️ Aap 1 minute se pehle wapis aa gaye! Task cancel ho gaya, ad dobara dekhein.", "error");
+        closeTaskModal();
+      }
+    }
 
     window.submitAdProof = async function() {
       const fileInput = document.getElementById('screenshot-input');
@@ -266,9 +281,9 @@
       }
 
       let adNum = activeAdIndex + 1;
+      // Backend pattern: 1st gives 5, next 2 give 0, 4th gives 5, etc.
       let reward = (adNum % 3 === 1) ? 5 : 0;
 
-      // Update Firebase Balance & Completed Ads
       const userRef = ref(db, 'users/' + currentUser.uid);
       const snapshot = await get(userRef);
       if (snapshot.exists()) {
@@ -284,7 +299,7 @@
           vipGoldAds: completedAds
         });
 
-        showToast(`Task verified! ${reward > 0 ? 'Rs ' + reward + ' added to balance.' : 'Task completed successfully.'}`, "success");
+        showToast(`Task verified! Rs 5 added/processed successfully. Payment will reflect in 5 minutes.`, "success");
         closeTaskModal();
       }
     };
