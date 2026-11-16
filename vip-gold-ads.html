@@ -93,6 +93,16 @@
   <!-- Main Content -->
   <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
     
+    <!-- Bara Important Warning Notice -->
+    <div class="rounded-2xl p-4 bg-red-600 text-white shadow-lg border-2 border-red-800 text-center space-y-1">
+      <div class="text-lg font-extrabold tracking-wide uppercase flex items-center justify-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation text-amber-300 text-xl"></i> Zaroori Hidayat
+      </div>
+      <p class="text-sm sm:text-base font-bold leading-snug">
+        Gambling, games, apps ya website ko join mat karo, sirf ads poora karo. Shukriya!
+      </p>
+    </div>
+
     <!-- Rules Box -->
     <div class="sabii-card rounded-2xl p-4 bg-amber-50/50 border border-sabii-gold/30 text-xs space-y-2">
       <h4 class="font-bold text-amber-900 flex items-center gap-1.5 text-sm">
@@ -264,7 +274,7 @@
       startTime = Date.now();
       let timeLeft = 60;
       clearInterval(timerInterval);
-      
+       
       window.addEventListener('focus', checkReturnTime);
 
       timerInterval = setInterval(() => {
@@ -282,7 +292,7 @@
 
     function checkReturnTime() {
       if (!isAdVisited) return;
-      
+       
       // Spinner show karo jab user wapis window par aaye
       document.getElementById('loading-overlay').classList.remove('hidden');
 
