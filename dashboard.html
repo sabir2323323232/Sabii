@@ -18,6 +18,15 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Global Site Verification Snippet -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'DC-16361189');
+  </script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -46,38 +55,32 @@
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
-
     .sabii-card {
       background: #FFFFFF;
       border: 1px solid rgba(197, 160, 89, 0.3);
       box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
       transition: all 0.3s ease;
     }
-
     .sabii-card:hover {
       box-shadow: 0 15px 35px rgba(197, 160, 89, 0.18);
       transform: translateY(-2px);
     }
-
     .sabii-gold-text {
       background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-
     .sabii-button {
       background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
       background-size: 200% auto;
       transition: all 0.3s ease;
       color: #FFFFFF;
     }
-
     .sabii-button:hover {
       background-position: right center;
       transform: translateY(-1px);
       box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
     }
-
     ::-webkit-scrollbar { width: 5px; height: 4px; }
     ::-webkit-scrollbar-track { background: #FAF9F6; }
     ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
@@ -188,9 +191,9 @@
   </header>
 
   <!-- Main Area -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
     
-    <!-- Wallet Balance Widget (Sabse Uper - Colorful Gradient) -->
+    <!-- Wallet Balance Widget -->
     <div class="flex items-center justify-between">
       <div class="inline-flex items-center gap-3 bg-gradient-to-r from-white via-amber-50/40 to-white border border-sabii-gold/40 rounded-2xl py-2.5 px-4 shadow-md w-full sm:w-auto">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-sabii-darkgold text-white flex items-center justify-center text-xs shadow-inner">
@@ -206,7 +209,7 @@
       </div>
     </div>
 
-    <!-- Uper Ads Wale 5 Buttons (Line by Line - Rang-ba-rang & Khoobsurat) -->
+    <!-- Uper Ads Wale 5 Buttons -->
     <div class="flex flex-col space-y-2.5">
       <div class="flex items-center justify-between px-1">
         <h3 class="text-xs font-bold font-brand text-amber-700 uppercase tracking-wider flex items-center gap-1.5">
@@ -290,7 +293,7 @@
 
   </main>
 
-  <!-- Fixed Bottom Menu Bar (Line ke sath: Payment, Balance, Jobs, Help, Referral, Sell, Simple Task Rs 10, Gmail Sell Rs 50) -->
+  <!-- Fixed Bottom Menu Bar -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl">
     <div class="max-w-7xl mx-auto grid grid-cols-4 sm:grid-cols-8 gap-2">
       <a href="payment.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-300 text-emerald-800 font-bold text-[10px] sm:text-xs text-center flex flex-col items-center justify-center gap-1 transition shadow-sm hover:scale-105">
@@ -324,6 +327,17 @@
   <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-28 shadow-inner">
     &copy; Sabii Application. Powered by SABIPK.
   </footer>
+
+  <!-- Conversion Event Snippet & noscript -->
+  <script>
+    gtag('event', 'conversion', {
+      'allow_custom_scripts': true,
+      'send_to': 'DC-16361189/manau0/sabii0+standard'
+    });
+  </script>
+  <noscript>
+    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ord=1?" width="1" height="1" alt=""/>
+  </noscript>
 
   <!-- Firebase Scripts & Logic -->
   <script type="module">
