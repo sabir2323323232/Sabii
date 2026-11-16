@@ -157,34 +157,19 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Purane 40 links ko repeat karke 50 links ka array
-    const oldFortyLinks = [
-      "https://uplcm.com/4/12279207", "https://uplcm.com/4/12279208",
-      "https://uplcm.com/4/12279210", "https://uplcm.com/4/12279213",
-      "https://uplcm.com/4/12279214", "https://uplcm.com/4/12279215",
-      "https://uplcm.com/4/12279218", "https://uplcm.com/4/12279221",
-      "https://uplcm.com/4/12279222", "https://uplcm.com/4/12279225",
-      "https://uplcm.com/4/12279227", "https://uplcm.com/4/12279228",
-      "https://uplcm.com/4/12279231", "https://uplcm.com/4/12279234",
-      "https://uplcm.com/4/12279236", "https://uplcm.com/4/12279239",
-      "https://uplcm.com/4/12279241", "https://uplcm.com/4/12279243",
-      "https://uplcm.com/4/12279245", "https://uplcm.com/4/12279248",
-      "https://uplcm.com/4/12278912", "https://uplcm.com/4/12278915",
-      "https://uplcm.com/4/12278918", "https://uplcm.com/4/12278921",
-      "https://uplcm.com/4/12278924", "https://uplcm.com/4/12278927",
-      "https://uplcm.com/4/12278930", "https://uplcm.com/4/12278933",
-      "https://uplcm.com/4/12278936", "https://uplcm.com/4/12278939",
-      "https://uplcm.com/4/12278942", "https://uplcm.com/4/12278945",
-      "https://uplcm.com/4/12278948", "https://uplcm.com/4/12278951",
-      "https://uplcm.com/4/12278954", "https://uplcm.com/4/12278957",
-      "https://uplcm.com/4/12278960", "https://uplcm.com/4/12278963",
-      "https://uplcm.com/4/12278966", "https://uplcm.com/4/12278969"
+    // Aapke naye 50 links
+    const adLinks = [
+      "https://uplcm.com/4/12277374", "https://uplcm.com/4/12277379", "https://uplcm.com/4/12277380", "https://uplcm.com/4/12277381", "https://uplcm.com/4/12277382",
+      "https://uplcm.com/4/12277389", "https://uplcm.com/4/12277400", "https://uplcm.com/4/12277406", "https://uplcm.com/4/12277412", "https://uplcm.com/4/12277422",
+      "https://uplcm.com/4/12277473", "https://uplcm.com/4/12277512", "https://uplcm.com/4/12277511", "https://uplcm.com/4/12277514", "https://uplcm.com/4/12277515",
+      "https://uplcm.com/4/12277519", "https://uplcm.com/4/12277524", "https://uplcm.com/4/12277525", "https://uplcm.com/4/12277527", "https://uplcm.com/4/12277532",
+      "https://uplcm.com/4/12277542", "https://uplcm.com/4/12277552", "https://uplcm.com/4/12277554", "https://uplcm.com/4/12277558", "https://uplcm.com/4/12277569",
+      "https://uplcm.com/4/12277585", "https://uplcm.com/4/12277586", "https://uplcm.com/4/12277591", "https://uplcm.com/4/12278423", "https://uplcm.com/4/12278422",
+      "https://uplcm.com/4/12278424", "https://uplcm.com/4/12278425", "https://uplcm.com/4/12278426", "https://uplcm.com/4/12278427", "https://uplcm.com/4/12278428",
+      "https://uplcm.com/4/12278429", "https://uplcm.com/4/12278432", "https://uplcm.com/4/12278436", "https://uplcm.com/4/12278437", "https://uplcm.com/4/12278438",
+      "https://uplcm.com/4/12277374", "https://uplcm.com/4/12277379", "https://uplcm.com/4/12277380", "https://uplcm.com/4/12277381", "https://uplcm.com/4/12277382",
+      "https://uplcm.com/4/12277389", "https://uplcm.com/4/12277400", "https://uplcm.com/4/12277406", "https://uplcm.com/4/12277412", "https://uplcm.com/4/12277422"
     ];
-
-    const adLinks = [];
-    for (let i = 0; i < 50; i++) {
-      adLinks.push(oldFortyLinks[i % oldFortyLinks.length]);
-    }
 
     let currentUser = null;
     let activeAdIndex = null;
@@ -266,7 +251,6 @@
       document.getElementById('action-area').classList.remove('hidden');
       document.getElementById('claim-area').classList.add('hidden');
 
-      // Loading spinner jab ad modal load ho
       setTimeout(() => {
         document.getElementById('loading-overlay').classList.add('hidden');
       }, 900);
@@ -311,7 +295,6 @@
         document.getElementById('loading-overlay').classList.add('hidden');
         let elapsedTime = (Date.now() - startTime) / 1000;
 
-        // Sakht restriction agar 10 second se pehle wapis aaye
         if (elapsedTime < 9.5) {
           clearInterval(timerInterval);
           window.removeEventListener('focus', checkReturnTime);
