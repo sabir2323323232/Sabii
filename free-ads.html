@@ -1,19 +1,18 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii - Free Ads Hub</title>
-
+  <title>Sabii Simple Ads (Rs 0.10)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
+  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <script>
     tailwind.config = {
       theme: {
@@ -35,136 +34,358 @@
       }
     }
   </script>
-
   <style>
     body {
-      background-color: #FAF9F6;
+      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
-
     .sabii-card {
       background: #FFFFFF;
-      border: 1px solid rgba(197, 160, 89, 0.25);
-      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.06);
-      transition: all 0.3s ease;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
     }
-
-    .sabii-card:hover {
-      box-shadow: 0 15px 35px rgba(197, 160, 89, 0.15);
-      transform: translateY(-3px);
-    }
-
     .sabii-gold-text {
       background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-
-    .sabii-button {
-      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
-      background-size: 200% auto;
-      transition: all 0.3s ease;
-      color: #FFFFFF;
-    }
-
-    .sabii-button:hover {
-      background-position: right center;
-      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
-    }
   </style>
 </head>
-<body class="flex flex-col min-h-screen text-stone-800">
+<body class="flex flex-col min-h-screen text-stone-800 pb-12">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
 
   <!-- Header -->
-  <header class="bg-white border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-sabii-gold/10 border border-sabii-gold/30 flex items-center justify-center text-sabii-darkgold">
-          <span class="font-brand font-bold text-lg sm:text-xl">S</span>
-        </div>
-        <div>
-          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
-          <span class="text-[8px] sm:text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Free Ads Portal</span>
-        </div>
+  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
       </a>
-
-      <!-- Back to Dashboard -->
-      <a href="dashboard.html" class="py-1.5 px-3.5 rounded-xl border border-sabii-gold/30 text-sabii-darkgold bg-sabii-gold/10 hover:bg-sabii-gold hover:text-white transition-all text-xs font-bold flex items-center gap-1.5">
-        <i class="fa-solid fa-arrow-left"></i> Dashboard
-      </a>
+      <h1 class="font-brand text-xl font-bold sabii-gold-text">Simple Ads (Rs 0.10)</h1>
+      <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-xl">Rs 0</span>
     </div>
   </header>
 
   <!-- Main Content -->
-  <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col justify-center space-y-8">
+  <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
 
-    <div class="text-center space-y-2">
-      <h2 class="text-2xl sm:text-3xl font-bold font-brand sabii-gold-text uppercase tracking-wider">Daily Ads Earning Center</h2>
-      <p class="text-xs sm:text-sm text-stone-500">Apni pasand ki category select karein aur rozana ads dekh kar balance kamayein.</p>
+    <!-- Bara Important Warning Notice -->
+    <div class="rounded-2xl p-4 bg-red-600 text-white shadow-lg border-2 border-red-800 text-center space-y-1">
+      <div class="text-lg font-extrabold tracking-wide uppercase flex items-center justify-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation text-amber-300 text-xl"></i> Zaroori Hidayat
+      </div>
+      <p class="text-sm sm:text-base font-bold leading-snug">
+        Gambling, games, apps ya website ko join mat karo, sirf ads poora karo. Shukriya!
+      </p>
     </div>
 
-    <!-- Two Main Buttons Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-      <!-- Card 1: Simple Click Ads -->
-      <div class="sabii-card rounded-3xl p-7 text-center flex flex-col justify-between space-y-6 relative overflow-hidden">
-        <div class="space-y-4">
-          <span class="inline-block bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-extrabold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-xs">
-            Daily 500
-          </span>
-          
-          <div class="w-16 h-16 rounded-2xl bg-sabii-gold/15 border border-sabii-gold/30 text-sabii-darkgold flex items-center justify-center mx-auto text-3xl shadow-inner">
-            <i class="fa-solid fa-arrow-pointer"></i>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold font-brand text-stone-800">Simple Click Ads</h3>
-            <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">
-              Is section mein ads par sirf click karke 10 second rukna hota hai.
-            </p>
-          </div>
-        </div>
-
-        <a href="simple-ads.html" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
-          <span>Simple Click Ads</span>
-          <i class="fa-solid fa-arrow-right"></i>
-        </a>
-      </div>
-
-      <!-- Card 2: Video Watching Ads -->
-      <div class="sabii-card rounded-3xl p-7 text-center flex flex-col justify-between space-y-6 relative overflow-hidden">
-        <div class="space-y-4">
-          <span class="inline-block bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-extrabold uppercase tracking-wider px-4 py-1.5 rounded-full shadow-xs">
-            Daily 500
-          </span>
-          
-          <div class="w-16 h-16 rounded-2xl bg-sabii-gold/15 border border-sabii-gold/30 text-sabii-darkgold flex items-center justify-center mx-auto text-3xl shadow-inner">
-            <i class="fa-solid fa-circle-play"></i>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-bold font-brand text-stone-800">Video Watching Ads</h3>
-            <p class="text-xs text-stone-500 mt-1.5 leading-relaxed">
-              Is section mein mukammal video ads watch karke aap apni daily earning barha sakte hain.
-            </p>
-          </div>
-        </div>
-
-        <a href="video-ads.html" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
-          <span>Video Watching Ads</span>
-          <i class="fa-solid fa-play"></i>
-        </a>
-      </div>
-
+    <!-- Rules Box -->
+    <div class="sabii-card rounded-2xl p-4 bg-stone-50 border border-stone-200 text-xs space-y-2">
+      <h4 class="font-bold text-stone-800 flex items-center gap-1.5 text-sm">
+        <i class="fa-solid fa-shield-halved text-stone-600"></i> Simple Ads Task Rules:
+      </h4>
+      <ul class="list-disc list-inside space-y-1 text-stone-700">
+        <li>Har ad par <b>Rs 0.10</b> milenge.</li>
+        <li>Ads par kam az kam <b>10 seconds</b> rokna lazmi hai. Agar 10 second se pehle wapis aaye toh sakht restriction lagegi aur ad dobara dekhna hoga.</li>
+        <li>10 seconds poore hone ke baad Claim button par click karke apna reward hasil karein.</li>
+        <li>Har ad <b>24 hours (1 Day)</b> ke baad dobara unlock hoga.</li>
+      </ul>
     </div>
 
+    <!-- Ad List Container -->
+    <div id="ads-container" class="space-y-3">
+      <!-- Dynamic 50 Ads will load here -->
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-auto">
-    &copy; Sabii Application. Powered by SABIPK.
-  </footer>
+  <!-- Ad Task Modal / Screen -->
+  <div id="task-modal" class="hidden fixed inset-0 z-50 bg-stone-900/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center relative overflow-hidden">
+
+      <!-- Explicit Loading Spinner Overlay -->
+      <div id="loading-overlay" class="hidden absolute inset-0 z-20 bg-white flex flex-col items-center justify-center space-y-3">
+        <div class="w-12 h-12 border-4 border-stone-700 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-xs font-bold text-stone-700">Ad load aur verify ho raha hai, intezar karein...</p>
+      </div>
+
+      <div id="modal-content" class="space-y-4">
+        <h3 id="modal-title" class="font-brand text-xl font-bold text-stone-800">Simple Ad Task</h3>
+        <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur <b>10 seconds</b> tak ad page par rukein.</p>
+
+        <div id="timer-box" class="py-4 bg-stone-100 rounded-2xl border border-stone-200">
+          <p class="text-[10px] uppercase font-bold text-stone-400">Rukne ka Waqt (Timer)</p>
+          <span id="countdown-timer" class="text-3xl font-bold text-stone-800">10</span> Seconds
+        </div>
+
+        <div id="action-area" class="space-y-3">
+          <a id="ad-link-btn" href="#" target="_blank" onclick="startAdSession()" class="block w-full py-3 rounded-xl bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs uppercase tracking-wider shadow-md">
+            <i class="fa-solid fa-external-link-alt mr-1"></i> Visit Ad Link & Start 10s Timer
+          </a>
+        </div>
+
+        <div id="claim-area" class="hidden space-y-3 pt-2 border-t border-stone-100">
+          <p class="text-xs text-emerald-700 font-bold">10 Seconds poore ho gaye! Neeche click karke reward lein.</p>
+          <button onclick="claimSimpleAd()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-md">
+            Claim Rs 0.10 Reward
+          </button>
+        </div>
+      </div>
+
+      <button onclick="closeTaskModal()" class="text-xs text-stone-400 hover:text-stone-600 pt-2">Cancel / Close</button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Purane 40 links ko repeat karke 50 links ka array
+    const oldFortyLinks = [
+      "https://uplcm.com/4/12279207", "https://uplcm.com/4/12279208",
+      "https://uplcm.com/4/12279210", "https://uplcm.com/4/12279213",
+      "https://uplcm.com/4/12279214", "https://uplcm.com/4/12279215",
+      "https://uplcm.com/4/12279218", "https://uplcm.com/4/12279221",
+      "https://uplcm.com/4/12279222", "https://uplcm.com/4/12279225",
+      "https://uplcm.com/4/12279227", "https://uplcm.com/4/12279228",
+      "https://uplcm.com/4/12279231", "https://uplcm.com/4/12279234",
+      "https://uplcm.com/4/12279236", "https://uplcm.com/4/12279239",
+      "https://uplcm.com/4/12279241", "https://uplcm.com/4/12279243",
+      "https://uplcm.com/4/12279245", "https://uplcm.com/4/12279248",
+      "https://uplcm.com/4/12278912", "https://uplcm.com/4/12278915",
+      "https://uplcm.com/4/12278918", "https://uplcm.com/4/12278921",
+      "https://uplcm.com/4/12278924", "https://uplcm.com/4/12278927",
+      "https://uplcm.com/4/12278930", "https://uplcm.com/4/12278933",
+      "https://uplcm.com/4/12278936", "https://uplcm.com/4/12278939",
+      "https://uplcm.com/4/12278942", "https://uplcm.com/4/12278945",
+      "https://uplcm.com/4/12278948", "https://uplcm.com/4/12278951",
+      "https://uplcm.com/4/12278954", "https://uplcm.com/4/12278957",
+      "https://uplcm.com/4/12278960", "https://uplcm.com/4/12278963",
+      "https://uplcm.com/4/12278966", "https://uplcm.com/4/12278969"
+    ];
+
+    const adLinks = [];
+    for (let i = 0; i < 50; i++) {
+      adLinks.push(oldFortyLinks[i % oldFortyLinks.length]);
+    }
+
+    let currentUser = null;
+    let activeAdIndex = null;
+    let timerInterval = null;
+    let isAdVisited = false;
+    let startTime = 0;
+
+    window.showToast = function (message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-2 pointer-events-auto`;
+      toast.innerHTML = `<div class="flex items-center gap-2"><span>${message}</span></div>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4500);
+    };
+
+    // Custom Payout Calculation:
+    // Ad #1 to #10 (Pehle 10 ads) = Rs 0.10
+    // Ad #11, #12, #13 (3 ads) = Rs 0
+    // Ad #14 (1 ad) = Rs 0.10
+    // Ad #15 to #24 (10 ads) = Rs 0
+    // Ad #25 = Rs 0.10, phir 10 ads Rs 0 (har 11th ad par Rs 0.10)
+    function calculateActualReward(adNum) {
+      if (adNum >= 1 && adNum <= 10) return 0.10;
+      if (adNum >= 11 && adNum <= 13) return 0;
+      if ((adNum - 14) % 11 === 0) return 0.10;
+      return 0;
+    }
+
+    function renderAds(completedAds = {}) {
+      const container = document.getElementById('ads-container');
+      container.innerHTML = "";
+
+      for (let i = 0; i < 50; i++) {
+        let adNum = i + 1;
+        let isLocked = false;
+        let lockText = `Earn Rs 0.10`;
+
+        if (completedAds[i]) {
+          let lastTime = completedAds[i];
+          let diffHours = (Date.now() - lastTime) / (1000 * 60 * 60);
+          if (diffHours < 24) {
+            isLocked = true;
+            let timeLeft = Math.ceil(24 - diffHours);
+            lockText = `Locked (${timeLeft}h left)`;
+          }
+        }
+
+        const card = document.createElement('div');
+        card.className = `sabii-card rounded-2xl p-3.5 flex items-center justify-between bg-white ${isLocked ? 'opacity-60' : ''}`;
+        card.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-stone-200 text-stone-700 flex items-center justify-center font-bold text-xs">
+              #${adNum}
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-stone-800">Simple Ad #${adNum}</h4>
+              <p class="text-[10px] text-stone-500">Reward: <span class="text-stone-800 font-bold">Rs 0.10</span></p>
+            </div>
+          </div>
+          <button onclick="${isLocked ? '' : `openTaskModal(${i}, '${adLinks[i]}')`}"
+            class="text-xs font-bold px-3.5 py-1.5 rounded-xl ${isLocked ? 'bg-stone-200 text-stone-400 cursor-not-allowed' : 'bg-stone-800 text-white shadow-sm hover:bg-stone-900'}">
+            ${lockText}
+          </button>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    window.openTaskModal = function(index, link) {
+      activeAdIndex = index;
+      isAdVisited = false;
+      document.getElementById('task-modal').classList.remove('hidden');
+      document.getElementById('loading-overlay').classList.remove('hidden');
+      document.getElementById('ad-link-btn').href = link;
+      document.getElementById('countdown-timer').innerText = "10";
+      document.getElementById('timer-box').classList.remove('hidden');
+      document.getElementById('action-area').classList.remove('hidden');
+      document.getElementById('claim-area').classList.add('hidden');
+
+      // Loading spinner jab ad modal load ho
+      setTimeout(() => {
+        document.getElementById('loading-overlay').classList.add('hidden');
+      }, 900);
+    };
+
+    window.closeTaskModal = function() {
+      document.getElementById('task-modal').classList.add('hidden');
+      document.getElementById('loading-overlay').classList.add('hidden');
+      clearInterval(timerInterval);
+      window.removeEventListener('focus', checkReturnTime);
+    };
+
+    window.startAdSession = function() {
+      isAdVisited = true;
+      startTime = Date.now();
+      let timeLeft = 10;
+      clearInterval(timerInterval);
+
+      window.addEventListener('focus', checkReturnTime);
+
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById('countdown-timer').innerText = timeLeft;
+
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          window.removeEventListener('focus', checkReturnTime);
+          document.getElementById('timer-box').classList.add('hidden');
+          document.getElementById('action-area').classList.add('hidden');
+          document.getElementById('claim-area').classList.remove('hidden');
+          showToast("10 seconds poore ho gaye! Ab claim karein.", "success");
+        }
+      }, 1000);
+    };
+
+    function checkReturnTime() {
+      if (!isAdVisited) return;
+
+      document.getElementById('loading-overlay').classList.remove('hidden');
+
+      setTimeout(() => {
+        document.getElementById('loading-overlay').classList.add('hidden');
+        let elapsedTime = (Date.now() - startTime) / 1000;
+
+        // Sakht restriction agar 10 second se pehle wapis aaye
+        if (elapsedTime < 9.5) {
+          clearInterval(timerInterval);
+          window.removeEventListener('focus', checkReturnTime);
+          showToast("⚠️ Restricted! Aap 10 seconds se pehle wapis aa gaye. Ad cancel ho gaya, dobara dekhein!", "error");
+          closeTaskModal();
+        }
+      }, 1000);
+    }
+
+    window.claimSimpleAd = async function() {
+      document.getElementById('loading-overlay').classList.remove('hidden');
+
+      let adNum = activeAdIndex + 1;
+      let reward = calculateActualReward(adNum);
+
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      const snapshot = await get(userRef);
+
+      if (snapshot.exists()) {
+        let data = snapshot.val();
+        let currentBalance = Number(data.balance || 0);
+        let completedAds = data.simpleAds || {};
+
+        completedAds[activeAdIndex] = Date.now();
+        let newBalance = Number((currentBalance + reward).toFixed(2));
+
+        await update(userRef, {
+          balance: newBalance,
+          simpleAds: completedAds
+        });
+
+        showToast("Ad mukammal ho gaya! Rs 0.10 aapke account mein add ho gaye.", "success");
+        closeTaskModal();
+      }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUser = user;
+        const userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            document.getElementById('header-balance').innerText = `Rs ${data.balance || 0}`;
+            renderAds(data.simpleAds || {});
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Start of global snippet: Please do not remove -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'DC-16361189');
+  </script>
+  <!-- End of global snippet: Please do not remove -->
+
+  <!-- Event snippet for sabii-seven.vercel.app -->
+  <script>
+    gtag('event', 'conversion', {
+      'allow_custom_scripts': true,
+      'send_to': 'DC-16361189/manau0/sabii0+standard'
+    });
+  </script>
+  <noscript>
+    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=;ord=1?" width="1" height="1" alt=""/>
+  </noscript>
+  <!-- End of event snippet: Please do not remove -->
 
 </body>
 </html>
