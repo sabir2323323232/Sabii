@@ -242,7 +242,7 @@
   <!-- Main Area -->
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
     
-    <!-- Quick Horizontal Scrollable Menu (Free Ads -> Simple Task -> Gmail Sell in sequence, with swipe hint) -->
+    <!-- Quick Horizontal Scrollable Menu (Free Ads -> Simple Task -> Gmail Sell in sequence) -->
     <div class="bg-white border border-sabii-gold/30 rounded-2xl p-2.5 shadow-sm space-y-1.5 relative">
       <div class="flex items-center justify-between px-1">
         <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1.5">
@@ -318,50 +318,18 @@
       </div>
     </div>
 
-    <!-- Products Section -->
-    <section class="space-y-3">
-      <!-- Minimized Product Cashback Offer Banner (Single Clean Line) -->
-      <div class="bg-sabii-gold/10 border border-sabii-gold/35 rounded-xl py-2 px-3 flex items-center justify-between gap-2 shadow-2xs">
-        <div class="flex items-center gap-2 overflow-hidden">
-          <div class="w-7 h-7 rounded-lg bg-sabii-gold/20 text-sabii-darkgold flex items-center justify-center shrink-0 text-xs">
-            <i class="fa-solid fa-bag-shopping"></i>
-          </div>
-          <p class="text-[11px] text-stone-700 truncate">
-            Product buy karne per <strong class="text-sabii-darkgold">Rs 40 wapis</strong> milege!
-          </p>
-        </div>
-        <span class="text-[9px] text-sabii-darkgold font-bold bg-white px-2 py-0.5 rounded-full border border-sabii-gold/30 shrink-0">Live</span>
-      </div>
-
-      <!-- Chota sa Product Search Bar -->
-      <div class="relative max-w-sm mx-auto sm:mx-0">
-        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-stone-400">
-          <i class="fa-solid fa-search"></i>
-        </span>
-        <input type="text" id="product-search" oninput="filterProducts()" placeholder="Product search karein..." class="w-full pl-9 pr-4 py-1.5 text-xs rounded-xl border border-sabii-gold/30 bg-white focus:outline-none focus:border-sabii-gold shadow-2xs">
-      </div>
-
-      <!-- Products Grid Container -->
-      <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">
-          <i class="fa-solid fa-spinner fa-spin text-sabii-gold text-lg mb-2"></i>
-          <p>Loading products...</p>
-        </div>
-      </div>
-    </section>
-
   </main>
 
-  <!-- Fixed Bottom Area (VIP Big Ads Golden Animated Button + Original 4 Bottom Buttons) -->
+  <!-- Fixed Bottom Area (VIP Big Ads Golden Animated Button + Bottom Buttons) -->
   <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl space-y-2">
     <div class="max-w-7xl mx-auto">
-      <!-- Golden Animated VIP Big Ads Button (Opens vip-big-ads.html) -->
+      <!-- Golden Animated VIP Big Ads Button -->
       <a href="vip-big-ads.html" class="w-full py-2.5 px-4 rounded-xl vip-animated-btn font-bold text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 shadow-lg">
         <i class="fa-solid fa-bolt text-amber-200"></i> VIP Direct Ads (Rs 5 per Ad) <i class="fa-solid fa-arrow-right text-amber-200"></i>
       </a>
     </div>
 
-    <!-- Original Bottom 4 Buttons Bar -->
+    <!-- Bottom Buttons Bar -->
     <div class="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-2">
       <a href="buy-free-product.html" class="py-2 px-2.5 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] sm:text-xs text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
         <i class="fa-solid fa-gift shrink-0 text-sabii-gold"></i> Buy & Earn 40
@@ -407,7 +375,6 @@
     let actualBalance = 0;
     let currentStep = 1;
     const totalSteps = 3;
-    let allProducts = [];
 
     function showOnboardingStep(step) {
       const counter = document.getElementById('step-counter');
@@ -426,12 +393,6 @@
         nextBtn.innerHTML = `Next Step <i class="fa-solid fa-arrow-right ml-1"></i>`;
       } else if (step === 2) {
         prevBtn.classList.remove('hidden');
-        icon.className = "fa-solid fa-bag-shopping";
-        title.innerText = "Products & Cashback";
-        desc.innerHTML = "Yahan neechay aapko special products milenge. Har product buy karne par aapko <strong>Rs 40 cashback</strong> aur <strong>20% discount</strong> milega!";
-        nextBtn.innerHTML = `Next Step <i class="fa-solid fa-arrow-right ml-1"></i>`;
-      } else if (step === 3) {
-        prevBtn.classList.remove('hidden');
         icon.className = "fa-solid fa-wallet";
         title.innerText = "Withdrawal System";
         desc.innerHTML = "Jab aapki earning complete ho jaye toh bottom menu se <strong>Withdraw</strong> button par click karke apna balance aasani se apne account mein nikal sakte hain.";
@@ -440,7 +401,7 @@
     }
 
     window.nextStep = function() {
-      if (currentStep < totalSteps) {
+      if (currentStep < 2) {
         currentStep++;
         showOnboardingStep(currentStep);
       } else {
@@ -515,51 +476,6 @@
       }
     };
 
-    // Render Products Function
-    window.renderProductsList = function(productsToDisplay) {
-      const container = document.getElementById('products-container');
-      container.innerHTML = "";
-
-      if (!productsToDisplay || productsToDisplay.length === 0) {
-        container.innerHTML = `<div class="col-span-full sabii-card rounded-3xl p-10 text-center text-stone-400 text-xs shadow-sm">Koi product nahi mila.</div>`;
-        return;
-      }
-
-      productsToDisplay.forEach((p) => {
-        const card = document.createElement('div');
-        card.className = "sabii-card rounded-3xl overflow-hidden flex flex-col justify-between bg-white p-4 space-y-3 border border-sabii-gold/20 shadow-md";
-        card.innerHTML = `
-          <div class="space-y-2.5">
-            <div class="w-full h-40 rounded-2xl overflow-hidden border border-sabii-gold/20 bg-stone-50 shadow-inner">
-              <img src="${p.image || 'https://via.placeholder.com/300'}" alt="Product" loading="lazy" class="w-full h-full object-cover hover:scale-105 transition duration-300">
-            </div>
-            <div class="space-y-1">
-              <div class="flex items-center justify-between">
-                <h4 class="font-brand font-bold text-sm text-stone-800">${p.name || 'Special Product'}</h4>
-                ${p.rating ? `<span class="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full"><i class="fa-solid fa-star text-amber-500 mr-0.5"></i> ${p.rating}</span>` : ''}
-              </div>
-              <p class="text-xs text-stone-500 leading-relaxed line-clamp-2">${p.details || 'High quality product.'}</p>
-              <div class="flex items-center gap-2 pt-1">
-                <span class="text-xs text-stone-400 line-through">Rs ${p.oldPrice || '0'}</span>
-                <span class="text-sm font-bold sabii-gold-text">Rs ${p.newPrice || '0'}</span>
-                <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full ml-auto shadow-xs">20% OFF</span>
-              </div>
-            </div>
-          </div>
-          <a href="${p.darazLink || '#'}" target="_blank" class="w-full py-2.5 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider text-center block shadow-md">
-            Buy Now & Earn Cashback <i class="fa-solid fa-arrow-right ml-1"></i>
-          </a>
-        `;
-        container.appendChild(card);
-      });
-    };
-
-    window.filterProducts = function() {
-      const query = document.getElementById('product-search').value.toLowerCase().trim();
-      const filtered = allProducts.filter(p => (p.name && p.name.toLowerCase().includes(query)) || (p.details && p.details.toLowerCase().includes(query)));
-      renderProductsList(filtered);
-    };
-
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "index.html";
@@ -585,18 +501,6 @@
             document.getElementById('modal-referrals').innerText = data.totalReferrals || 0;
             document.getElementById('modal-refcode').innerText = data.referralCode || "-";
           }
-        });
-
-        const productsRef = ref(db, 'admin/dashboardProducts');
-        onValue(productsRef, (snapshot) => {
-          allProducts = [];
-          if (snapshot.exists()) {
-            snapshot.forEach((childSnap) => {
-              allProducts.push(childSnap.val());
-            });
-            allProducts.sort((a, b) => (parseFloat(b.rating) || 0) - (parseFloat(a.rating) || 0));
-          }
-          renderProductsList(allProducts);
         });
       }
     });
