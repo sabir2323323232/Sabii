@@ -114,7 +114,7 @@
         <i class="fa-solid fa-right-to-bracket text-sabii-gold"></i> Login
       </button>
       <button id="tab-register-btn" onclick="switchTab('register')" class="flex-1 py-3.5 font-semibold text-xs sm:text-sm text-stone-400 border-b-2 border-transparent hover:text-sabii-darkgold transition-all flex items-center justify-center gap-2">
-        <i class="fa-solid fa-user-plus"></i> Register (+1 Rs)
+        <i class="fa-solid fa-user-plus"></i> Register (Rs 50/Ref)
       </button>
     </div>
 
@@ -162,7 +162,7 @@
       <div id="register-section" class="hidden max-w-xl mx-auto space-y-5">
         <div class="text-center mb-4">
           <h2 class="text-xl font-bold text-stone-800 font-brand">Sabii Account Register Karein</h2>
-          <p class="text-xs text-stone-500">Per referral <span class="text-sabii-darkgold font-bold">1 Rupee</span> earn karein!</p>
+          <p class="text-xs text-stone-500">Har referral par <span class="text-sabii-darkgold font-bold">Rs 50</span> earn karein! (Rs 1000 hone par Rs 100 dashboard mein add honge, baaki pending next month)</p>
         </div>
 
         <form id="register-form" onsubmit="handleRegister(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -204,10 +204,10 @@
 
           <!-- Email -->
           <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Email Address</label>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Email Address (Real Gmail)</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-envelope"></i></span>
-              <input type="email" id="reg-email" required placeholder="email@example.com" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sabii-input text-stone-800">
+              <input type="email" id="reg-email" required placeholder="email@gmail.com" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm sabii-input text-stone-800">
             </div>
           </div>
 
@@ -256,17 +256,17 @@
   <!-- Firebase Scripts -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { 
-      getAuth, 
-      createUserWithEmailAndPassword, 
-      signInWithEmailAndPassword, 
-      onAuthStateChanged 
+    import {  
+      getAuth,  
+      createUserWithEmailAndPassword,  
+      signInWithEmailAndPassword,  
+      onAuthStateChanged  
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { 
-      getDatabase, 
-      ref, 
-      set, 
-      get, 
+    import {  
+      getDatabase,  
+      ref,  
+      set,  
+      get,  
       update,
       push
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -291,8 +291,8 @@
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       
-      const bgColor = type === 'success' 
-        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' 
+      const bgColor = type === 'success'  
+        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold'  
         : 'bg-red-900 border-red-500 text-white';
 
       toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
@@ -349,6 +349,33 @@
       }
     });
 
+    // Check Fake / Disposable Emails
+    function isFakeEmail(email) {
+      const fakeDomains = [
+        'tempmail.com', '10minutemail.com', 'trashmail.com', 'guerrillamail.com',
+        'mailinator.com', 'yopmail.com', 'dispostable.com', 'fakeinbox.com',
+        'sharklasers.com', 'getnada.com', 'temp-mail.org', 'mohmal.com'
+      ];
+      const domain = email.split('@')[1]?.toLowerCase();
+      if (!domain) return true;
+      if (fakeDomains.includes(domain)) return true;
+      return false;
+    }
+
+    // Check Device Limit (Max 2 accounts per mobile/device)
+    function checkDeviceAccountLimit() {
+      let registeredDevices = JSON.parse(localStorage.getItem('sabii_device_accounts') || '[]');
+      return registeredDevices.length >= 2;
+    }
+
+    function saveDeviceAccount(email) {
+      let registeredDevices = JSON.parse(localStorage.getItem('sabii_device_accounts') || '[]');
+      if (!registeredDevices.includes(email)) {
+        registeredDevices.push(email);
+        localStorage.setItem('sabii_device_accounts', JSON.stringify(registeredDevices));
+      }
+    }
+
     // Check Duplicate Username
     async function isUsernameTaken(username) {
       const usersRef = ref(db, 'users');
@@ -389,9 +416,24 @@
       return referrerKey ? { uid: referrerKey, data: referrerData } : null;
     }
 
-    // Handle Registration with Referral Reward (1 Rupee per Referral + Earnings Record)
+    // Handle Registration with Anti-Fake Email & 2-Account Mobile Limit & Rs 50 Referral Rule
     window.handleRegister = async function(e) {
       e.preventDefault();
+
+      // Check device account limit (Max 2 accounts per device)
+      if (checkDeviceAccountLimit()) {
+        showToast('Is mobile/device par pehle se 2 accounts registered hain. Mazeed account banana allowed nahi hai!', 'error');
+        return;
+      }
+
+      const email = document.getElementById('reg-email').value.trim();
+
+      // Check fake email
+      if (isFakeEmail(email)) {
+        showToast('Fake ya temporary email address allowed nahi hai! Barah-e-karam apna asal Gmail istemal karein.', 'error');
+        return;
+      }
+
       const btn = document.getElementById('reg-btn-text');
       btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Registering...`;
       btn.disabled = true;
@@ -400,7 +442,6 @@
       const username = document.getElementById('reg-username').value.trim().toLowerCase();
       const phone = document.getElementById('reg-phone').value.trim();
       const city = document.getElementById('reg-city').value.trim();
-      const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
       const refInput = document.getElementById('reg-referral').value.trim();
 
@@ -427,6 +468,9 @@
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const uid = userCredential.user.uid;
 
+        // Save device account tracking in localStorage
+        saveDeviceAccount(email);
+
         const autoRefCode = 'SABII-' + Math.random().toString(36).substring(2, 7).toUpperCase();
 
         const userData = {
@@ -444,21 +488,20 @@
 
         await set(ref(db, 'users/' + uid), userData);
 
-        // Referral Reward: Give 1 Rupee to Referrer and record in earnings history
+        // Referral Reward: Give Rs 50 to Referrer and record in earnings history (Pending / Next Month Rule)
         if (referrer) {
-          const currentBal = referrer.data.balance || 0;
-          const currentCount = referrer.data.totalReferrals || 0;
+          const currentCount = (referrer.data.totalReferrals || 0) + 1;
           
           await update(ref(db, 'users/' + referrer.uid), {
-            balance: currentBal + 1,
-            totalReferrals: currentCount + 1
+            totalReferrals: currentCount
           });
 
           const referrerEarnRef = ref(db, `user_earnings/${referrer.uid}`);
           const newRefPush = push(referrerEarnRef);
           await set(newRefPush, {
             source: `Referral Bonus (${username})`,
-            amount: 1,
+            amount: 50,
+            status: 'Pending / Next Month',
             timestamp: new Date().toISOString()
           });
         }
