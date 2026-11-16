@@ -106,12 +106,12 @@
 
   <!-- Ad Task Modal / Screen -->
   <div id="task-modal" class="fixed inset-0 z-50 bg-stone-900/70 backdrop-blur-sm flex items-center justify-center hidden p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center relative">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center relative overflow-hidden">
       
-      <!-- Loading Spinner / Arrow Overlay (Jab tak ad load/process ho raha ho) -->
-      <div id="loading-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center space-y-3 rounded-3xl z-20 hidden">
-        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-sabii-gold"></i>
-        <p class="text-xs font-bold text-stone-600">Ad Load ho raha hai, intezar karein...</p>
+      <!-- Explicit Loading Spinner Overlay -->
+      <div id="loading-overlay" class="absolute inset-0 bg-white flex flex-col items-center justify-center space-y-3 z-50 hidden">
+        <div class="w-12 h-12 border-4 border-sabii-gold border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-xs font-bold text-stone-700">Ad verify ho raha hai, intezar karein...</p>
       </div>
 
       <div id="modal-content" class="space-y-4">
@@ -235,7 +235,7 @@
       activeAdIndex = index;
       isAdVisited = false;
       document.getElementById('task-modal').classList.remove('hidden');
-      document.getElementById('loading-overlay').classList.add('hidden'); // Initially hidden
+      document.getElementById('loading-overlay').classList.add('hidden');
       document.getElementById('ad-link-btn').href = link;
       document.getElementById('countdown-timer').innerText = "60";
       document.getElementById('timer-box').classList.remove('hidden');
@@ -273,7 +273,7 @@
     function checkReturnTime() {
       if (!isAdVisited) return;
       
-      // Jab user link se wapis aaye toh pehle loading spinner/arrow dikhao
+      // Spinner show karo jab user wapis window par aaye
       document.getElementById('loading-overlay').classList.remove('hidden');
 
       setTimeout(() => {
@@ -285,7 +285,7 @@
           showToast("⚠️ Aap 1 minute se pehle wapis aa gaye! Task cancel ho gaya, ad dobara dekhein.", "error");
           closeTaskModal();
         }
-      }, 1500); // 1.5 second loading effect
+      }, 1500);
     }
 
     window.submitAdProof = async function() {
