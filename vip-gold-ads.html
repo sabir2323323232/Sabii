@@ -106,7 +106,14 @@
 
   <!-- Ad Task Modal / Screen -->
   <div id="task-modal" class="fixed inset-0 z-50 bg-stone-900/70 backdrop-blur-sm flex items-center justify-center hidden p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center relative">
+      
+      <!-- Loading Spinner / Arrow Overlay (Jab tak ad load/process ho raha ho) -->
+      <div id="loading-overlay" class="absolute inset-0 bg-white/90 backdrop-blur-xs flex flex-col items-center justify-center space-y-3 rounded-3xl z-20 hidden">
+        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-sabii-gold"></i>
+        <p class="text-xs font-bold text-stone-600">Ad Load ho raha hai, intezar karein...</p>
+      </div>
+
       <div id="modal-content" class="space-y-4">
         <h3 id="modal-title" class="font-brand text-xl font-bold text-stone-800">Ad Task in Progress</h3>
         <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur 1 minute tak page par ruken. Tabhi timer poora hoga!</p>
@@ -228,6 +235,7 @@
       activeAdIndex = index;
       isAdVisited = false;
       document.getElementById('task-modal').classList.remove('hidden');
+      document.getElementById('loading-overlay').classList.add('hidden'); // Initially hidden
       document.getElementById('ad-link-btn').href = link;
       document.getElementById('countdown-timer').innerText = "60";
       document.getElementById('timer-box').classList.remove('hidden');
@@ -236,6 +244,7 @@
 
     window.closeTaskModal = function() {
       document.getElementById('task-modal').classList.add('hidden');
+      document.getElementById('loading-overlay').classList.add('hidden');
       clearInterval(timerInterval);
       window.removeEventListener('focus', checkReturnTime);
     };
@@ -246,7 +255,6 @@
       let timeLeft = 60;
       clearInterval(timerInterval);
       
-      // Listen when user returns back to tab/window
       window.addEventListener('focus', checkReturnTime);
 
       timerInterval = setInterval(() => {
@@ -264,13 +272,20 @@
 
     function checkReturnTime() {
       if (!isAdVisited) return;
-      let elapsedTime = (Date.now() - startTime) / 1000; // seconds
-      if (elapsedTime < 58) { // Strict check (if returned in less than 60 seconds)
-        clearInterval(timerInterval);
-        window.removeEventListener('focus', checkReturnTime);
-        showToast("⚠️ Aap 1 minute se pehle wapis aa gaye! Task cancel ho gaya, ad dobara dekhein.", "error");
-        closeTaskModal();
-      }
+      
+      // Jab user link se wapis aaye toh pehle loading spinner/arrow dikhao
+      document.getElementById('loading-overlay').classList.remove('hidden');
+
+      setTimeout(() => {
+        document.getElementById('loading-overlay').classList.add('hidden');
+        let elapsedTime = (Date.now() - startTime) / 1000; // seconds
+        if (elapsedTime < 58) { 
+          clearInterval(timerInterval);
+          window.removeEventListener('focus', checkReturnTime);
+          showToast("⚠️ Aap 1 minute se pehle wapis aa gaye! Task cancel ho gaya, ad dobara dekhein.", "error");
+          closeTaskModal();
+        }
+      }, 1500); // 1.5 second loading effect
     }
 
     window.submitAdProof = async function() {
@@ -281,7 +296,6 @@
       }
 
       let adNum = activeAdIndex + 1;
-      // Backend pattern: 1st gives 5, next 2 give 0, 4th gives 5, etc.
       let reward = (adNum % 3 === 1) ? 5 : 0;
 
       const userRef = ref(db, 'users/' + currentUser.uid);
