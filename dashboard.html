@@ -83,7 +83,7 @@
     ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
 </head>
-<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800">
+<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800 pb-24">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
@@ -188,31 +188,34 @@
   </header>
 
   <!-- Main Area -->
-  <main class="flex-grow max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
     
     <!-- Wallet Balance Widget (Sabse Uper) -->
     <div class="flex items-center justify-between">
-      <div class="inline-flex items-center gap-3 bg-white border border-sabii-gold/30 rounded-2xl py-3 px-5 shadow-sm w-full sm:w-auto">
-        <div class="w-10 h-10 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-sm shadow-inner">
+      <div class="inline-flex items-center gap-3 bg-white border border-sabii-gold/30 rounded-2xl py-2.5 px-4 shadow-sm w-full sm:w-auto">
+        <div class="w-9 h-9 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-xs shadow-inner">
           <i class="fa-solid fa-wallet"></i>
         </div>
         <div class="text-left">
-          <p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider leading-none">Wallet Balance</p>
-          <span id="header-balance" class="text-base sm:text-lg font-bold sabii-gold-text">Rs 0</span>
+          <p class="text-[9px] text-stone-400 uppercase font-bold tracking-wider leading-none">Wallet Balance</p>
+          <span id="header-balance" class="text-base font-bold sabii-gold-text">Rs 0</span>
         </div>
-        <button onclick="toggleBalanceVisibility()" title="Hide/Show Balance" class="text-stone-400 hover:text-sabii-darkgold text-xs pl-4 transition">
+        <button onclick="toggleBalanceVisibility()" title="Hide/Show Balance" class="text-stone-400 hover:text-sabii-darkgold text-xs pl-3 transition">
           <i id="balance-eye-icon" class="fa-solid fa-eye"></i>
         </button>
       </div>
     </div>
 
-    <!-- All Ads & Tasks & Menu Buttons Line by Line (Bade aur Clean Cards) -->
-    <div class="flex flex-col space-y-3">
-      
-      <!-- 1. Simple Ads -->
+    <!-- 1. Uper Ads Wale 5 Buttons (Line by Line) -->
+    <div class="flex flex-col space-y-2.5">
+      <h3 class="text-xs font-bold font-brand text-stone-500 uppercase tracking-wider px-1">
+        <i class="fa-solid fa-bolt text-sabii-gold mr-1"></i> Earning Ads Tiers
+      </h3>
+
+      <!-- Simple Ads -->
       <a href="free-ads.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
         <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-stone-100 text-stone-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
+          <div class="w-10 h-10 rounded-xl bg-stone-100 text-stone-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
             <i class="fa-solid fa-rectangle-ad"></i>
           </div>
           <div>
@@ -220,13 +223,13 @@
             <p class="text-xs text-stone-500 font-medium">Per Ads Rs 0.10 • <span class="text-sabii-darkgold font-bold">50 Ads Available</span></p>
           </div>
         </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
+        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
       </a>
 
-      <!-- 2. Golden Ads -->
+      <!-- Golden Ads -->
       <a href="golden-ads.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
         <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
             <i class="fa-solid fa-award"></i>
           </div>
           <div>
@@ -234,13 +237,13 @@
             <p class="text-xs text-stone-500 font-medium">Per Ads Rs 0.30 • <span class="text-sabii-darkgold font-bold">50 Ads Available</span></p>
           </div>
         </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
+        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
       </a>
 
-      <!-- 3. Platinum Ads -->
+      <!-- Platinum Ads -->
       <a href="platinum-ads.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
         <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
+          <div class="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
             <i class="fa-solid fa-gem"></i>
           </div>
           <div>
@@ -248,13 +251,13 @@
             <p class="text-xs text-stone-500 font-medium">Per Ads Rs 0.50 • <span class="text-sabii-darkgold font-bold">50 Ads Available</span></p>
           </div>
         </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
+        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
       </a>
 
-      <!-- 4. VIP Ads -->
+      <!-- VIP Ads -->
       <a href="vip-ads.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
         <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
             <i class="fa-solid fa-crown"></i>
           </div>
           <div>
@@ -262,13 +265,13 @@
             <p class="text-xs text-stone-500 font-medium">Per Ads 3 Rupe • <span class="text-sabii-darkgold font-bold">50 Ads Available</span></p>
           </div>
         </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
+        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Start</span>
       </a>
 
-      <!-- 5. VIP Gold Ads -->
+      <!-- VIP Gold Ads -->
       <a href="vip-gold-ads.html" class="sabii-card rounded-2xl p-4 bg-gradient-to-r from-amber-50/60 to-white flex items-center justify-between border border-sabii-gold/40 hover:border-sabii-gold transition shadow-sm group">
         <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl sabii-button flex items-center justify-center text-base shadow-sm group-hover:scale-105 transition">
+          <div class="w-10 h-10 rounded-xl sabii-button flex items-center justify-center text-base shadow-sm group-hover:scale-105 transition">
             <i class="fa-solid fa-bolt"></i>
           </div>
           <div>
@@ -278,125 +281,73 @@
         </div>
         <span class="text-xs font-bold text-white sabii-button px-3.5 py-1.5 rounded-xl shadow-xs">Start</span>
       </a>
+    </div>
 
-      <!-- 6. Simple Task -->
-      <a href="simple-task.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Simple Task</h4>
-            <p class="text-xs text-sabii-darkgold font-bold">Per Task 5 Rupe</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Open</span>
-      </a>
+    <!-- 2. Tasks & Gmail Sell Section -->
+    <div class="flex flex-col space-y-2.5 pt-2">
+      <h3 class="text-xs font-bold font-brand text-stone-500 uppercase tracking-wider px-1">
+        <i class="fa-solid fa-list-check text-sabii-gold mr-1"></i> Special Tasks & Services
+      </h3>
 
-      <!-- 7. Gmail Sell -->
-      <a href="gmail-selling.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-envelope-open-text"></i>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Simple Task -->
+        <a href="simple-task.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner">
+              <i class="fa-solid fa-list-check"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-stone-800">Simple Task</h4>
+              <p class="text-[10px] text-sabii-darkgold font-bold">Per Task 5 Rupe</p>
+            </div>
           </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Gmail Sell</h4>
-            <p class="text-xs text-stone-500 font-medium">Earn <span class="text-sabii-darkgold font-bold">Rs 40</span> per Gmail</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Open</span>
-      </a>
+          <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-2.5 py-1 rounded-lg">Open</span>
+        </a>
 
-      <!-- 8. Referral -->
-      <a href="referral.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-users"></i>
+        <!-- Gmail Sell -->
+        <a href="gmail-selling.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner">
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-stone-800">Gmail Sell</h4>
+              <p class="text-[10px] text-stone-500">Earn <span class="text-sabii-darkgold font-bold">Rs 40</span></p>
+            </div>
           </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Referral Program</h4>
-            <p class="text-xs text-sabii-darkgold font-bold">Per Referral 50 Rupe</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Invite</span>
-      </a>
-
-      <!-- 9. Payment / Withdraw -->
-      <a href="payment.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-credit-card"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Payment & Withdraw</h4>
-            <p class="text-xs text-stone-500">Apni kamai ko apne account me nikalen</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Open</span>
-      </a>
-
-      <!-- 10. Your Balance -->
-      <a href="your-balance.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Your Balance & History</h4>
-            <p class="text-xs text-stone-500">Apne wallet aur earnings ka record dekhen</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">View</span>
-      </a>
-
-      <!-- 11. Jobs -->
-      <a href="jobs.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-briefcase"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Online Jobs</h4>
-            <p class="text-xs text-stone-500">Daily online jobs aur projects se kamayen</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Open</span>
-      </a>
-
-      <!-- 12. Sell Product -->
-      <a href="product-selling.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-store"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Sell Product</h4>
-            <p class="text-xs text-stone-500">Apni products list karen aur munafa kamayen</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Open</span>
-      </a>
-
-      <!-- 13. Help Centre -->
-      <a href="help-centre.html" class="sabii-card rounded-2xl p-4 bg-white flex items-center justify-between hover:border-sabii-gold transition shadow-sm group">
-        <div class="flex items-center gap-3.5">
-          <div class="w-11 h-11 rounded-xl bg-stone-100 text-stone-600 flex items-center justify-center text-base shadow-inner group-hover:scale-105 transition">
-            <i class="fa-solid fa-headset"></i>
-          </div>
-          <div>
-            <h4 class="text-sm font-bold text-stone-800">Help Centre & Support</h4>
-            <p class="text-xs text-stone-500">Kisi bhi masle ki surat me team se rabta karen</p>
-          </div>
-        </div>
-        <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-3.5 py-1.5 rounded-xl border border-sabii-gold/20 group-hover:bg-sabii-gold group-hover:text-white transition">Contact</span>
-      </a>
-
+          <span class="text-xs font-bold text-sabii-darkgold bg-sabii-gold/10 px-2.5 py-1 rounded-lg">Open</span>
+        </a>
+      </div>
     </div>
 
   </main>
 
+  <!-- Fixed Bottom Menu Bar (Original Style & Fit) -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-30 shadow-2xl">
+    <div class="max-w-7xl mx-auto grid grid-cols-3 sm:grid-cols-6 gap-2">
+      <a href="payment.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-credit-card text-sabii-gold"></i> Payment
+      </a>
+      <a href="your-balance.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-wallet text-sabii-gold"></i> Balance
+      </a>
+      <a href="jobs.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-briefcase text-sabii-gold"></i> Jobs
+      </a>
+      <a href="help-centre.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-headset text-sabii-gold"></i> Help
+      </a>
+      <a href="referral.html" class="py-2 px-2 rounded-xl border border-sabii-gold/40 hover:bg-sabii-gold/10 text-sabii-darkgold font-bold text-[11px] text-center flex items-center justify-center gap-1.5 transition shadow-sm truncate">
+        <i class="fa-solid fa-users text-sabii-gold"></i> Ref 50 Rs
+      </a>
+      <a href="product-selling.html" class="py-2 px-2 rounded-xl sabii-button font-bold text-[11px] text-center flex items-center justify-center gap-1.5 shadow-md truncate">
+        <i class="fa-solid fa-store"></i> Sell
+      </a>
+    </div>
+  </nav>
+
   <!-- Footer -->
-  <footer class="p-4 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mt-8 shadow-inner">
+  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-20 shadow-inner">
     &copy; Sabii Application. Powered by SABIPK.
   </footer>
 
