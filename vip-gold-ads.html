@@ -293,12 +293,11 @@
     function checkReturnTime() {
       if (!isAdVisited) return;
        
-      // Spinner show karo jab user wapis window par aaye
       document.getElementById('loading-overlay').classList.remove('hidden');
 
       setTimeout(() => {
         document.getElementById('loading-overlay').classList.add('hidden');
-        let elapsedTime = (Date.now() - startTime) / 1000; // seconds
+        let elapsedTime = (Date.now() - startTime) / 1000;
         if (elapsedTime < 58) { 
           clearInterval(timerInterval);
           window.removeEventListener('focus', checkReturnTime);
@@ -315,8 +314,13 @@
         return;
       }
 
-      let adNum = activeAdIndex + 1;
-      let reward = (adNum % 3 === 1) ? 5 : 0;
+      let adNum = activeAdIndex + 1; // 1-based index (1 to 50)
+      
+      // Pattern logic: 
+      // Cycle of 5 ads: [Pay, Pay, Pay, No Pay, Pay] -> Repeat
+      // Modulo 5: remainder 1, 2, 3 -> Pay; remainder 4 -> No Pay; remainder 0 -> Pay
+      let remainder = adNum % 5;
+      let reward = (remainder === 4) ? 0 : 5;
 
       const userRef = ref(db, 'users/' + currentUser.uid);
       const snapshot = await get(userRef);
@@ -333,7 +337,11 @@
           vipGoldAds: completedAds
         });
 
-        showToast(`Task verified! Rs 5 added/processed successfully. Payment will reflect in 5 minutes.`, "success");
+        if (reward > 0) {
+          showToast(`Task verified! Rs 5 added/processed successfully. Payment will reflect in 5 minutes.`, "success");
+        } else {
+          showToast(`Task verified successfully! Payment will reflect in 5 minutes.`, "success");
+        }
         closeTaskModal();
       }
     };
