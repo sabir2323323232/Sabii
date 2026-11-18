@@ -146,6 +146,16 @@
 
   <!-- Top Header Bar -->
   <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    
+    <!-- Live Small Popup Ticker Banner (Sabse Uper Chhota Chhota Popup) -->
+    <div id="live-ticker-banner" class="bg-gradient-to-r from-amber-600 via-sabii-gold to-amber-700 text-white px-3 py-1.5 text-[11px] font-semibold flex items-center justify-between shadow-inner overflow-hidden">
+      <div class="flex items-center gap-2 truncate">
+        <span class="bg-white/20 text-white text-[9px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">Live Payout</span>
+        <span id="ticker-text" class="truncate">Usman ne Rs 500 withdraw kiye!</span>
+      </div>
+      <div class="text-[10px] opacity-85 shrink-0 pl-2">S EW Verified</div>
+    </div>
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
       <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
         <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-sabii-gold text-white flex items-center justify-center shadow-sm">
@@ -345,6 +355,32 @@
 
     let isBalanceHidden = false;
     let actualBalance = 0;
+
+    // Live Ticker Messages Rotator
+    const tickerMessages = [
+      "Ali (Peshawar) ne Rs 500 withdraw kiye!",
+      "Bilal ne VIP Gold Ads se Rs 250 kamaye!",
+      "Ayesha ne Gmail sell karke Rs 200 withdraw kiye!",
+      "Hamza ne Rs 1000 ka successful withdraw liya!",
+      "Zain ne Referral bonus se Rs 300 hasil kiye!",
+      "Faran ne Simple Tasks se Rs 150 withdraw kiye!",
+      " Usman ne Rs 750 ka payout receive kiya!"
+    ];
+
+    function startLiveTicker() {
+      let index = 0;
+      const tickerEl = document.getElementById('ticker-text');
+      if (!tickerEl) return;
+      setInterval(() => {
+        index = (index + 1) % tickerMessages.length;
+        tickerEl.style.opacity = 0;
+        setTimeout(() => {
+          tickerEl.innerText = tickerMessages[index];
+          tickerEl.style.opacity = 1;
+        }, 300);
+      }, 3500);
+    }
+    startLiveTicker();
 
     window.showToast = function (message, type = 'success') {
       const container = document.getElementById('toast-container');
