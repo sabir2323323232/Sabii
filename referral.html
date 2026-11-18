@@ -142,8 +142,8 @@
 
       <!-- Stats Box -->
       <div class="bg-white border border-sabii-gold/30 rounded-2xl p-4 px-6 text-center shadow-sm shrink-0 space-y-1">
-        <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Total Referrals</span>
-        <h3 id="stat-referrals" class="text-3xl font-bold sabii-gold-text">0</h3>
+        <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider block">Total Pending Referrals Amount</span>
+        <h3 id="stat-pending-amount" class="text-3xl font-bold sabii-gold-text">Rs 0</h3>
       </div>
     </div>
 
@@ -171,9 +171,9 @@
           <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
             <i class="fa-solid fa-clock-rotate-left text-sabii-gold"></i> Referral Payout & Pending History
           </h3>
-          <p class="text-xs text-stone-400">Aapke referrals ki earning aur pending status yahan show hoga.</p>
+          <p class="text-xs text-stone-400">Aapke referrals ki earning aur pending status yahan show hoga jab tak dashboard par real payment transfer nahi hoti.</p>
         </div>
-        <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Real-time</span>
+        <span class="text-[10px] text-sabii-darkgold font-bold bg-sabii-gold/10 px-2 py-0.5 rounded-full">Real-time Pending</span>
       </div>
 
       <div id="referral-history-list" class="space-y-3 max-h-[350px] overflow-y-auto pr-1">
@@ -265,14 +265,11 @@
       } else {
         const uid = user.uid;
 
-        // Fetch User Data for Referral Code/Username
+        // Fetch User Data for Referral Code/Username & Total Referrals
         onValue(ref(db, 'users/' + uid), (snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
             const username = data.username || data.referralCode || uid;
-            const totalRefs = data.totalReferrals || 0;
-
-            document.getElementById('stat-referrals').innerText = totalRefs;
 
             // Generate full website link with query parameter `?ref=...`
             const fullLink = `https://Sabii-seven.vercel.app/?ref=${username}`;
@@ -289,37 +286,46 @@
             const data = snapshot.val();
             const keys = Object.keys(data).reverse();
             let hasReferralEarnings = false;
+            let totalPendingSum = 0;
 
             keys.forEach((key) => {
               const item = data[key];
               if (item.source && (item.source.toLowerCase().includes('referral') || item.source.toLowerCase().includes('commission'))) {
                 hasReferralEarnings = true;
+                const amount = item.amount || 50;
+                totalPendingSum += amount;
+
                 const card = document.createElement('div');
-                card.className = "sabii-card rounded-xl p-3 flex items-center justify-between bg-stone-50/50";
+                card.className = "sabii-card rounded-xl p-3 flex items-center justify-between bg-amber-50/30 border-amber-200/50";
                 card.innerHTML = `
                   <div>
                     <h4 class="font-bold text-xs text-stone-800">${item.source}</h4>
-                    <p class="text-[10px] text-stone-400 mt-0.5">${new Date(item.timestamp).toLocaleDateString()} • <span class="text-amber-600 font-semibold">Pending / Next Month</span></p>
+                    <p class="text-[10px] text-stone-400 mt-0.5">${item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'Recent'} • <span class="text-amber-600 font-bold bg-amber-100 px-1.5 py-0.5 rounded">Pending (Awaiting Dashboard Credit)</span></p>
                   </div>
                   <div class="text-right">
-                    <span class="font-bold text-xs sabii-gold-text">+ Rs ${item.amount}</span>
+                    <span class="font-bold text-xs sabii-gold-text">+ Rs ${amount}</span>
                   </div>
                 `;
                 container.appendChild(card);
               }
             });
 
+            // Update total pending amount on top stat box
+            document.getElementById('stat-pending-amount').innerText = `Rs ${totalPendingSum}`;
+
             if (!hasReferralEarnings) {
+              document.getElementById('stat-pending-amount').innerText = `Rs 0`;
               container.innerHTML = `
                 <div class="text-center py-6 text-stone-400 text-xs">
-                  Abhi tak koi referral commission hasil nahi hua. (Rs 1000 hone par Rs 100 dashboard mein add honge aur baaki pending next month aayenge).
+                  Abhi tak koi referral commission pending nahi hai. Dosto ko invite karein aur unki pending payment yahan dekhein!
                 </div>
               `;
             }
           } else {
+            document.getElementById('stat-pending-amount').innerText = `Rs 0`;
             container.innerHTML = `
               <div class="text-center py-6 text-stone-400 text-xs">
-                Abhi tak koi history maujood nahi hai.
+                Abhi tak koi referral history maujood nahi hai.
               </div>
             `;
           }
