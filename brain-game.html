@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii Brain Game & Community Chat</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
+    }
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      color: #FFFFFF;
+      transition: all 0.3s ease;
+    }
+    .sabii-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-stone-800 pb-14">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <h1 class="font-brand text-xl font-bold sabii-gold-text">Brain Game</h1>
+      <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-xl">Rs 0</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
+
+    <!-- Progress & Guide Bar -->
+    <div class="sabii-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 bg-white">
+      <div>
+        <p class="text-xs font-bold text-stone-800">
+          Daily Games: <span id="game-progress-text" class="text-sabii-darkgold">0 / 50</span>
+        </p>
+        <p id="current-game-rate-label" class="text-[11px] text-stone-500">Game #1 • Reward: Rs 2</p>
+      </div>
+      <button type="button" onclick="openGameGuideModal(true)"
+        class="px-3.5 py-2 rounded-xl sabii-button text-xs font-bold">
+        <i class="fa-solid fa-circle-info mr-1"></i> Game Guide
+      </button>
+    </div>
+
+    <!-- 24-Hour Lock Card (After 50 Games) -->
+    <div id="game-lock-card" class="hidden sabii-card rounded-3xl p-6 bg-amber-50/90 border border-amber-400 text-center space-y-3">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-800 flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 class="font-brand text-2xl font-bold text-stone-900">Daily 50 Brain Games Complete</h2>
+      <p class="text-xs text-stone-700 leading-relaxed">
+        Aaj ke 50 games poore ho chuke hain. Ab <strong>24 hours</strong> baad dobara unlock honge.
+      </p>
+      <p id="game-lock-timer" class="text-sm font-extrabold text-amber-900 bg-white border border-amber-300 rounded-2xl py-2.5 px-4 inline-block">
+        Remaining Lock Time: 24h 0m 0s
+      </p>
+    </div>
+
+    <!-- Checkpoint 5-Ads Gate Card (Every 10 Games: 10, 20, 30, 40) -->
+    <div id="checkpoint-ads-card" class="hidden sabii-card rounded-3xl p-5 sm:p-6 bg-white border border-amber-400 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">
+            Milestone Ad Check
+          </span>
+          <h2 id="checkpoint-title" class="font-brand text-xl font-bold text-stone-900 mt-1">
+            Complete 5 Ads (10s Each)
+          </h2>
+        </div>
+        <span id="checkpoint-count-badge" class="text-xs font-bold bg-sabii-gold/15 text-sabii-darkgold px-3 py-1 rounded-xl">
+          0 / 5 Done
+        </span>
+      </div>
+
+      <p class="text-xs text-stone-600 leading-relaxed">
+        Agle game par jaane se pehle in 5 ads mein se har ad par kam az kam <b>10 seconds</b> rukna lazmi hai.
+      </p>
+
+      <div id="checkpoint-ads-list" class="space-y-2.5"></div>
+
+      <!-- Active Checkpoint Ad Timer Box -->
+      <div id="checkpoint-timer-panel" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-center space-y-3">
+        <p id="checkpoint-active-label" class="text-xs font-bold text-amber-900">Ad #1 Timer</p>
+        <div class="text-3xl font-extrabold text-amber-700">
+          <span id="checkpoint-seconds-left">10</span>s
+        </div>
+        <button id="checkpoint-confirm-btn" type="button" onclick="confirmCheckpointAd()"
+          class="hidden w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider">
+          Confirm Ad #1
+        </button>
+      </div>
+    </div>
+
+    <!-- Active 3-Mini-Game Set Card -->
+    <div id="game-active-card" class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <span id="game-number-badge" class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
+            Game #1 of 50 • Reward Rs 2
+          </span>
+          <h2 id="mini-game-heading" class="font-brand text-xl font-bold text-stone-800 mt-1">
+            Stage 1 of 3
+          </h2>
+        </div>
+        <span id="mini-game-fails-badge" class="text-xs font-bold bg-stone-100 text-stone-700 px-3 py-1 rounded-xl">
+          Fails: 0 / 2
+        </span>
+      </div>
+
+      <!-- Mini-Game Prompt Box -->
+      <div class="p-4 rounded-2xl bg-stone-900 text-amber-100 border border-sabii-gold/40 space-y-2">
+        <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-amber-300 font-bold">
+          <span id="mini-game-type-label">Word Puzzle</span>
+          <span id="mini-game-difficulty-label">Normal</span>
+        </div>
+        <p id="mini-game-question" class="text-sm sm:text-base font-bold leading-relaxed"></p>
+        <p id="mini-game-hint" class="text-[11px] text-stone-300"></p>
+      </div>
+
+      <!-- Options / Answer Area -->
+      <div id="mini-game-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+
+      <!-- Action Buttons: Confirm, Try Again, Next, Submit -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+        <button id="btn-confirm-game" type="button" onclick="handleConfirmButton()"
+          class="py-2.5 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow">
+          Confirm
+        </button>
+
+        <button id="btn-try-again-game" type="button" onclick="handleTryAgainButton()"
+          class="py-2.5 px-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow">
+          Try Again
+        </button>
+
+        <button id="btn-next-game" type="button" onclick="handleNextButton()"
+          class="py-2.5 px-3 rounded-xl bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs uppercase tracking-wider shadow">
+          Next
+        </button>
+
+        <button id="btn-submit-game" type="button" onclick="handleSubmitGameSet()"
+          class="py-2.5 px-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider shadow">
+          Submit
+        </button>
+      </div>
+
+      <p id="game-status-note" class="text-[11px] text-stone-500 text-center">
+        Teeno games solve kar ke <b>Submit</b> dabayein (agar 2 bar fail hon toh Next/Try Again use karein).
+      </p>
+    </div>
+
+    <!-- Permanent On-Screen Guide for All 3 Games -->
+    <div id="onscreen-game-guide" class="sabii-card rounded-3xl p-5 bg-white space-y-2.5 border border-sabii-gold/30">
+      <div class="flex items-center justify-between">
+        <h3 class="font-brand text-lg font-bold text-stone-800">Kaise Khelna Hai (3 Games Guide)</h3>
+        <button type="button" onclick="openGameGuideModal(true)" class="text-xs font-bold text-sabii-darkgold hover:underline">
+          Popup Guide
+        </button>
+      </div>
+      <div class="text-xs text-stone-700 space-y-1.5 leading-relaxed">
+        <p><b>1. Word Unscramble:</b> Bikhre hue letters se sahi English word chunein (maths ki zaroorat nahi).</p>
+        <p><b>2. Odd One Out:</b> Jo word baqi group se alag ho us par tap karein.</p>
+        <p><b>3. Mushkil Reverse / Pattern Match:</b> Yeh 3rd game thoda mushkil hota hai — ulta/pattern word dhyan se chunein. Agar 2 bar fail hon toh <b>Try Again</b> ya <b>Next</b> dabayein; <b>Confirm</b>, <b>Try Again</b> aur <b>Next</b> par ad aayega. Teeno games ke baad <b>Submit</b> dabayein.</p>
+      </div>
+    </div>
+
+    <!-- Live Community Chat (24h Auto-Delete in Firebase, User Memory Cache) -->
+    <div class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4 border border-sabii-gold/35">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h3 class="font-brand text-xl font-bold text-stone-800 flex items-center gap-2">
+            <i class="fa-solid fa-comments text-sabii-darkgold"></i> Members Chat
+          </h3>
+          <p class="text-[11px] text-stone-500">
+            Sab registered users yahan baat kar sakte hain • Messages 24h baad auto-remove
+          </p>
+        </div>
+        <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">
+          Live
+        </span>
+      </div>
+
+      <div id="chat-messages-box"
+        class="h-60 overflow-y-auto p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2.5 text-xs">
+        <p class="text-stone-400 text-center py-6">Messages load ho rahe hain...</p>
+      </div>
+
+      <form id="chat-send-form" class="flex gap-2">
+        <input id="chat-message-input" type="text" maxlength="240" required
+          placeholder="Apna message likhein..."
+          class="flex-grow px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-xs text-stone-800 focus:outline-none focus:border-sabii-gold">
+        <button type="submit" class="px-4 py-2.5 rounded-xl sabii-button text-xs font-bold shrink-0">
+          <i class="fa-solid fa-paper-plane mr-1"></i> Send
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- New User Guide Modal (Also Replayable) -->
+  <div id="game-guide-modal" class="hidden fixed inset-0 z-50 bg-stone-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-gamepad"></i>
+      </div>
+      <h3 class="font-brand text-2xl font-bold text-stone-800">Brain Game Guide</h3>
+
+      <div class="text-xs text-stone-700 space-y-2 text-left bg-amber-50/70 border border-amber-200 rounded-2xl p-4 leading-relaxed">
+        <p><b>Game 1 (Word Unscramble):</b> Letters se sahi word chunein.</p>
+        <p><b>Game 2 (Odd One Out):</b> Group se alag word par tap karein.</p>
+        <p><b>Game 3 (Mushkil Challenge):</b> Yeh sabse mushkil hota hai — ulta/pattern word dhyan se chunein.</p>
+        <p>Agar 2 bar fail hon toh <b>Try Again</b> ya <b>Next</b> dabayein. <b>Confirm</b>, <b>Try Again</b> aur <b>Next</b> par ads aayenge. Teeno games ke baad <b>Submit</b> karein. Din mein 50 games ke baad 24h lock lagta hai.</p>
+      </div>
+
+      <button type="button" onclick="closeGameGuideModal()" class="w-full py-3 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider">
+        Samajh Gaya — Start Playing
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, update, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const DIRECT_AD_LINKS = [
+      "https://uplcm.com/4/10475285",
+      "https://uplcm.com/4/10440633",
+      "https://uplcm.com/4/10475299"
+    ];
+
+    const TWENTY_SEVEN_ADS = [
+      "https://uplcm.com/4/12325143",
+      "https://uplcm.com/4/12325189",
+      "https://uplcm.com/4/12325228",
+      "https://uplcm.com/4/12325234",
+      "https://uplcm.com/4/12325236",
+      "https://uplcm.com/4/12325239",
+      "https://uplcm.com/4/12325241",
+      "https://uplcm.com/4/12325243",
+      "https://uplcm.com/4/12325244",
+      "https://uplcm.com/4/12325246",
+      "https://uplcm.com/4/12325247",
+      "https://uplcm.com/4/12325248",
+      "https://uplcm.com/4/12325250",
+      "https://uplcm.com/4/12325252",
+      "https://uplcm.com/4/12325253",
+      "https://uplcm.com/4/12325254",
+      "https://uplcm.com/4/12325255",
+      "https://uplcm.com/4/10475294",
+      "https://uplcm.com/4/10475279",
+      "https://uplcm.com/4/10475296",
+      "https://uplcm.com/4/10475282",
+      "https://uplcm.com/4/10475278",
+      "https://uplcm.com/4/10475291",
+      "https://uplcm.com/4/10475297",
+      "https://uplcm.com/4/10475280",
+      "https://uplcm.com/4/10475284",
+      "https://uplcm.com/4/10475283"
+    ];
+
+    const DAILY_GAME_LIMIT = 50;
+    const LOCK_DURATION_MS = 24 * 60 * 60 * 1000;
+    const MSG_EXPIRY_MS = 24 * 60 * 60 * 1000;
+    const GAME_GUIDE_KEY = "sabii_braingame_guide_seen_v1";
+    const CHAT_CACHE_KEY = "sabii_user_chat_memory_v1";
+
+    // Payout rule per game number (1..50):
+    // 1..4   -> actual 2, display 2
+    // 5..14  -> actual 0.50, display 2
+    // 15..24 -> actual 2, display 2
+    // 25..50 -> actual 0.40, display 2
+    function getGamePayoutInfo(gameNum) {
+      if ((gameNum >= 1 && gameNum <= 4) || (gameNum >= 15 && gameNum <= 24)) {
+        return { actual: 2, display: 2 };
+      }
+      if (gameNum >= 5 && gameNum <= 14) {
+        return { actual: 0.50, display: 2 };
+      }
+      return { actual: 0.40, display: 2 };
+    }
+
+    // Non-math 3 mini-games bank (Stage 1: Unscramble, Stage 2: Odd One Out, Stage 3: Hard Reverse/Pattern)
+    const stage1Bank = [
+      { q: "Letters 'L - E - P - A - P' se kaunsa sahi word banta hai?", hint: "Ek mashhoor phal", opts: ["APPLE", "PEARL", "GRAPE", "PLUMB"], ans: "APPLE" },
+      { q: "Letters 'E - R - T - W - A' se kaunsa sahi word banta hai?", hint: "Peene ki cheez", opts: ["WATER", "TOWER", "HEART", "EARTH"], ans: "WATER" },
+      { q: "Letters 'O - B - O - K' se kaunsa sahi word banta hai?", hint: "Parhne ki cheez", opts: ["BOOK", "LOOK", "COOK", "HOOK"], ans: "BOOK" },
+      { q: "Letters 'N - T - R - A - I' se kaunsa sahi word banta hai?", hint: "Safar ka zariya", opts: ["TRAIN", "PLANT", "SMART", "GIANT"], ans: "TRAIN" },
+      { q: "Letters 'R - E - D - A - N - G' se kaunsa sahi word banta hai?", hint: "Safar ka aala", opts: ["GARDEN", "DANGER", "GENDER", "GRENAD"], ans: "GARDEN" }
+    ];
+
+    const stage2Bank = [
+      { q: "In mein se kaunsa word baqi teen se alag (Odd One Out) hai?", hint: "Baqi 3 phal/janwar/cheezein hain", opts: ["Mango", "Banana", "Orange", "Chair"], ans: "Chair" },
+      { q: "In mein se kaunsa word baqi teen se alag hai?", hint: "Category check karein", opts: ["Lion", "Tiger", "Wolf", "Spoon"], ans: "Spoon" },
+      { q: "In mein se kaunsa word baqi teen se alag hai?", hint: "Category check karein", opts: ["Monday", "Friday", "Sunday", "Winter"], ans: "Winter" },
+      { q: "In mein se kaunsa word baqi teen se alag hai?", hint: "Category check karein", opts: ["Pen", "Pencil", "Eraser", "Cloud"], ans: "Cloud" },
+      { q: "In mein se kaunsa word baqi teen se alag hai?", hint: "Category check karein", opts: ["River", "Ocean", "Lake", "Pillow"], ans: "Pillow" }
+    ];
+
+    // Hard 3rd mini-game: reverse spelling / tricky pattern matching
+    const stage3HardBank = [
+      { q: "Mushkil Challenge: 'T-E-R-C-E-S' ko seedha karne par kaunsa word banta hai?", hint: "Peechhe se parhein (R -> L)", opts: ["SECRET", "STREET", "SCREEN", "SELECT"], ans: "SECRET" },
+      { q: "Mushkil Challenge: 'E-G-N-E-L-L-A-H-C' ko seedha karne par kaunsa word banta hai?", hint: "Aakhri letter se shuru karein", opts: ["CHALLENGE", "CHANGEABLE", "CHARCOAL", "CHECKLIST"], ans: "CHALLENGE" },
+      { q: "Mushkil Challenge: 'N-O-I-T-A-D-N-U-O-F' ko seedha karne par kaunsa word banta hai?", hint: "Ulta letter sequence dhyan se dekhein", opts: ["FOUNDATION", "FORMATION", "FRUSTRATION", "FASCINATION"], ans: "FOUNDATION" },
+      { q: "Mushkil Challenge: 'E-C-N-E-I-T-A-P' ko seedha karne par kaunsa word banta hai?", hint: "Ulta word check karein", opts: ["PATIENCE", "POSITIVE", "PRACTICE", "PRECISION"], ans: "PATIENCE" },
+      { q: "Mushkil Challenge: 'S-S-E-C-C-U-S' ka ulta (reverse) roop kaunsa hai?", hint: "SUCCESS ko ulta likhein", opts: ["SSECCUS", "SUCCSES", "SECCUSS", "SSUCCESS"], ans: "SSECCUS" }
+    ];
+
+    let currentUser = null;
+    let currentUserName = "Sabii Member";
+
+    let dailyCompletedGames = 0;
+    let lockUntilTimestamp = 0;
+    let lockIntervalId = null;
+
+    let currentStageIndex = 0; // 0, 1, 2
+    let selectedOption = null;
+    let stageFailCount = 0;
+    let stageSolvedFlags = [false, false, false];
+    let adClickCounter = 0;
+
+    // 5-ads checkpoint state (after 10, 20, 30, 40 completed games)
+    let checkpointTarget = 0;
+    let checkpointLinks = [];
+    let checkpointCompletedMap = {};
+    let activeCheckpointSlot = null;
+    let checkpointTimerInterval = null;
+    let checkpointStartTs = 0;
+    let checkpointReadyToConfirm = false;
+
+    window.showToast = function (message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-2 pointer-events-auto`;
+      toast.innerHTML = `<div class="flex items-center gap-2"><span>${message}</span></div>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4500);
+    };
+
+    window.openGameGuideModal = function (force = false) {
+      if (force || !localStorage.getItem(GAME_GUIDE_KEY)) {
+        document.getElementById('game-guide-modal').classList.remove('hidden');
+      }
+    };
+
+    window.closeGameGuideModal = function () {
+      localStorage.setItem(GAME_GUIDE_KEY, "1");
+      document.getElementById('game-guide-modal').classList.add('hidden');
+    };
+
+    function triggerButtonDirectAd(url) {
+      const target = url || DIRECT_AD_LINKS[adClickCounter % DIRECT_AD_LINKS.length];
+      adClickCounter++;
+      window.open(target, "_blank", "noopener,noreferrer");
+    }
+
+    function getStagePuzzle(stageIdx, gameNumber) {
+      const seed = (gameNumber - 1) + stageIdx * 3;
+      if (stageIdx === 0) {
+        const item = stage1Bank[seed % stage1Bank.length];
+        return { ...item, type: "Game 1 • Word Unscramble", diff: "Easy / Normal" };
+      }
+      if (stageIdx === 1) {
+        const item = stage2Bank[seed % stage2Bank.length];
+        return { ...item, type: "Game 2 • Odd One Out", diff: "Normal" };
+      }
+      const item = stage3HardBank[seed % stage3HardBank.length];
+      return { ...item, type: "Game 3 • Hard Reverse Match", diff: "Very Hard" };
+    }
+
+    function renderCurrentMiniGame() {
+      const gameNum = Math.min(dailyCompletedGames + 1, DAILY_GAME_LIMIT);
+      const rateInfo = getGamePayoutInfo(gameNum);
+      const puzzle = getStagePuzzle(currentStageIndex, gameNum);
+      selectedOption = null;
+
+      document.getElementById('game-number-badge').innerText =
+        `Game #${gameNum} of ${DAILY_GAME_LIMIT} • Reward Rs ${rateInfo.display}`;
+      document.getElementById('mini-game-heading').innerText =
+        `Mini-Game ${currentStageIndex + 1} of 3 ${stageFailCount >= 2 ? "(2 Fails Reached)" : ""}`;
+      document.getElementById('mini-game-fails-badge').innerText =
+        `Fails: ${stageFailCount} / 2`;
+      document.getElementById('mini-game-type-label').innerText = puzzle.type;
+      document.getElementById('mini-game-difficulty-label').innerText = puzzle.diff;
+      document.getElementById('mini-game-question').innerText = puzzle.q;
+      document.getElementById('mini-game-hint').innerText = `Hint: ${puzzle.hint}`;
+
+      const optionsBox = document.getElementById('mini-game-options');
+      optionsBox.innerHTML = "";
+
+      puzzle.opts.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.type = "button";
+        btn.innerText = opt;
+        btn.className = "py-3 px-4 rounded-2xl border border-stone-300 bg-stone-50 hover:bg-amber-50 hover:border-amber-400 text-xs sm:text-sm font-bold text-stone-800 transition text-left";
+        btn.onclick = () => {
+          selectedOption = opt;
+          Array.from(optionsBox.children).forEach(el => {
+            el.classList.remove("bg-amber-100", "border-amber-600", "ring-2", "ring-amber-300");
+          });
+          btn.classList.add("bg-amber-100", "border-amber-600", "ring-2", "ring-amber-300");
+        };
+        optionsBox.appendChild(btn);
+      });
+    }
+
+    function loadFreshGameSet(resetFails = true) {
+      currentStageIndex = 0;
+      if (resetFails) {
+        stageFailCount = 0;
+      }
+      stageSolvedFlags = [false, false, false];
+      renderCurrentMiniGame();
+    }
+
+    window.handleConfirmButton = function () {
+      triggerButtonDirectAd(DIRECT_AD_LINKS[0]);
+      const gameNum = Math.min(dailyCompletedGames + 1, DAILY_GAME_LIMIT);
+      const puzzle = getStagePuzzle(currentStageIndex, gameNum);
+
+      if (!selectedOption) {
+        showToast("Ad open hua! Pehle koi option select kar ke dobara Confirm dabayein.", "error");
+        return;
+      }
+
+      if (selectedOption === puzzle.ans) {
+        stageSolvedFlags[currentStageIndex] = true;
+        showToast(`Stage ${currentStageIndex + 1} sahi ho gaya!`, "success");
+        if (currentStageIndex < 2) {
+          currentStageIndex++;
+          stageFailCount = 0;
+          renderCurrentMiniGame();
+        } else {
+          renderCurrentMiniGame();
+          showToast("Teeno games mukammal! Ab Submit button dabayein.", "success");
+        }
+      } else {
+        stageFailCount++;
+        showToast(`Ghalat jawab! Fail count: ${stageFailCount}/2`, "error");
+        renderCurrentMiniGame();
+      }
+    };
+
+    window.handleTryAgainButton = function () {
+      triggerButtonDirectAd(DIRECT_AD_LINKS[1]);
+      selectedOption = null;
+      renderCurrentMiniGame();
+      showToast("Ad open hua! Dobara dhyan se koshish karein.", "success");
+    };
+
+    window.handleNextButton = function () {
+      triggerButtonDirectAd(DIRECT_AD_LINKS[2]);
+      if (currentStageIndex < 2) {
+        currentStageIndex++;
+        stageFailCount = 0;
+        renderCurrentMiniGame();
+        showToast(`Ad open hua! Agla game (${currentStageIndex + 1}/3) khul gaya.`, "success");
+      } else {
+        currentStageIndex = 0;
+        stageFailCount = 0;
+        renderCurrentMiniGame();
+        showToast("Ad open hua! Game 1 par wapis aa gaye.", "success");
+      }
+    };
+
+    function pickFiveRandomFrom27(seedNum) {
+      const copy = [...TWENTY_SEVEN_ADS];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = (i * 7 + seedNum * 13 + 3) % (i + 1);
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0, 5);
+    }
+
+    function openCheckpointGateIfNeeded() {
+      // Trigger at 10, 20, 30, 40 completed games
+      if (dailyCompletedGames > 0 && dailyCompletedGames < DAILY_GAME_LIMIT && dailyCompletedGames % 10 === 0) {
+        checkpointTarget = dailyCompletedGames;
+        checkpointLinks = pickFiveRandomFrom27(checkpointTarget);
+        checkpointCompletedMap = {};
+        activeCheckpointSlot = null;
+        checkpointReadyToConfirm = false;
+        renderCheckpointGate();
+        document.getElementById('game-active-card').classList.add('hidden');
+        document.getElementById('checkpoint-ads-card').classList.remove('hidden');
+        return true;
+      }
+      checkpointTarget = 0;
+      document.getElementById('checkpoint-ads-card').classList.add('hidden');
+      return false;
+    }
+
+    function renderCheckpointGate() {
+      const doneCount = Object.keys(checkpointCompletedMap).length;
+      document.getElementById('checkpoint-title').innerText =
+        `${checkpointTarget} Games Complete — 5 Ads (10s Each)`;
+      document.getElementById('checkpoint-count-badge').innerText =
+        `${doneCount} / 5 Done`;
+
+      const list = document.getElementById('checkpoint-ads-list');
+      list.innerHTML = "";
+
+      for (let idx = 0; idx < 5; idx++) {
+        const isDone = Boolean(checkpointCompletedMap[idx]);
+        const row = document.createElement('div');
+        row.className = "p-3 rounded-2xl border border-stone-200 bg-stone-50 flex items-center justify-between gap-2";
+        row.innerHTML = `
+          <span class="text-xs font-bold text-stone-800">Milestone Ad #${idx + 1} (10s)</span>
+          <button type="button" ${isDone ? "disabled" : ""} onclick="startCheckpointAd(${idx})"
+            class="px-3.5 py-1.5 rounded-xl text-xs font-bold ${isDone ? 'bg-emerald-100 text-emerald-700' : 'sabii-button'}">
+            ${isDone ? "Completed ✓" : "Watch Ad (10s)"}
+          </button>
+        `;
+        list.appendChild(row);
+      }
+
+      if (doneCount >= 5) {
+        clearInterval(checkpointTimerInterval);
+        document.getElementById('checkpoint-timer-panel').classList.add('hidden');
+        document.getElementById('checkpoint-ads-card').classList.add('hidden');
+        document.getElementById('game-active-card').classList.remove('hidden');
+        checkpointTarget = 0;
+        loadFreshGameSet(true);
+        showToast("5 ads mukammal! Ab agla game unlock ho gaya hai.", "success");
+      }
+    }
+
+    window.startCheckpointAd = function (idx) {
+      if (checkpointCompletedMap[idx]) return;
+      activeCheckpointSlot = idx;
+      checkpointReadyToConfirm = false;
+      checkpointStartTs = Date.now();
+      let sec = 10;
+
+      clearInterval(checkpointTimerInterval);
+      document.getElementById('checkpoint-timer-panel').classList.remove('hidden');
+      document.getElementById('checkpoint-active-label').innerText = `Ad #${idx + 1} — 10 Seconds Rukna Lazmi Hai`;
+      document.getElementById('checkpoint-seconds-left').innerText = String(sec);
+      document.getElementById('checkpoint-confirm-btn').classList.add('hidden');
+
+      window.open(checkpointLinks[idx], "_blank", "noopener,noreferrer");
+
+      checkpointTimerInterval = setInterval(() => {
+        sec--;
+        document.getElementById('checkpoint-seconds-left').innerText = String(Math.max(0, sec));
+        if (sec <= 0) {
+          clearInterval(checkpointTimerInterval);
+          checkpointReadyToConfirm = true;
+          document.getElementById('checkpoint-confirm-btn').innerText = `Confirm Ad #${idx + 1}`;
+          document.getElementById('checkpoint-confirm-btn').classList.remove('hidden');
+        }
+      }, 1000);
+    };
+
+    window.confirmCheckpointAd = function () {
+      if (!checkpointReadyToConfirm || activeCheckpointSlot === null) return;
+      const elapsed = (Date.now() - checkpointStartTs) / 1000;
+      if (elapsed < 9.5) {
+        showToast("Kam az kam 10 seconds rukna zaroori hai!", "error");
+        return;
+      }
+      checkpointCompletedMap[activeCheckpointSlot] = true;
+      checkpointReadyToConfirm = false;
+      activeCheckpointSlot = null;
+      document.getElementById('checkpoint-timer-panel').classList.add('hidden');
+      renderCheckpointGate();
+    };
+
+    window.handleSubmitGameSet = async function () {
+      if (!currentUser) return;
+      if (lockUntilTimestamp > Date.now() || dailyCompletedGames >= DAILY_GAME_LIMIT) {
+        syncGameLockUI();
+        return;
+      }
+
+      const allThreeSolved = stageSolvedFlags[0] && stageSolvedFlags[1] && stageSolvedFlags[2];
+      const eligibleAfterFails = stageFailCount >= 2 && (stageSolvedFlags[currentStageIndex] || selectedOption !== null);
+
+      if (!allThreeSolved && !eligibleAfterFails) {
+        showToast("Teeno mini-games mukammal karein ya 2 fail ke baad option select kar ke Submit dabayein.", "error");
+        return;
+      }
+
+      const completedGameNumber = dailyCompletedGames + 1;
+      const rateInfo = getGamePayoutInfo(completedGameNumber);
+      const newLockUntil = completedGameNumber >= DAILY_GAME_LIMIT ? (Date.now() + LOCK_DURATION_MS) : 0;
+
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      const snap = await get(userRef);
+
+      if (snap.exists()) {
+        const data = snap.val();
+        const currBalance = Number(data.balance || 0);
+        const totalGamesPlayed = Number(data.brainGamesCompleted || 0);
+        const updatedBalance = Number((currBalance + rateInfo.actual).toFixed(4));
+
+        await update(userRef, {
+          balance: updatedBalance,
+          brainGamesCompleted: totalGamesPlayed + 1,
+          brainGameState: {
+            dailyCompleted: completedGameNumber,
+            lockUntil: newLockUntil,
+            updatedAt: Date.now()
+          }
+        });
+
+        showToast(`Game #${completedGameNumber} submit ho gaya! Reward: Rs ${rateInfo.display}`, "success");
+      }
+    };
+
+    function updateGameLockTimer() {
+      const rem = lockUntilTimestamp - Date.now();
+      if (rem <= 0) {
+        lockUntilTimestamp = 0;
+        dailyCompletedGames = 0;
+        if (currentUser) {
+          update(ref(db, 'users/' + currentUser.uid + '/brainGameState'), {
+            dailyCompleted: 0,
+            lockUntil: 0
+          });
+        }
+        syncGameLockUI();
+        return;
+      }
+      const totalSec = Math.floor(rem / 1000);
+      const hrs = Math.floor(totalSec / 3600);
+      const mins = Math.floor((totalSec % 3600) / 60);
+      const secs = totalSec % 60;
+      document.getElementById('game-lock-timer').innerText =
+        `Remaining Lock Time: ${hrs}h ${mins}m ${secs}s`;
+    }
+
+    function syncGameLockUI() {
+      const isLocked = lockUntilTimestamp > Date.now() || dailyCompletedGames >= DAILY_GAME_LIMIT;
+      const shownCount = Math.min(dailyCompletedGames, DAILY_GAME_LIMIT);
+      const nextNum = Math.min(dailyCompletedGames + 1, DAILY_GAME_LIMIT);
+      const rateInfo = getGamePayoutInfo(nextNum);
+
+      document.getElementById('game-progress-text').innerText = `${shownCount} / ${DAILY_GAME_LIMIT}`;
+      document.getElementById('current-game-rate-label').innerText =
+        isLocked ? "Daily 50 limit complete • 24h lock" : `Game #${nextNum} • Reward: Rs ${rateInfo.display}`;
+
+      if (isLocked) {
+        document.getElementById('game-active-card').classList.add('hidden');
+        document.getElementById('checkpoint-ads-card').classList.add('hidden');
+        document.getElementById('game-lock-card').classList.remove('hidden');
+        updateGameLockTimer();
+        if (!lockIntervalId) {
+          lockIntervalId = setInterval(updateGameLockTimer, 1000);
+        }
+      } else {
+        document.getElementById('game-lock-card').classList.add('hidden');
+        if (lockIntervalId) {
+          clearInterval(lockIntervalId);
+          lockIntervalId = null;
+        }
+        if (!openCheckpointGateIfNeeded()) {
+          document.getElementById('game-active-card').classList.remove('hidden');
+          loadFreshGameSet(true);
+        }
+      }
+    }
+
+    // --- Live Chat with 24h Firebase Auto-Cleanup & User Memory Cache ---
+    function loadCachedMessages() {
+      try {
+        const raw = localStorage.getItem(CHAT_CACHE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function saveCachedMessages(msgs) {
+      try {
+        localStorage.setItem(CHAT_CACHE_KEY, JSON.stringify(msgs.slice(-80)));
+      } catch (_) {}
+    }
+
+    function renderChatMessages(msgs) {
+      const box = document.getElementById('chat-messages-box');
+      if (!msgs || msgs.length === 0) {
+        box.innerHTML = `<p class="text-stone-400 text-center py-6">Abhi koi message nahi hai. Baat shuru karein!</p>`;
+        return;
+      }
+
+      box.innerHTML = "";
+      msgs.forEach((m) => {
+        const item = document.createElement('div');
+        item.className = "p-2.5 rounded-xl bg-white border border-stone-200 space-y-1";
+        const timeStr = m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-[10px]">
+            <span class="font-bold text-sabii-darkgold">${escapeHtml(m.sender || "User")}</span>
+            <span class="text-stone-400">${timeStr}</span>
+          </div>
+          <p class="text-xs text-stone-800 break-words">${escapeHtml(m.text || "")}</p>
+        `;
+        box.appendChild(item);
+      });
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function initCommunityChat() {
+      const cached = loadCachedMessages();
+      if (cached.length > 0) {
+        renderChatMessages(cached);
+      }
+
+      const chatRef = ref(db, 'gameChat');
+      onValue(chatRef, async (snapshot) => {
+        const now = Date.now();
+        const validList = [];
+
+        if (snapshot.exists()) {
+          const val = snapshot.val();
+          for (const [key, msg] of Object.entries(val)) {
+            if (!msg) continue;
+            const createdAt = Number(msg.createdAt || now);
+            if (now - createdAt >= MSG_EXPIRY_MS) {
+              // Remove expired (>24h) message from Firebase so database stays clean
+              try {
+                await remove(ref(db, 'gameChat/' + key));
+              } catch (_) {}
+            } else {
+              validList.push({ id: key, ...msg, createdAt });
+            }
+          }
+        }
+
+        validList.sort((a, b) => a.createdAt - b.createdAt);
+
+        // Merge with user's local memory cache so user retains recent view even after Firebase cleanup
+        const mergedMap = new Map();
+        cached.forEach(m => {
+          if (m && m.text) mergedMap.set(m.id || `${m.createdAt}_${m.text}`, m);
+        });
+        validList.forEach(m => {
+          mergedMap.set(m.id || `${m.createdAt}_${m.text}`, m);
+        });
+        const mergedList = Array.from(mergedMap.values()).sort((a, b) => a.createdAt - b.createdAt);
+        saveCachedMessages(mergedList);
+        renderChatMessages(mergedList);
+      });
+    }
+
+    document.getElementById('chat-send-form').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!currentUser) return;
+      const input = document.getElementById('chat-message-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const msgObj = {
+        uid: currentUser.uid,
+        sender: currentUserName,
+        text,
+        createdAt: Date.now()
+      };
+
+      input.value = "";
+      await push(ref(db, 'gameChat'), msgObj);
+    });
+
+    loadFreshGameSet(true);
+    initCommunityChat();
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUser = user;
+        openGameGuideModal(false);
+        const userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            document.getElementById('header-balance').innerText = `Rs ${data.balance || 0}`;
+            currentUserName = data.name || data.username || (user.email ? user.email.split("@")[0] : "Sabii Member");
+
+            const gState = data.brainGameState || {};
+            const savedLock = Number(gState.lockUntil || 0);
+            const savedCount = Number(gState.dailyCompleted || 0);
+
+            if (savedLock > 0 && savedLock <= Date.now()) {
+              dailyCompletedGames = 0;
+              lockUntilTimestamp = 0;
+              update(ref(db, 'users/' + user.uid + '/brainGameState'), {
+                dailyCompleted: 0,
+                lockUntil: 0
+              });
+            } else {
+              dailyCompletedGames = savedCount;
+              lockUntilTimestamp = savedLock;
+            }
+            syncGameLockUI();
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Start of global snippet: Please do not remove -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'DC-16361189');
+  </script>
+  <!-- End of global snippet: Please do not remove -->
+
+  <!-- Event snippet for sabii-seven.vercel.app -->
+  <script>
+    gtag('event', 'conversion', {
+      'allow_custom_scripts': true,
+      'send_to': 'DC-16361189/manau0/sabii0+standard'
+    });
+  </script>
+  <noscript>
+    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=;ord=1?" width="1" height="1" alt=""/>
+  </noscript>
+  <!-- End of event snippet: Please do not remove -->
+
+</body>
+</html>
