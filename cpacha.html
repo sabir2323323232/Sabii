@@ -81,63 +81,77 @@
   <!-- Main Content -->
   <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
 
-    <!-- Page Guide Trigger & Quick Info -->
-    <div class="sabii-card rounded-2xl p-4 flex items-center justify-between gap-3 bg-white">
+    <!-- Daily Progress & Guide Bar -->
+    <div class="sabii-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 bg-white">
       <div class="space-y-0.5">
-        <p class="text-xs font-bold text-stone-800 flex items-center gap-1.5">
-          <i class="fa-solid fa-circle-question text-sabii-darkgold"></i> How to Solve Captcha
+        <p class="text-xs font-bold text-stone-800">
+          Daily Progress: <span id="daily-progress-text" class="text-sabii-darkgold">0 / 20</span>
         </p>
-        <p class="text-[11px] text-stone-500">Har sahi captcha par <strong>Rs 1</strong> reward milta hai.</p>
+        <p id="current-display-rate-note" class="text-[11px] text-stone-500">Captcha #1 • Reward: Rs 1</p>
       </div>
       <button type="button" onclick="openGuideModal(true)" class="px-3.5 py-2 rounded-xl sabii-button text-xs font-bold shrink-0">
-        <i class="fa-solid fa-play-circle mr-1"></i> Guide Dekhein
+        <i class="fa-solid fa-play-circle mr-1"></i> How to Solve Captcha
       </button>
     </div>
 
+    <!-- 24-Hour Lock Card (Shown When 20/20 Completed) -->
+    <div id="daily-lock-card" class="hidden sabii-card rounded-3xl p-6 bg-amber-50/90 border border-amber-400 text-center space-y-3">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-800 flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 class="font-brand text-2xl font-bold text-stone-900">Daily 20 Captcha Limit Complete</h2>
+      <p class="text-xs text-stone-700 leading-relaxed">
+        Aaj ke 20 captchas poore ho chuke hain. Ab agla set <strong>24 hours</strong> baad unlock hoga.
+      </p>
+      <p id="lock-countdown-text" class="text-sm font-extrabold text-amber-900 bg-white border border-amber-300 rounded-2xl py-2.5 px-4 inline-block">
+        Remaining Lock Time: 24h 0m
+      </p>
+    </div>
+
     <!-- Captcha Box -->
-    <div class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4">
+    <div id="captcha-active-card" class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
-            Reward: Rs 1
+          <span id="captcha-badge" class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
+            Captcha #1 of 20 • Rs 1
           </span>
-          <h2 class="font-brand text-xl font-bold text-stone-800 mt-1">Enter Captcha Code</h2>
+          <h2 class="font-brand text-xl font-bold text-stone-800 mt-1">Hard Captcha Verification</h2>
         </div>
         <button type="button" onclick="generateCaptcha()" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold flex items-center gap-1.5">
-          <i class="fa-solid fa-rotate"></i> New Code
+          <i class="fa-solid fa-rotate"></i> Refresh
         </button>
       </div>
 
-      <!-- Captcha Display Area -->
-      <div class="py-5 px-4 rounded-2xl bg-stone-900 text-center border border-sabii-gold/40 select-none relative overflow-hidden">
-        <div id="captcha-display" class="text-2xl sm:text-3xl font-extrabold tracking-[0.35em] text-amber-300 font-mono">
-          A7K9M2
-        </div>
-        <p class="text-[10px] text-stone-400 mt-1.5">Upar diya gaya code neeche bilkul same likhein</p>
+      <!-- Hard Distorted Captcha Canvas -->
+      <div class="py-4 px-3 rounded-2xl bg-stone-900 text-center border border-sabii-gold/40 select-none relative overflow-hidden">
+        <canvas id="captcha-canvas" width="320" height="84" class="mx-auto max-w-full rounded-xl"></canvas>
+        <p class="text-[10px] text-stone-400 mt-1.5">
+          Case-sensitive / tricky characters dhyan se dekh kar neeche likhein
+        </p>
       </div>
 
       <!-- User Input Form -->
       <form id="captcha-form" class="space-y-3">
         <input id="captcha-input" type="text" autocomplete="off" required
-          placeholder="Yahan captcha code likhein..."
-          class="w-full px-4 py-3 rounded-2xl bg-stone-50 border border-stone-300 text-sm font-bold tracking-wider uppercase text-stone-800 focus:outline-none focus:border-sabii-gold">
+          placeholder="Upar wala code bilkul sahi likhein..."
+          class="w-full px-4 py-3 rounded-2xl bg-stone-50 border border-stone-300 text-sm font-bold tracking-widest text-stone-800 focus:outline-none focus:border-sabii-gold">
 
         <button id="submit-captcha-btn" type="submit" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md">
-          <i class="fa-solid fa-check-circle mr-1"></i> Submit Captcha (Earn Rs 1)
+          <i class="fa-solid fa-check-circle mr-1"></i> Submit Captcha
         </button>
       </form>
 
       <!-- Pending / Return Claim Box (After Ad Click) -->
       <div id="pending-claim-box" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-center space-y-2.5">
         <p id="pending-claim-text" class="text-xs font-bold text-amber-900">
-          Ad open ho chuka hai. Wapis aane par apna Rs 1 reward claim karein ya dobara ad open karein.
+          Ad open ho chuka hai. Wapis aane par apna reward claim karein ya dobara ad open karein.
         </p>
         <div class="flex flex-col sm:flex-row gap-2">
           <button type="button" onclick="openDirectAd()" class="flex-1 py-2.5 px-3 rounded-xl bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs">
             Open Ad Again
           </button>
           <button type="button" onclick="finalizeCaptchaReward()" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs">
-            Claim Rs 1 Now
+            Claim Reward Now
           </button>
         </div>
       </div>
@@ -210,13 +224,36 @@
     const db = getDatabase(app);
 
     const DIRECT_AD_LINK = "https://uplcm.com/4/10474554";
-    const CAPTCHA_REWARD = 1;
+    const DAILY_CAPTCHA_LIMIT = 20;
+    const LOCK_DURATION_MS = 24 * 60 * 60 * 1000;
     const GUIDE_STORAGE_KEY = "sabii_captcha_guide_seen_v1";
 
     let currentUser = null;
     let currentCaptcha = "";
     let awaitingReturnReward = false;
     let adOpenTimestamp = 0;
+
+    let dailyCompletedCount = 0;
+    let lockUntilTimestamp = 0;
+    let lockIntervalId = null;
+
+    // Captcha number (1 to 20):
+    // 1..3   -> actual 1, user display 1
+    // 4..10  -> actual 0.20, user display 1
+    // 11..13 -> actual 1, user display 1
+    // 14..20 -> actual 0.20, user display 0.20
+    function getCaptchaPayoutInfo(captchaNumber) {
+      if (captchaNumber <= 3) {
+        return { actual: 1, display: 1 };
+      }
+      if (captchaNumber <= 10) {
+        return { actual: 0.20, display: 1 };
+      }
+      if (captchaNumber <= 13) {
+        return { actual: 1, display: 1 };
+      }
+      return { actual: 0.20, display: 0.20 };
+    }
 
     window.showToast = function (message, type = 'success') {
       const container = document.getElementById('toast-container');
@@ -239,20 +276,132 @@
       document.getElementById('guide-modal').classList.add('hidden');
     };
 
+    function drawHardCaptcha(code) {
+      const canvas = document.getElementById('captcha-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = '#141210';
+      ctx.fillRect(0, 0, w, h);
+
+      // Background noise dots
+      for (let i = 0; i < 95; i++) {
+        ctx.fillStyle = i % 2 === 0 ? 'rgba(251, 191, 36, 0.28)' : 'rgba(255, 255, 255, 0.16)';
+        ctx.beginPath();
+        ctx.arc(Math.random() * w, Math.random() * h, Math.random() * 2.1 + 0.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Crossing strike lines
+      for (let l = 0; l < 6; l++) {
+        ctx.strokeStyle = l % 2 === 0 ? 'rgba(245, 158, 11, 0.42)' : 'rgba(244, 63, 94, 0.35)';
+        ctx.lineWidth = Math.random() * 1.8 + 1;
+        ctx.beginPath();
+        ctx.moveTo(Math.random() * w, Math.random() * h);
+        ctx.bezierCurveTo(
+          Math.random() * w, Math.random() * h,
+          Math.random() * w, Math.random() * h,
+          Math.random() * w, Math.random() * h
+        );
+        ctx.stroke();
+      }
+
+      // Draw each character with tricky tilt & size variation
+      const stepX = (w - 36) / code.length;
+      for (let i = 0; i < code.length; i++) {
+        const ch = code[i];
+        const x = 22 + i * stepX + (Math.random() * 6 - 3);
+        const y = h / 2 + (Math.random() * 12 - 6);
+        const angle = (Math.random() * 0.48 - 0.24);
+        const fontSize = Math.floor(Math.random() * 6) + 24;
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.font = `800 ${fontSize}px monospace`;
+        ctx.fillStyle = i % 2 === 0 ? '#FCD34D' : '#FDE68A';
+        ctx.strokeStyle = 'rgba(0,0,0,0.65)';
+        ctx.lineWidth = 2;
+        ctx.strokeText(ch, -8, 8);
+        ctx.fillText(ch, -8, 8);
+        ctx.restore();
+      }
+    }
+
     window.generateCaptcha = function () {
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      // Tricky mixed pool with lookalike characters to make solving harder
+      const pool = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#%&*";
+      const length = 7;
       let code = "";
-      for (let i = 0; i < 6; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      for (let i = 0; i < length; i++) {
+        code += pool.charAt(Math.floor(Math.random() * pool.length));
       }
       currentCaptcha = code;
       awaitingReturnReward = false;
       adOpenTimestamp = 0;
-      document.getElementById('captcha-display').innerText = code;
+      drawHardCaptcha(code);
       document.getElementById('captcha-input').value = "";
       document.getElementById('wrong-captcha-box').classList.add('hidden');
       document.getElementById('pending-claim-box').classList.add('hidden');
     };
+
+    function updateLockCountdown() {
+      const remaining = lockUntilTimestamp - Date.now();
+      if (remaining <= 0) {
+        lockUntilTimestamp = 0;
+        dailyCompletedCount = 0;
+        if (currentUser) {
+          update(ref(db, 'users/' + currentUser.uid + '/captchaState'), {
+            dailyCompleted: 0,
+            lockUntil: 0
+          });
+        }
+        syncCaptchaUI();
+        return;
+      }
+
+      const totalSeconds = Math.floor(remaining / 1000);
+      const hrs = Math.floor(totalSeconds / 3600);
+      const mins = Math.floor((totalSeconds % 3600) / 60);
+      const secs = totalSeconds % 60;
+      document.getElementById('lock-countdown-text').innerText =
+        `Remaining Lock Time: ${hrs}h ${mins}m ${secs}s`;
+    }
+
+    function syncCaptchaUI() {
+      const isLocked = lockUntilTimestamp > Date.now() || dailyCompletedCount >= DAILY_CAPTCHA_LIMIT;
+      const nextNum = Math.min(dailyCompletedCount + 1, DAILY_CAPTCHA_LIMIT);
+      const rateInfo = getCaptchaPayoutInfo(nextNum);
+
+      document.getElementById('daily-progress-text').innerText =
+        `${Math.min(dailyCompletedCount, DAILY_CAPTCHA_LIMIT)} / ${DAILY_CAPTCHA_LIMIT}`;
+      document.getElementById('current-display-rate-note').innerText =
+        isLocked
+          ? "Daily 20 limit mukammal • 24h lock active"
+          : `Captcha #${nextNum} • Reward: Rs ${rateInfo.display}`;
+      document.getElementById('captcha-badge').innerText =
+        `Captcha #${nextNum} of ${DAILY_CAPTCHA_LIMIT} • Rs ${rateInfo.display}`;
+
+      if (isLocked) {
+        awaitingReturnReward = false;
+        document.getElementById('captcha-active-card').classList.add('hidden');
+        document.getElementById('daily-lock-card').classList.remove('hidden');
+        updateLockCountdown();
+        if (!lockIntervalId) {
+          lockIntervalId = setInterval(updateLockCountdown, 1000);
+        }
+      } else {
+        document.getElementById('daily-lock-card').classList.add('hidden');
+        document.getElementById('captcha-active-card').classList.remove('hidden');
+        if (lockIntervalId) {
+          clearInterval(lockIntervalId);
+          lockIntervalId = null;
+        }
+      }
+    }
 
     window.openDirectAd = function () {
       adOpenTimestamp = Date.now();
@@ -261,6 +410,15 @@
 
     window.finalizeCaptchaReward = async function () {
       if (!awaitingReturnReward || !currentUser) return;
+      if (lockUntilTimestamp > Date.now() || dailyCompletedCount >= DAILY_CAPTCHA_LIMIT) {
+        syncCaptchaUI();
+        return;
+      }
+
+      const nextCaptchaNumber = dailyCompletedCount + 1;
+      const rateInfo = getCaptchaPayoutInfo(nextCaptchaNumber);
+      const newCount = nextCaptchaNumber;
+      const newLockUntil = newCount >= DAILY_CAPTCHA_LIMIT ? (Date.now() + LOCK_DURATION_MS) : 0;
 
       const userRef = ref(db, 'users/' + currentUser.uid);
       const snapshot = await get(userRef);
@@ -268,17 +426,30 @@
       if (snapshot.exists()) {
         const data = snapshot.val();
         const currentBalance = Number(data.balance || 0);
-        const solvedCount = Number(data.captchaSolved || 0);
-        const newBalance = Number((currentBalance + CAPTCHA_REWARD).toFixed(2));
+        const totalSolvedAllTime = Number(data.captchaSolved || 0);
+        const newBalance = Number((currentBalance + rateInfo.actual).toFixed(4));
 
         await update(userRef, {
           balance: newBalance,
-          captchaSolved: solvedCount + 1
+          captchaSolved: totalSolvedAllTime + 1,
+          captchaState: {
+            dailyCompleted: newCount,
+            lockUntil: newLockUntil,
+            updatedAt: Date.now()
+          }
         });
 
         awaitingReturnReward = false;
-        showToast("Mubarak! Captcha mukammal aur Rs 1 balance mein add ho gaya.", "success");
-        generateCaptcha();
+        showToast(
+          `Mubarak! Captcha #${nextCaptchaNumber} mukammal aur Rs ${rateInfo.display} reward add ho gaya.`,
+          "success"
+        );
+
+        if (newCount >= DAILY_CAPTCHA_LIMIT) {
+          showToast("Aaj ke 20 captchas poore ho gaye! Ab 24 hours ka lock lag gaya hai.", "success");
+        } else {
+          generateCaptcha();
+        }
       }
     };
 
@@ -297,18 +468,24 @@
 
     document.getElementById('captcha-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      const entered = document.getElementById('captcha-input').value.trim().toUpperCase();
+      if (lockUntilTimestamp > Date.now() || dailyCompletedCount >= DAILY_CAPTCHA_LIMIT) {
+        syncCaptchaUI();
+        return;
+      }
+
+      const entered = document.getElementById('captcha-input').value.trim();
 
       if (entered === currentCaptcha) {
         document.getElementById('wrong-captcha-box').classList.add('hidden');
         awaitingReturnReward = true;
         openDirectAd();
         document.getElementById('pending-claim-box').classList.remove('hidden');
-        showToast("Ad open hua hai! Wapis aane par Rs 1 reward mil jayega.", "success");
+        showToast("Ad open hua hai! Wapis aane par reward mil jayega.", "success");
       } else {
         awaitingReturnReward = false;
         document.getElementById('pending-claim-box').classList.add('hidden');
-        document.getElementById('wrong-captcha-msg').innerText = "Captcha ghalat likha gaya hai! Try Again par click kar ke ad dekhein.";
+        document.getElementById('wrong-captcha-msg').innerText =
+          "Captcha ghalat likha gaya hai! Try Again par click kar ke ad dekhein aur dobara likhein.";
         document.getElementById('wrong-captcha-box').classList.remove('hidden');
         showToast("Captcha ghalat hai! Try Again dabayein.", "error");
       }
@@ -317,10 +494,11 @@
     window.handleTryAgainAd = function () {
       openDirectAd();
       generateCaptcha();
-      showToast("Ad open hua hai! Ab naya captcha sahi likh kar submit karein.", "success");
+      showToast("Ad open hua hai! Naya mushkil captcha dhyan se likh kar submit karein.", "success");
     };
 
     generateCaptcha();
+    syncCaptchaUI();
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -333,6 +511,23 @@
           if (snapshot.exists()) {
             const data = snapshot.val();
             document.getElementById('header-balance').innerText = `Rs ${data.balance || 0}`;
+
+            const cState = data.captchaState || {};
+            const savedLock = Number(cState.lockUntil || 0);
+            const savedCount = Number(cState.dailyCompleted || 0);
+
+            if (savedLock > 0 && savedLock <= Date.now()) {
+              dailyCompletedCount = 0;
+              lockUntilTimestamp = 0;
+              update(ref(db, 'users/' + user.uid + '/captchaState'), {
+                dailyCompleted: 0,
+                lockUntil: 0
+              });
+            } else {
+              dailyCompletedCount = savedCount;
+              lockUntilTimestamp = savedLock;
+            }
+            syncCaptchaUI();
           }
         });
       }
