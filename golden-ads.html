@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii Golden Ads (Rs 0.30)</title>
+  <title>Sabii Golden Ads (0.010)</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -71,7 +72,7 @@
       <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
         <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
       </a>
-      <h1 class="font-brand text-xl font-bold sabii-gold-text">Golden Ads (Rs 0.30)</h1>
+      <h1 class="font-brand text-xl font-bold sabii-gold-text">Golden Ads (0.010)</h1>
       <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-xl">Rs 0</span>
     </div>
   </header>
@@ -79,30 +80,21 @@
   <!-- Main Content -->
   <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
 
-    <!-- Bara Important Warning Notice -->
-    <div class="rounded-2xl p-4 bg-red-600 text-white shadow-lg border-2 border-red-800 text-center space-y-1">
-      <div class="text-lg font-extrabold tracking-wide uppercase flex items-center justify-center gap-2">
-        <i class="fa-solid fa-triangle-exclamation text-amber-300 text-xl"></i> Zaroori Hidayat
-      </div>
-      <p class="text-sm sm:text-base font-bold leading-snug">
-        Jo app ya website aye ose register download karna lazmi ha 
-
     <!-- Rules Box -->
     <div class="sabii-card rounded-2xl p-4 bg-amber-50/60 border border-amber-200 text-xs space-y-2">
       <h4 class="font-bold text-amber-900 flex items-center gap-1.5 text-sm">
         <i class="fa-solid fa-shield-halved text-amber-600"></i> Golden Ads Task Rules:
       </h4>
       <ul class="list-disc list-inside space-y-1 text-stone-700">
-        <li>Har ad par <b>Rs 0.30</b> milenge.</li>
-        <li>Ads par kam az kam <b>10 seconds</b> rokna lazmi hai. Agar 10 second se pehle wapis aaye toh sakht restriction lagegi aur ad dobara dekhna hoga.</li>
-        <li>10 seconds poore hone ke baad Claim button par click karke apna reward hasil karein.</li>
+        <li>Har ad par <b>0.010</b> milenge.</li>
+        <li>Ads par kam az kam <b>15 seconds</b> rokna lazmi hai. Agar 15 second se pehle wapis aaye toh sakht restriction lagegi aur ad dobara dekhna hoga.</li>
         <li>Har ad <b>24 hours (1 Day)</b> ke baad dobara unlock hoga.</li>
       </ul>
     </div>
 
     <!-- Ad List Container -->
     <div id="ads-container" class="space-y-3">
-      <!-- Dynamic 50 Ads will load here -->
+      <!-- Dynamic Ads will load here -->
     </div>
   </main>
 
@@ -118,23 +110,23 @@
 
       <div id="modal-content" class="space-y-4">
         <h3 id="modal-title" class="font-brand text-xl font-bold text-stone-800">Golden Ad Task</h3>
-        <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur <b>10 seconds</b> tak ad page par rukein.</p>
+        <p id="modal-desc" class="text-xs text-stone-500">Neeche diye gaye link par click karein aur <b>15 seconds</b> tak ad page par rukein.</p>
 
         <div id="timer-box" class="py-4 bg-amber-50 rounded-2xl border border-amber-200">
           <p class="text-[10px] uppercase font-bold text-stone-400">Rukne ka Waqt (Timer)</p>
-          <span id="countdown-timer" class="text-3xl font-bold text-amber-700">10</span> Seconds
+          <span id="countdown-timer" class="text-3xl font-bold text-amber-700">15</span> Seconds
         </div>
 
         <div id="action-area" class="space-y-3">
-          <a id="ad-link-btn" href="#" target="_blank" onclick="startAdSession()" class="block w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow-md hover:opacity-95">
-            <i class="fa-solid fa-external-link-alt mr-1"></i> Visit Ad Link & Start 10s Timer
+          <a id="ad-link-btn" href="#" target="_blank" rel="noopener noreferrer" onclick="startAdSession()" class="block w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-700 text-white font-bold text-xs uppercase tracking-wider shadow-md hover:opacity-95">
+            <i class="fa-solid fa-external-link-alt mr-1"></i> Visit Ad Link & Start 15s Timer
           </a>
         </div>
 
         <div id="claim-area" class="hidden space-y-3 pt-2 border-t border-stone-100">
-          <p class="text-xs text-amber-800 font-bold">10 Seconds poore ho gaye! Neeche click karke reward lein.</p>
+          <p class="text-xs text-amber-800 font-bold">15 Seconds poore ho gaye! Neeche click karke reward lein.</p>
           <button onclick="claimGoldenAd()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-md">
-            Claim Rs 0.30 Reward
+            Claim Reward (0.010)
           </button>
         </div>
       </div>
@@ -163,39 +155,44 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    // Same links array used in VIP Ads (Rs 3) repeated to 50 links
-    const baseLinks = [
-      "https://uplcm.com/4/12279138",
-      "https://uplcm.com/4/12279153",
-      "https://uplcm.com/4/12279154",
-      "https://uplcm.com/4/12279162",
-      "https://uplcm.com/4/12279170",
-      "https://uplcm.com/4/12279172",
-      "https://uplcm.com/4/12279174",
-      "https://uplcm.com/4/12279175",
-      "https://uplcm.com/4/12279176",
-      "https://uplcm.com/4/12279177",
-      "https://uplcm.com/4/12279180",
-      "https://uplcm.com/4/12279184",
-      "https://uplcm.com/4/12279186",
-      "https://uplcm.com/4/12279191",
-      "https://uplcm.com/4/12279196",
-      "https://uplcm.com/4/12279197",
-      "https://uplcm.com/4/12279198",
-      "https://uplcm.com/4/12279201",
-      "https://uplcm.com/4/12279204",
-      "https://uplcm.com/4/12279205"
+    const adLinks = [
+      "https://uplcm.com/4/12325143",
+      "https://uplcm.com/4/12325189",
+      "https://uplcm.com/4/12325228",
+      "https://uplcm.com/4/12325234",
+      "https://uplcm.com/4/12325236",
+      "https://uplcm.com/4/12325239",
+      "https://uplcm.com/4/12325241",
+      "https://uplcm.com/4/12325243",
+      "https://uplcm.com/4/12325244",
+      "https://uplcm.com/4/12325246",
+      "https://uplcm.com/4/12325247",
+      "https://uplcm.com/4/12325248",
+      "https://uplcm.com/4/12325250",
+      "https://uplcm.com/4/12325252",
+      "https://uplcm.com/4/12325253",
+      "https://uplcm.com/4/12325254",
+      "https://uplcm.com/4/12325255",
+      "https://uplcm.com/4/10475294",
+      "https://uplcm.com/4/10475279",
+      "https://uplcm.com/4/10475296",
+      "https://uplcm.com/4/10475282",
+      "https://uplcm.com/4/10475278",
+      "https://uplcm.com/4/10475291",
+      "https://uplcm.com/4/10475297",
+      "https://uplcm.com/4/10475280",
+      "https://uplcm.com/4/10475284",
+      "https://uplcm.com/4/10475283"
     ];
 
-    const adLinks = [];
-    for (let i = 0; i < 50; i++) {
-      adLinks.push(baseLinks[i % baseLinks.length]);
-    }
+    const AD_REWARD = 0.010;
+    const REQUIRED_SECONDS = 15;
 
     let currentUser = null;
     let activeAdIndex = null;
     let timerInterval = null;
     let isAdVisited = false;
+    let isTimerCompleted = false;
     let startTime = 0;
 
     window.showToast = function (message, type = 'success') {
@@ -208,37 +205,14 @@
       setTimeout(() => toast.remove(), 4500);
     };
 
-    // Custom Payout Calculation:
-    // Ad #1, #2 (Pehle 2 ads) = Rs 0.30
-    // Ad #3, #4, #5, #6, #7 (5 ads) = Rs 0
-    // Ad #8 (1 ad) = Rs 0.30
-    // Ad #9, #10 (2 ads) = Rs 0
-    // Ad #11 = Rs 0.30, phir sequence follow karega
-    function calculateActualReward(adNum) {
-      if (adNum === 1 || adNum === 2) return 0.30;
-      if (adNum >= 3 && adNum <= 7) return 0;
-      if ((adNum - 8) % 10 === 0 || (adNum - 8) % 10 === 3) {
-        // Pattern adjustment based on user rule: 
-        // 2 paid, 5 unpaid, 1 paid, 2 unpaid -> total cycle of 10 items
-      }
-      
-      // Exact rule implementation mapping:
-      // Index relative to start after first paid/unpaid block
-      let adjusted = adNum - 1; // 0-based
-      // Pattern breakdown: [Paid(2), Unpaid(5), Paid(1), Unpaid(2)] -> Cycle length = 10
-      let rem = adjusted % 10;
-      if (rem === 0 || rem === 1 || rem === 7) return 0.30;
-      return 0;
-    }
-
     function renderAds(completedAds = {}) {
       const container = document.getElementById('ads-container');
       container.innerHTML = "";
 
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < adLinks.length; i++) {
         let adNum = i + 1;
         let isLocked = false;
-        let lockText = `Earn Rs 0.30`;
+        let lockText = `Earn ${AD_REWARD}`;
 
         if (completedAds[i]) {
           let lastTime = completedAds[i];
@@ -259,7 +233,7 @@
             </div>
             <div>
               <h4 class="text-xs font-bold text-stone-800">Golden Ad #${adNum}</h4>
-              <p class="text-[10px] text-stone-500">Reward: <span class="text-amber-700 font-bold">Rs 0.30</span></p>
+              <p class="text-[10px] text-stone-500">Reward: <span class="text-amber-700 font-bold">${AD_REWARD}</span></p>
             </div>
           </div>
           <button onclick="${isLocked ? '' : `openTaskModal(${i}, '${adLinks[i]}')`}"
@@ -274,17 +248,15 @@
     window.openTaskModal = function(index, link) {
       activeAdIndex = index;
       isAdVisited = false;
+      isTimerCompleted = false;
+      startTime = 0;
       document.getElementById('task-modal').classList.remove('hidden');
-      document.getElementById('loading-overlay').classList.remove('hidden');
+      document.getElementById('loading-overlay').classList.add('hidden');
       document.getElementById('ad-link-btn').href = link;
-      document.getElementById('countdown-timer').innerText = "10";
+      document.getElementById('countdown-timer').innerText = String(REQUIRED_SECONDS);
       document.getElementById('timer-box').classList.remove('hidden');
       document.getElementById('action-area').classList.remove('hidden');
       document.getElementById('claim-area').classList.add('hidden');
-
-      setTimeout(() => {
-        document.getElementById('loading-overlay').classList.add('hidden');
-      }, 900);
     };
 
     window.closeTaskModal = function() {
@@ -292,54 +264,73 @@
       document.getElementById('loading-overlay').classList.add('hidden');
       clearInterval(timerInterval);
       window.removeEventListener('focus', checkReturnTime);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
+
+    function handleVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        checkReturnTime();
+      }
+    }
 
     window.startAdSession = function() {
       isAdVisited = true;
+      isTimerCompleted = false;
       startTime = Date.now();
-      let timeLeft = 10;
+      let timeLeft = REQUIRED_SECONDS;
       clearInterval(timerInterval);
+      document.getElementById('countdown-timer').innerText = String(timeLeft);
 
       window.addEventListener('focus', checkReturnTime);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
 
       timerInterval = setInterval(() => {
         timeLeft--;
-        document.getElementById('countdown-timer').innerText = timeLeft;
+        document.getElementById('countdown-timer').innerText = String(Math.max(0, timeLeft));
 
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
+          isTimerCompleted = true;
           window.removeEventListener('focus', checkReturnTime);
+          document.removeEventListener('visibilitychange', handleVisibilityChange);
           document.getElementById('timer-box').classList.add('hidden');
           document.getElementById('action-area').classList.add('hidden');
           document.getElementById('claim-area').classList.remove('hidden');
-          showToast("10 seconds poore ho gaye! Ab claim karein.", "success");
+          showToast("15 seconds poore ho gaye! Ab claim karein.", "success");
         }
       }, 1000);
     };
 
     function checkReturnTime() {
-      if (!isAdVisited) return;
+      if (!isAdVisited || isTimerCompleted || !startTime) return;
 
-      document.getElementById('loading-overlay').classList.remove('hidden');
+      let elapsedTime = (Date.now() - startTime) / 1000;
+      if (elapsedTime < REQUIRED_SECONDS) {
+        clearInterval(timerInterval);
+        window.removeEventListener('focus', checkReturnTime);
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
+        isAdVisited = false;
 
-      setTimeout(() => {
-        document.getElementById('loading-overlay').classList.add('hidden');
-        let elapsedTime = (Date.now() - startTime) / 1000;
-
-        if (elapsedTime < 9.5) {
-          clearInterval(timerInterval);
-          window.removeEventListener('focus', checkReturnTime);
-          showToast("⚠️ Restricted! Aap 10 seconds se pehle wapis aa gaye. Ad cancel ho gaya, dobara dekhein!", "error");
+        document.getElementById('loading-overlay').classList.remove('hidden');
+        setTimeout(() => {
+          document.getElementById('loading-overlay').classList.add('hidden');
+          showToast("⚠️ Sakht Restriction! 15 seconds se pehle wapis aane par ad cancel ho gaya, dobara dekhein!", "error");
           closeTaskModal();
-        }
-      }, 1000);
+        }, 1000);
+      }
     }
 
     window.claimGoldenAd = async function() {
-      document.getElementById('loading-overlay').classList.remove('hidden');
+      if (!isTimerCompleted || activeAdIndex === null || !currentUser) return;
 
-      let adNum = activeAdIndex + 1;
-      let reward = calculateActualReward(adNum);
+      let elapsedTime = (Date.now() - startTime) / 1000;
+      if (elapsedTime < REQUIRED_SECONDS) {
+        showToast("⚠️ Sakht Restriction! 15 seconds poore nahi hue, ad dobara dekhein!", "error");
+        closeTaskModal();
+        return;
+      }
+
+      document.getElementById('loading-overlay').classList.remove('hidden');
 
       const userRef = ref(db, 'users/' + currentUser.uid);
       const snapshot = await get(userRef);
@@ -350,14 +341,14 @@
         let completedAds = data.goldenAds || {};
 
         completedAds[activeAdIndex] = Date.now();
-        let newBalance = Number((currentBalance + reward).toFixed(2));
+        let newBalance = Number((currentBalance + AD_REWARD).toFixed(4));
 
         await update(userRef, {
           balance: newBalance,
           goldenAds: completedAds
         });
 
-        showToast("Ad mukammal ho gaya! Rs 0.30 aapke account mein add ho gaye.", "success");
+        showToast(`Ad mukammal ho gaya! ${AD_REWARD} aapke account mein add ho gaye.`, "success");
         closeTaskModal();
       }
     };
