@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii Writing Task</title>
+  <!-- Monetag All Tag -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="313977" async data-cfasync="false"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
+    }
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      color: #FFFFFF;
+      transition: all 0.3s ease;
+    }
+    .sabii-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-stone-800 pb-12">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <h1 class="font-brand text-xl font-bold sabii-gold-text">Writing Task</h1>
+      <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-xl">Rs 0</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
+
+    <!-- Daily Progress & Guide Button Bar -->
+    <div class="sabii-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 bg-white">
+      <div>
+        <p class="text-xs font-bold text-stone-800">
+          Daily Writing Progress: <span id="writing-progress-text" class="text-sabii-darkgold">0 / 20</span>
+        </p>
+        <p class="text-[11px] text-stone-500">Har task mein 4 English lines hain • Din mein 20 tasks</p>
+      </div>
+      <div class="flex items-center gap-2">
+        <button type="button" onclick="openWritingGuideModal(true)"
+          class="px-3 py-1.5 rounded-xl sabii-button text-xs font-bold">
+          <i class="fa-solid fa-circle-info mr-1"></i> Guide Dekhein
+        </button>
+        <span class="text-xs font-bold bg-sabii-gold/15 text-sabii-darkgold px-3 py-1.5 rounded-xl">
+          Reward: Rs 1.1
+        </span>
+      </div>
+    </div>
+
+    <!-- 24-Hour Lock Card (When 20/20 Completed) -->
+    <div id="writing-lock-card" class="hidden sabii-card rounded-3xl p-6 bg-amber-50/90 border border-amber-400 text-center space-y-3">
+      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-800 flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h2 class="font-brand text-2xl font-bold text-stone-900">Daily 20 Writing Limit Complete</h2>
+      <p class="text-xs text-stone-700 leading-relaxed">
+        Aaj ke 20 writing tasks poore ho chuke hain. 24 hours baad dobara show aur unlock hoga.
+      </p>
+      <p id="writing-lock-timer" class="text-sm font-extrabold text-amber-900 bg-white border border-amber-300 rounded-2xl py-2.5 px-4 inline-block">
+        Remaining Lock Time: 24h 0m 0s
+      </p>
+    </div>
+
+    <!-- Active Writing Card -->
+    <div id="writing-active-card" class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <span id="task-counter-badge" class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
+            Task #1 of 20 • Rs 1.1
+          </span>
+          <h2 class="font-brand text-xl font-bold text-stone-800 mt-1">Copy & Write English Lines</h2>
+        </div>
+        <span id="revealed-lines-badge" class="text-xs font-bold text-stone-600 bg-stone-100 px-3 py-1 rounded-xl">
+          Lines: 1 / 4
+        </span>
+      </div>
+
+      <!-- Upper Source Text Box (4 Lines Total, 1st Shown Initially) -->
+      <div class="p-4 rounded-2xl bg-stone-900 text-stone-100 border border-sabii-gold/40 space-y-2">
+        <div class="flex items-center justify-between text-[10px] text-amber-300 font-bold uppercase tracking-wider">
+          <span>Reference Text (English)</span>
+          <span id="line-hint-label">Click "Next Line" for next line</span>
+        </div>
+        <div id="source-lines-box" class="space-y-1.5 text-xs sm:text-sm font-medium leading-relaxed text-amber-100"></div>
+      </div>
+
+      <!-- Next Line Button (Triggers Direct Ad & Reveals Next Line) -->
+      <button id="next-line-btn" type="button" onclick="revealNextLineWithAd()"
+        class="w-full py-2.5 px-4 rounded-xl bg-stone-800 hover:bg-stone-900 text-amber-200 font-bold text-xs uppercase tracking-wider shadow flex items-center justify-center gap-2">
+        <i class="fa-solid fa-eye"></i> Next Line (Ad & Show Next Line)
+      </button>
+
+      <!-- Lower Writing Input Area -->
+      <form id="writing-form" class="space-y-3">
+        <label for="writing-input" class="block text-xs font-bold text-stone-700">
+          Upar dikhne wali text ko neeche bilkul same likhein:
+        </label>
+        <textarea id="writing-input" rows="5" required
+          placeholder="Upar show hone wali English lines yahan likhein..."
+          class="w-full p-3.5 rounded-2xl bg-stone-50 border border-stone-300 text-xs sm:text-sm text-stone-800 leading-relaxed focus:outline-none focus:border-sabii-gold"></textarea>
+
+        <button id="submit-writing-btn" type="submit"
+          class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md">
+          <i class="fa-solid fa-paper-plane mr-1"></i> Submit Writing
+        </button>
+      </form>
+
+      <!-- Pending Return Claim Box (After Submit Ad) -->
+      <div id="writing-pending-box" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-center space-y-2.5">
+        <p class="text-xs font-bold text-amber-900">
+          Direct ad open ho chuka hai. Wapis aane par apna reward claim karein ya ad dobara open karein.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button type="button" onclick="openWritingDirectAd()"
+            class="flex-1 py-2.5 px-3 rounded-xl bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs">
+            Open Ad Again
+          </button>
+          <button type="button" onclick="finalizeWritingTask()"
+            class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs">
+            Claim Reward Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Wrong Text / Try Again Box -->
+      <div id="writing-wrong-box" class="hidden p-4 rounded-2xl bg-red-50 border border-red-300 text-center space-y-2.5">
+        <p id="writing-wrong-msg" class="text-xs font-bold text-red-700">
+          Likhi hui text upar wali text se match nahi karti! Try Again par click kar ke ad dekhein.
+        </p>
+        <button type="button" onclick="handleWritingTryAgainAd()"
+          class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow">
+          <i class="fa-solid fa-arrow-rotate-right mr-1"></i> Try Again (Ad & Retry)
+        </button>
+      </div>
+    </div>
+
+    <!-- Permanent Guide Card on Page -->
+    <div id="writing-page-guide" class="sabii-card rounded-3xl p-5 bg-white space-y-2.5 border border-sabii-gold/30">
+      <div class="flex items-center justify-between">
+        <h3 class="font-brand text-lg font-bold text-stone-800">How to Do Writing Task</h3>
+        <button type="button" onclick="openWritingGuideModal(true)" class="text-xs font-bold text-sabii-darkgold hover:underline">
+          Popup Guide
+        </button>
+      </div>
+      <div class="text-xs text-stone-700 space-y-1.5 leading-relaxed">
+        <p>Upar pehli English line show hogi, agli line ke liye <b>Next Line</b> dabayein jis par ad chalega.</p>
+        <p>Upar dikhne wali text ko neeche bilkul same likh kar <b>Submit</b> karein — har tap/click par ads aayenge, ads dekh kar wapis aayein aur task mukammal karein.</p>
+        <p>Agar text ghalat ho toh <b>Try Again</b> par click kar ke ad dekhein aur dobara sahi likh kar submit karein. Din mein 20 tasks poore hone par 24 hours ka lock lagega.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- How to Do Writing Modal (Auto for New Users + Replayable) -->
+  <div id="writing-guide-modal" class="hidden fixed inset-0 z-50 bg-stone-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-pen-nib"></i>
+      </div>
+      <h3 class="font-brand text-2xl font-bold text-stone-800">How to Do Writing Task</h3>
+
+      <div class="text-xs text-stone-700 space-y-2 text-left bg-amber-50/70 border border-amber-200 rounded-2xl p-4 leading-relaxed">
+        <p>1. Upar pehli English line nazar aayegi. Agli line dekhne ke liye <b>Next Line</b> par click karein — har click/tap par ads chalega.</p>
+        <p>2. Upar show hone wali lines ko neeche box mein bilkul same likhein aur <b>Submit Writing</b> dabayein.</p>
+        <p>3. Har tap par ads aayenge; ads dekh kar wapis aayein toh task complete hoga. Agar text ghalat ho toh <b>Try Again</b> par click kar ke ad dekhein aur dobara likhein.</p>
+        <p>4. Din mein total <b>20 writing tasks</b> hain, uske baad <b>24 hours</b> ka lock lag jayega.</p>
+      </div>
+
+      <button type="button" onclick="closeWritingGuideModal()" class="w-full py-3 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider">
+        Samajh Gaya — Start Writing
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const DIRECT_AD_LINK = "https://uplcm.com/4/10475298";
+    const DAILY_WRITING_LIMIT = 20;
+    const LOCK_DURATION_MS = 24 * 60 * 60 * 1000;
+    const WRITING_GUIDE_KEY = "sabii_writing_guide_seen_v1";
+
+    // Task number (1..20):
+    // 1..2   -> actual 1.1
+    // 3..10  -> actual 0.40
+    // 11..12 -> actual 1.1
+    // 13..20 -> actual 0.40
+    // User ko hamesha 1.1 hi show hoga
+    function getWritingPayoutInfo(taskNumber) {
+      if ((taskNumber >= 1 && taskNumber <= 2) || (taskNumber >= 11 && taskNumber <= 12)) {
+        return { actual: 1.1, display: 1.1 };
+      }
+      return { actual: 0.40, display: 1.1 };
+    }
+
+    // 4 English lines per set
+    const writingSets = [
+      [
+        "Consistency is the key to long term growth.",
+        "Small daily actions create big results over time.",
+        "Stay focused on your goals every single day.",
+        "Patience and hard work always pay off."
+      ],
+      [
+        "Digital skills open doors to new opportunities.",
+        "Reading carefully helps avoid simple mistakes.",
+        "Discipline matters more than sudden motivation.",
+        "Keep learning something useful every week."
+      ],
+      [
+        "Clear communication builds trust with others.",
+        "Good habits make difficult tasks much easier.",
+        "Every challenge teaches a valuable lesson.",
+        "Success comes to those who never quit."
+      ],
+      [
+        "Plan your day before starting your work.",
+        "Accuracy is just as important as speed.",
+        "A calm mind makes better decisions.",
+        "Turn your ideas into steady progress."
+      ]
+    ];
+
+    let currentUser = null;
+    let dailyCompletedCount = 0;
+    let lockUntilTimestamp = 0;
+    let lockIntervalId = null;
+
+    let currentLines = [];
+    let revealedCount = 1;
+    let awaitingSubmitReturn = false;
+    let submitAdOpenTime = 0;
+
+    window.showToast = function (message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-2 pointer-events-auto`;
+      toast.innerHTML = `<div class="flex items-center gap-2"><span>${message}</span></div>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4500);
+    };
+
+    window.openWritingGuideModal = function (force = false) {
+      if (force || !localStorage.getItem(WRITING_GUIDE_KEY)) {
+        document.getElementById('writing-guide-modal').classList.remove('hidden');
+      }
+    };
+
+    window.closeWritingGuideModal = function () {
+      localStorage.setItem(WRITING_GUIDE_KEY, "1");
+      document.getElementById('writing-guide-modal').classList.add('hidden');
+    };
+
+    function normalizeText(str) {
+      return String(str || "")
+        .replace(/\r\n/g, "\n")
+        .split("\n")
+        .map(line => line.trim().replace(/\s+/g, " "))
+        .filter(line => line.length > 0)
+        .join("\n")
+        .trim();
+    }
+
+    function renderRevealedLines() {
+      const box = document.getElementById('source-lines-box');
+      const badge = document.getElementById('revealed-lines-badge');
+      const nextBtn = document.getElementById('next-line-btn');
+      const hintLabel = document.getElementById('line-hint-label');
+
+      box.innerHTML = "";
+      for (let i = 0; i < revealedCount; i++) {
+        const p = document.createElement('p');
+        p.className = "py-1 px-2.5 rounded-lg bg-white/5 border border-white/10";
+        p.innerText = `${i + 1}. ${currentLines[i]}`;
+        box.appendChild(p);
+      }
+
+      badge.innerText = `Lines: ${revealedCount} / ${currentLines.length}`;
+
+      if (revealedCount < currentLines.length) {
+        nextBtn.classList.remove("hidden");
+        hintLabel.innerText = `Line ${revealedCount + 1} ke liye Next Line dabayein`;
+      } else {
+        nextBtn.classList.add("hidden");
+        hintLabel.innerText = "Sab 4 lines show ho chuki hain";
+      }
+    }
+
+    window.loadWritingTask = function (resetInput = true) {
+      const setIdx = dailyCompletedCount % writingSets.length;
+      currentLines = writingSets[setIdx];
+      revealedCount = 1;
+      awaitingSubmitReturn = false;
+      submitAdOpenTime = 0;
+
+      document.getElementById('writing-wrong-box').classList.add('hidden');
+      document.getElementById('writing-pending-box').classList.add('hidden');
+      if (resetInput) {
+        document.getElementById('writing-input').value = "";
+      }
+      renderRevealedLines();
+    };
+
+    window.openWritingDirectAd = function () {
+      submitAdOpenTime = Date.now();
+      window.open(DIRECT_AD_LINK, "_blank", "noopener,noreferrer");
+    };
+
+    window.revealNextLineWithAd = function () {
+      if (revealedCount >= currentLines.length) return;
+      openWritingDirectAd();
+      revealedCount++;
+      renderRevealedLines();
+      showToast(`Ad open hua! Line ${revealedCount} show ho gayi hai.`, "success");
+    };
+
+    function updateWritingLockTimer() {
+      const rem = lockUntilTimestamp - Date.now();
+      if (rem <= 0) {
+        lockUntilTimestamp = 0;
+        dailyCompletedCount = 0;
+        if (currentUser) {
+          update(ref(db, 'users/' + currentUser.uid + '/writingState'), {
+            dailyCompleted: 0,
+            lockUntil: 0
+          });
+        }
+        syncWritingUI();
+        return;
+      }
+
+      const totalSec = Math.floor(rem / 1000);
+      const hrs = Math.floor(totalSec / 3600);
+      const mins = Math.floor((totalSec % 3600) / 60);
+      const secs = totalSec % 60;
+      document.getElementById('writing-lock-timer').innerText =
+        `Remaining Lock Time: ${hrs}h ${mins}m ${secs}s`;
+    }
+
+    function syncWritingUI() {
+      const isLocked = lockUntilTimestamp > Date.now() || dailyCompletedCount >= DAILY_WRITING_LIMIT;
+      const shownCount = Math.min(dailyCompletedCount, DAILY_WRITING_LIMIT);
+      const nextTaskNum = Math.min(dailyCompletedCount + 1, DAILY_WRITING_LIMIT);
+      const rateInfo = getWritingPayoutInfo(nextTaskNum);
+
+      document.getElementById('writing-progress-text').innerText =
+        `${shownCount} / ${DAILY_WRITING_LIMIT}`;
+      document.getElementById('task-counter-badge').innerText =
+        `Task #${nextTaskNum} of ${DAILY_WRITING_LIMIT} • Rs ${rateInfo.display}`;
+
+      if (isLocked) {
+        awaitingSubmitReturn = false;
+        document.getElementById('writing-active-card').classList.add('hidden');
+        document.getElementById('writing-lock-card').classList.remove('hidden');
+        updateWritingLockTimer();
+        if (!lockIntervalId) {
+          lockIntervalId = setInterval(updateWritingLockTimer, 1000);
+        }
+      } else {
+        document.getElementById('writing-lock-card').classList.add('hidden');
+        document.getElementById('writing-active-card').classList.remove('hidden');
+        if (lockIntervalId) {
+          clearInterval(lockIntervalId);
+          lockIntervalId = null;
+        }
+      }
+    }
+
+    window.finalizeWritingTask = async function () {
+      if (!awaitingSubmitReturn || !currentUser) return;
+      if (lockUntilTimestamp > Date.now() || dailyCompletedCount >= DAILY_WRITING_LIMIT) {
+        syncWritingUI();
+        return;
+      }
+
+      const nextTaskNumber = dailyCompletedCount + 1;
+      const rateInfo = getWritingPayoutInfo(nextTaskNumber);
+      const newLockUntil = nextTaskNumber >= DAILY_WRITING_LIMIT ? (Date.now() + LOCK_DURATION_MS) : 0;
+
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      const snapshot = await get(userRef);
+
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const currentBalance = Number(data.balance || 0);
+        const totalWritingDone = Number(data.writingCompleted || 0);
+        const newBalance = Number((currentBalance + rateInfo.actual).toFixed(4));
+
+        await update(userRef, {
+          balance: newBalance,
+          writingCompleted: totalWritingDone + 1,
+          writingState: {
+            dailyCompleted: nextTaskNumber,
+            lockUntil: newLockUntil,
+            updatedAt: Date.now()
+          }
+        });
+
+        awaitingSubmitReturn = false;
+        showToast(`Shabash! Writing Task #${nextTaskNumber} mukammal aur Rs ${rateInfo.display} add ho gaya.`, "success");
+
+        if (nextTaskNumber >= DAILY_WRITING_LIMIT) {
+          showToast("Aaj ke 20 writing tasks poore ho gaye! 24 hours ka lock lag gaya hai.", "success");
+        } else {
+          loadWritingTask(true);
+        }
+      }
+    };
+
+    function handleWritingReturnFromAd() {
+      if (!awaitingSubmitReturn || !submitAdOpenTime) return;
+      if (document.visibilityState === 'visible') {
+        const spent = (Date.now() - submitAdOpenTime) / 1000;
+        if (spent >= 2) {
+          finalizeWritingTask();
+        }
+      }
+    }
+
+    window.addEventListener('focus', handleWritingReturnFromAd);
+    document.addEventListener('visibilitychange', handleWritingReturnFromAd);
+
+    document.getElementById('writing-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (lockUntilTimestamp > Date.now() || dailyCompletedCount >= DAILY_WRITING_LIMIT) {
+        syncWritingUI();
+        return;
+      }
+
+      const expected = currentLines.slice(0, revealedCount).join("\n");
+      const actualInput = document.getElementById('writing-input').value;
+
+      if (normalizeText(actualInput) === normalizeText(expected)) {
+        document.getElementById('writing-wrong-box').classList.add('hidden');
+        awaitingSubmitReturn = true;
+        openWritingDirectAd();
+        document.getElementById('writing-pending-box').classList.remove('hidden');
+        showToast("Ad open hua hai! Wapis aane par task complete aur reward add hoga.", "success");
+      } else {
+        awaitingSubmitReturn = false;
+        document.getElementById('writing-pending-box').classList.add('hidden');
+        document.getElementById('writing-wrong-msg').innerText =
+          "Upar show hone wali text aur aapki likhi hui text mein farq hai! Try Again dabayein.";
+        document.getElementById('writing-wrong-box').classList.remove('hidden');
+        showToast("Text match nahi hui! Try Again par click karein.", "error");
+      }
+    });
+
+    window.handleWritingTryAgainAd = function () {
+      openWritingDirectAd();
+      document.getElementById('writing-wrong-box').classList.add('hidden');
+      showToast("Ad open hua hai! Ab upar wali text dhyan se dobara likh kar submit karein.", "success");
+    };
+
+    loadWritingTask(true);
+    syncWritingUI();
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUser = user;
+        openWritingGuideModal(false);
+        const userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            document.getElementById('header-balance').innerText = `Rs ${data.balance || 0}`;
+
+            const wState = data.writingState || {};
+            const savedLock = Number(wState.lockUntil || 0);
+            const savedCount = Number(wState.dailyCompleted || 0);
+
+            if (savedLock > 0 && savedLock <= Date.now()) {
+              dailyCompletedCount = 0;
+              lockUntilTimestamp = 0;
+              update(ref(db, 'users/' + user.uid + '/writingState'), {
+                dailyCompleted: 0,
+                lockUntil: 0
+              });
+            } else {
+              dailyCompletedCount = savedCount;
+              lockUntilTimestamp = savedLock;
+            }
+            syncWritingUI();
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Start of global snippet: Please do not remove -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'DC-16361189');
+  </script>
+  <!-- End of global snippet: Please do not remove -->
+
+  <!-- Event snippet for sabii-seven.vercel.app -->
+  <script>
+    gtag('event', 'conversion', {
+      'allow_custom_scripts': true,
+      'send_to': 'DC-16361189/manau0/sabii0+standard'
+    });
+  </script>
+  <noscript>
+    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=;ord=1?" width="1" height="1" alt=""/>
+  </noscript>
+  <!-- End of event snippet: Please do not remove -->
+
+</body>
+</html>
