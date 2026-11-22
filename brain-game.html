@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii Brain Game & Chatting Room</title>
+  <title>Sabii Brain Game</title>
   <!-- Monetag All Tag -->
   <script src="https://quge5.com/88/tag.min.js" data-zone="313977" async data-cfasync="false"></script>
   <!-- Tailwind CSS -->
@@ -37,15 +37,28 @@
     }
   </script>
   <style>
+    @keyframes floatSoft {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: translateY(10px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes pulseGold {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35); }
+      50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
+    }
     body {
-      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
+      background: radial-gradient(circle at top right, #FFF9EC 0%, #FAF7F0 45%, #F2ECE1 100%);
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
     .sabii-card {
-      background: #FFFFFF;
-      border: 1px solid rgba(197, 160, 89, 0.3);
-      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(197, 160, 89, 0.32);
+      box-shadow: 0 12px 32px rgba(163, 127, 56, 0.09);
+      animation: popIn 0.35s ease out;
     }
     .sabii-gold-text {
       background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
@@ -55,218 +68,243 @@
     .sabii-button {
       background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
       color: #FFFFFF;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, filter 0.2s ease;
+      animation: pulseGold 2.4s infinite;
     }
     .sabii-button:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(197, 160, 89, 0.4);
+      filter: brightness(1.04);
+    }
+    .sabii-button:active {
+      transform: scale(0.97);
+    }
+    .option-tile {
+      transition: transform 0.18s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .option-tile:hover:not(:disabled) {
+      transform: translateX(3px);
+    }
+    .float-badge {
+      animation: floatSoft 3s ease-in-out infinite;
+    }
+    .guide-drawer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.38s ease, opacity 0.3s ease;
+    }
+    .guide-drawer.open {
+      max-height: 620px;
+      opacity: 1;
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen text-stone-800 pb-14">
+<body class="flex flex-col min-h-screen text-stone-800 pb-12">
 
   <!-- Toast Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
 
   <!-- Header -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
-      <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
-        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/25 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+      <a href="dashboard.html" class="flex items-center gap-1.5 text-sabii-darkgold font-bold text-xs sm:text-sm hover:opacity-80 transition">
+        <i class="fa-solid fa-arrow-left"></i> Dashboard
       </a>
-      <h1 class="font-brand text-xl font-bold sabii-gold-text">Brain Game & Chat</h1>
-      <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-xl">Rs 0</span>
+      <h1 class="font-brand text-xl sm:text-2xl font-bold sabii-gold-text">Brain Game</h1>
+      <div class="flex items-center gap-2">
+        <button id="guide-toggle-btn" type="button" onclick="toggleGuideBox()"
+          class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold text-xs flex items-center gap-1.5 transition active:scale-95">
+          <i class="fa-solid fa-circle-info"></i> Guide
+        </button>
+        <span id="header-balance" class="text-xs font-bold bg-sabii-gold/15 text-sabii-darkgold px-3 py-1.5 rounded-xl">Rs 0</span>
+      </div>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
-
-    <!-- Chatting Room (Placed at Top for Instant Visibility) -->
-    <section id="chatting-room-section" class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4 border-2 border-sabii-gold/40">
-      <div class="flex items-center justify-between gap-2">
-        <div>
-          <h2 class="font-brand text-xl font-bold text-stone-900 flex items-center gap-2">
-            <i class="fa-solid fa-comments text-sabii-darkgold"></i> Sabii Chatting Room
-          </h2>
-          <p class="text-[11px] text-stone-500">
-            Sab members yahan baat kar sakte hain • Messages 24h baad Firebase se auto-delete (user memory mein safe)
-          </p>
+  <!-- Expandable Guide Panel (Opens Smoothly When Guide Button Clicked) -->
+  <div class="max-w-5xl w-full mx-auto px-4 pt-3">
+    <div id="guide-drawer" class="guide-drawer">
+      <div class="sabii-card rounded-2xl p-4 sm:p-5 bg-amber-50/80 border border-amber-300 space-y-2 text-xs text-stone-700 leading-relaxed">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-stone-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-wand-magic-sparkles text-amber-600"></i> Game Guide
+          </h3>
+          <button type="button" onclick="toggleGuideBox(false)" class="text-[11px] font-bold text-stone-500 hover:text-stone-800">
+            Band Karein ✕
+          </button>
         </div>
-        <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full">
-          Live Room
+        <p><b>Sequence (1 → 2 → 3):</b> Seedha agle game par nahi ja sakte. Pehle <b>1st game</b> (Word Unscramble) poora kar ke <b>Submit</b> karein, phir <b>2nd game</b> (Odd One Out), aur phir <b>3rd game</b> (Mushkil Reverse Match).</p>
+        <p><b>Try Again Ad:</b> Agar ek baar bhi ghalati/haar hui toh <b>Try Again</b> dabayein — direct ad open hoga aur dobara sahi khel kar aage barhna hoga.</p>
+        <p><b>5-Game Ads & Daily Limit:</b> Har <b>5 games</b> jeetne ke baad (5, 10, 15...) <b>5 ads</b> (10s each) aayenge. Din mein 50 games ke baad 24h lock lagta hai.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Layout: Game Main Focus (Left/Top) + Compact Side Chat Room (Right/Bottom) -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-5 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+    <!-- PRIMARY GAME COLUMN (8 cols on desktop) -->
+    <div class="lg:col-span-8 space-y-4">
+
+      <!-- Top Progress Strip -->
+      <div class="sabii-card rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-bold text-stone-800">
+            Daily Games: <span id="game-progress-text" class="text-sabii-darkgold">0 / 50</span>
+          </p>
+          <p id="current-game-rate-label" class="text-[11px] text-stone-500">Game #1 • Reward: Rs 2</p>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span id="step-dot-1" class="w-6 h-6 rounded-full bg-amber-500 text-white text-[11px] font-extrabold flex items-center justify-center transition">1</span>
+          <span class="w-3 h-0.5 bg-stone-200"></span>
+          <span id="step-dot-2" class="w-6 h-6 rounded-full bg-stone-200 text-stone-500 text-[11px] font-extrabold flex items-center justify-center transition">2</span>
+          <span class="w-3 h-0.5 bg-stone-200"></span>
+          <span id="step-dot-3" class="w-6 h-6 rounded-full bg-stone-200 text-stone-500 text-[11px] font-extrabold flex items-center justify-center transition">3</span>
+        </div>
+      </div>
+
+      <!-- 24-Hour Lock Card (After 50 Games) -->
+      <div id="game-lock-card" class="hidden sabii-card rounded-3xl p-6 bg-amber-50/90 border border-amber-400 text-center space-y-3">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-800 flex items-center justify-center mx-auto text-xl float-badge">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h2 class="font-brand text-2xl font-bold text-stone-900">Daily 50 Games Complete</h2>
+        <p class="text-xs text-stone-700 leading-relaxed">
+          Aaj ke 50 games poore ho chuke hain. <strong>24 hours</strong> baad dobara unlock honge.
+        </p>
+        <p id="game-lock-timer" class="text-sm font-extrabold text-amber-900 bg-white border border-amber-300 rounded-2xl py-2.5 px-4 inline-block">
+          Remaining Lock Time: 24h 0m 0s
+        </p>
+      </div>
+
+      <!-- Checkpoint 5-Ads Gate Card (Every 5 Games Won: 5, 10, 15...) -->
+      <div id="checkpoint-ads-card" class="hidden sabii-card rounded-3xl p-5 sm:p-6 bg-white border border-amber-400 space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">
+              5-Game Milestone Ad Check
+            </span>
+            <h2 id="checkpoint-title" class="font-brand text-xl font-bold text-stone-900 mt-1">
+              Complete 5 Ads (10s Each)
+            </h2>
+          </div>
+          <span id="checkpoint-count-badge" class="text-xs font-bold bg-sabii-gold/15 text-sabii-darkgold px-3 py-1 rounded-xl">
+            0 / 5 Done
+          </span>
+        </div>
+
+        <p class="text-xs text-stone-600">
+          Agla game kholne ke liye in 5 ads mein se har ad par <b>10 seconds</b> rukna lazmi hai.
+        </p>
+
+        <div id="checkpoint-ads-list" class="space-y-2"></div>
+
+        <!-- Active Checkpoint Ad Timer Box -->
+        <div id="checkpoint-timer-panel" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-center space-y-2.5">
+          <p id="checkpoint-active-label" class="text-xs font-bold text-amber-900">Ad #1 Timer</p>
+          <div class="text-3xl font-extrabold text-amber-700">
+            <span id="checkpoint-seconds-left">10</span>s
+          </div>
+          <button id="checkpoint-confirm-btn" type="button" onclick="confirmCheckpointAd()"
+            class="hidden w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition">
+            Verify & Complete Ad
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Animated Brain Game Arena -->
+      <div id="game-active-card" class="sabii-card rounded-3xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span id="game-number-badge" class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
+              Game #1 of 50 • Reward Rs 2
+            </span>
+            <h2 id="mini-game-heading" class="font-brand text-2xl font-bold text-stone-900 mt-1">
+              Game 1 of 3
+            </h2>
+          </div>
+          <span id="stage-status-badge" class="text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200 px-3 py-1 rounded-xl float-badge">
+            Stage 1 / 3
+          </span>
+        </div>
+
+        <!-- Animated Question Stage Box -->
+        <div id="question-stage-box" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-stone-900 via-stone-900 to-amber-950 text-amber-100 border border-sabii-gold/40 space-y-2 shadow-inner transition-all duration-300">
+          <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-amber-300 font-bold">
+            <span id="mini-game-type-label">1st Game • Word Unscramble</span>
+            <span id="mini-game-difficulty-label" class="px-2 py-0.5 rounded bg-white/10">Step 1 / 3</span>
+          </div>
+          <p id="mini-game-question" class="text-sm sm:text-base font-bold leading-relaxed pt-1"></p>
+          <p id="mini-game-hint" class="text-[11px] text-stone-300"></p>
+        </div>
+
+        <!-- Options Grid -->
+        <div id="mini-game-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+
+        <!-- Lost / Mistake Alert Box (Forces Try Again with Direct Ad) -->
+        <div id="game-lost-box" class="hidden p-4 rounded-2xl bg-red-50 border border-red-300 text-center space-y-2.5">
+          <p id="game-lost-msg" class="text-xs font-bold text-red-700">
+            Aap is game mein haar gaye hain! Aage barhne ke liye Try Again dabayein.
+          </p>
+          <button id="btn-try-again-game" type="button" onclick="handleTryAgainButton()"
+            class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow transition active:scale-95">
+            <i class="fa-solid fa-rotate-left mr-1"></i> Try Again (Ad & Retry)
+          </button>
+        </div>
+
+        <!-- Submit Button -->
+        <div id="submit-action-wrap" class="pt-1">
+          <button id="btn-submit-game" type="button" onclick="handleSubmitCurrentGame()"
+            class="w-full py-3.5 px-4 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md">
+            <i class="fa-solid fa-check-circle mr-1"></i> Submit Game
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPACT SIDE CHAT ROOM COLUMN (4 cols on desktop, compact box below on mobile) -->
+    <aside id="chatting-room-section" class="lg:col-span-4 sabii-card rounded-3xl p-4 space-y-3 border border-sabii-gold/35">
+      <div class="flex items-center justify-between">
+        <h2 class="font-brand text-lg font-bold text-stone-900 flex items-center gap-1.5">
+          <i class="fa-solid fa-comments text-sabii-darkgold text-sm"></i> Chat Room
+        </h2>
+        <span class="text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-full">
+          24h Auto-Clear
         </span>
       </div>
 
       <div id="chat-messages-box"
-        class="h-52 overflow-y-auto p-3.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 text-xs">
-        <p class="text-stone-400 text-center py-6">Chatting room load ho raha hai...</p>
+        class="h-44 lg:h-64 overflow-y-auto p-2.5 rounded-2xl bg-stone-50 border border-stone-200 space-y-2 text-[11px]">
+        <p class="text-stone-400 text-center py-6">Chat load ho rahi hai...</p>
       </div>
 
-      <form id="chat-send-form" class="flex gap-2">
-        <input id="chat-message-input" type="text" maxlength="240" required
-          placeholder="Chatting room mein message likhein..."
-          class="flex-grow px-4 py-2.5 rounded-xl bg-stone-50 border border-stone-300 text-xs text-stone-800 focus:outline-none focus:border-sabii-gold">
-        <button type="submit" class="px-4 py-2.5 rounded-xl sabii-button text-xs font-bold shrink-0">
-          <i class="fa-solid fa-paper-plane mr-1"></i> Send
+      <form id="chat-send-form" class="flex gap-1.5">
+        <input id="chat-message-input" type="text" maxlength="200" required
+          placeholder="Message likhein..."
+          class="flex-grow min-w-0 px-3 py-2 rounded-xl bg-stone-50 border border-stone-300 text-xs text-stone-800 focus:outline-none focus:border-sabii-gold">
+        <button type="submit" class="px-3 py-2 rounded-xl sabii-button text-xs font-bold shrink-0">
+          <i class="fa-solid fa-paper-plane"></i>
         </button>
       </form>
-    </section>
+    </aside>
 
-    <!-- Progress & Guide Bar -->
-    <div class="sabii-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 bg-white">
-      <div>
-        <p class="text-xs font-bold text-stone-800">
-          Daily Games: <span id="game-progress-text" class="text-sabii-darkgold">0 / 50</span>
-        </p>
-        <p id="current-game-rate-label" class="text-[11px] text-stone-500">Game #1 • Reward: Rs 2</p>
-      </div>
-      <button type="button" onclick="openGameGuideModal(true)"
-        class="px-3.5 py-2 rounded-xl sabii-button text-xs font-bold">
-        <i class="fa-solid fa-book-open mr-1"></i> Mukammal Guide
-      </button>
-    </div>
-
-    <!-- 24-Hour Lock Card (After 50 Games) -->
-    <div id="game-lock-card" class="hidden sabii-card rounded-3xl p-6 bg-amber-50/90 border border-amber-400 text-center space-y-3">
-      <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-800 flex items-center justify-center mx-auto text-xl">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-      <h2 class="font-brand text-2xl font-bold text-stone-900">Daily 50 Brain Games Complete</h2>
-      <p class="text-xs text-stone-700 leading-relaxed">
-        Aaj ke 50 games poore ho chuke hain. Ab <strong>24 hours</strong> baad dobara unlock honge.
-      </p>
-      <p id="game-lock-timer" class="text-sm font-extrabold text-amber-900 bg-white border border-amber-300 rounded-2xl py-2.5 px-4 inline-block">
-        Remaining Lock Time: 24h 0m 0s
-      </p>
-    </div>
-
-    <!-- Checkpoint 5-Ads Gate Card (Every 5 Games Won: 5, 10, 15, 20...) -->
-    <div id="checkpoint-ads-card" class="hidden sabii-card rounded-3xl p-5 sm:p-6 bg-white border border-amber-400 space-y-4">
-      <div class="flex items-center justify-between">
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">
-            5-Game Milestone Ad Gate
-          </span>
-          <h2 id="checkpoint-title" class="font-brand text-xl font-bold text-stone-900 mt-1">
-            Complete 5 Ads (10s Each)
-          </h2>
-        </div>
-        <span id="checkpoint-count-badge" class="text-xs font-bold bg-sabii-gold/15 text-sabii-darkgold px-3 py-1 rounded-xl">
-          0 / 5 Done
-        </span>
-      </div>
-
-      <p class="text-xs text-stone-600 leading-relaxed">
-        Agla game kholne ke liye in 5 ads mein se har ad par kam az kam <b>10 seconds</b> rukna zaroori hai.
-      </p>
-
-      <div id="checkpoint-ads-list" class="space-y-2.5"></div>
-
-      <!-- Active Checkpoint Ad Timer Box -->
-      <div id="checkpoint-timer-panel" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-center space-y-3">
-        <p id="checkpoint-active-label" class="text-xs font-bold text-amber-900">Ad #1 Timer</p>
-        <div class="text-3xl font-extrabold text-amber-700">
-          <span id="checkpoint-seconds-left">10</span>s
-        </div>
-        <button id="checkpoint-confirm-btn" type="button" onclick="confirmCheckpointAd()"
-          class="hidden w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider">
-          Verify & Complete Ad
-        </button>
-      </div>
-    </div>
-
-    <!-- Active Sequential 3-Game Set Card (No Skip Allowed) -->
-    <div id="game-active-card" class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4">
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div>
-          <span id="game-number-badge" class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
-            Game #1 of 50 • Reward Rs 2
-          </span>
-          <h2 id="mini-game-heading" class="font-brand text-xl font-bold text-stone-800 mt-1">
-            Pehla Game (1 / 3)
-          </h2>
-        </div>
-        <span id="stage-status-badge" class="text-xs font-bold bg-stone-100 text-stone-700 px-3 py-1 rounded-xl">
-          1 → 2 → 3 Sequence
-        </span>
-      </div>
-
-      <!-- Mini-Game Prompt Box -->
-      <div class="p-4 rounded-2xl bg-stone-900 text-amber-100 border border-sabii-gold/40 space-y-2">
-        <div class="flex items-center justify-between text-[10px] uppercase tracking-wider text-amber-300 font-bold">
-          <span id="mini-game-type-label">Pehla Game • Word Unscramble</span>
-          <span id="mini-game-difficulty-label">Step 1</span>
-        </div>
-        <p id="mini-game-question" class="text-sm sm:text-base font-bold leading-relaxed"></p>
-        <p id="mini-game-hint" class="text-[11px] text-stone-300"></p>
-      </div>
-
-      <!-- Options Area -->
-      <div id="mini-game-options" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
-
-      <!-- Lost / Mistake Alert Box (Forces Try Again with Direct Ad) -->
-      <div id="game-lost-box" class="hidden p-4 rounded-2xl bg-red-50 border border-red-300 text-center space-y-2.5">
-        <p id="game-lost-msg" class="text-xs font-bold text-red-700">
-          Aap is game mein haar gaye hain! Agle game par jaane ke liye Try Again dabayein.
-        </p>
-        <button id="btn-try-again-game" type="button" onclick="handleTryAgainButton()"
-          class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow">
-          <i class="fa-solid fa-rotate-left mr-1"></i> Try Again (Direct Ad & Retry)
-        </button>
-      </div>
-
-      <!-- Submit Button (Completes Current Game & Moves Sequentially 1 -> 2 -> 3) -->
-      <div id="submit-action-wrap" class="pt-1">
-        <button id="btn-submit-game" type="button" onclick="handleSubmitCurrentGame()"
-          class="w-full py-3.5 px-4 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md">
-          <i class="fa-solid fa-check-circle mr-1"></i> Submit Game
-        </button>
-      </div>
-
-      <p id="game-status-note" class="text-[11px] text-stone-500 text-center">
-        Pehle 1st game poora kar ke Submit karein, phir 2nd aur phir 3rd game khulega. Ek baar bhi haare toh Try Again lazmi hai.
-      </p>
-    </div>
-
-    <!-- Detailed On-Screen Guide -->
-    <div id="onscreen-game-guide" class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-3 border border-sabii-gold/35">
-      <div class="flex items-center justify-between">
-        <h3 class="font-brand text-xl font-bold text-stone-900">Mukammal Guide — Har Game Kaise Khelna Hai</h3>
-        <button type="button" onclick="openGameGuideModal(true)" class="text-xs font-bold text-sabii-darkgold hover:underline">
-          Popup Guide
-        </button>
-      </div>
-      <div class="text-xs text-stone-700 space-y-2 leading-relaxed">
-        <p><b>1. Sequence Lazmi Hai (1 → 2 → 3):</b> Jab user khel raha ho toh woh direct agle game par nahi ja sakta. Pehle <b>1st game</b> sahi chuno aur <b>Submit</b> karo, tab <b>2nd game</b> khulega, aur uske baad <b>3rd game</b> khulega.</p>
-        <p><b>2. Pehla Game (Word Unscramble):</b> Bikhre hue letters se sahi English word chuno (is ke liye maths aana zaroori nahi). Sahi jawab select kar ke <b>Submit</b> dabayein.</p>
-        <p><b>3. Dosra Game (Odd One Out):</b> Jo word baqi group se alag ho us par tap karo aur <b>Submit</b> dabayein.</p>
-        <p><b>4. Tesra Game (Mushkil Reverse / Pattern Match):</b> Yeh 3rd game thoda mushkil hota hai — ulta/pattern word dhyan se chuno aur <b>Submit</b> dabayein.</p>
-        <p><b>5. Haarne Par Try Again:</b> Agar kisi bhi game mein <b>ek baar bhi haare</b> toh ghalat jawab count hoga aur user ko <b>Try Again</b> dabana hoga — Try Again par direct ad chalega aur user ko dobara sahi khel kar aage barhna hoga.</p>
-        <p><b>6. Har 5 Games Par 5 Ads & Daily Limit:</b> Har <b>5 games</b> jeetne ke baad (5, 10, 15, 20...) <b>5 ads</b> aayenge jin par 10-10 seconds rukna hoga. Din mein 50 games ke baad 24 hours ka lock lagega.</p>
-      </div>
-    </div>
   </main>
 
-  <!-- Detailed New User Guide Modal (Auto for New Users + Replayable) -->
+  <!-- New User Popup Guide (Also Opened via Guide Button) -->
   <div id="game-guide-modal" class="hidden fixed inset-0 z-50 bg-stone-900/75 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center max-h-[90vh] overflow-y-auto">
-      <div class="w-12 h-12 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-xl">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-xl float-badge">
         <i class="fa-solid fa-gamepad"></i>
       </div>
-      <h3 class="font-brand text-2xl font-bold text-stone-900">Brain Game Tafseeli Guide</h3>
-
+      <h3 class="font-brand text-2xl font-bold text-stone-900">Brain Game Guide</h3>
       <div class="text-xs text-stone-700 space-y-2 text-left bg-amber-50/70 border border-amber-200 rounded-2xl p-4 leading-relaxed">
-        <p><b>Step-by-Step Khelne Ka Tariqa:</b> Aap seedha agle game par jump nahi kar sakte. Pehle <b>1st game</b> solve kar ke <b>Submit</b> karein, phir <b>2nd game</b>, aur phir <b>3rd game</b> khulega.</p>
-        <p><b>1st Game (Word Unscramble):</b> Letters ko jor kar sahi word select karein (maths ki koi zaroorat nahi).</p>
-        <p><b>2nd Game (Odd One Out):</b> Jo cheez/word baqi se alag ho usay select karein.</p>
-        <p><b>3rd Game (Mushkil Challenge):</b> Yeh 3rd game mushkil hota hai — ulta/pattern word dhyan se chunein.</p>
-        <p><b>Haar & Try Again:</b> Agar ek baar bhi haare toh <b>Try Again</b> dabayein; Try Again par direct ad open hoga aur dobara khelna hoga.</p>
-        <p><b>Har 5 Games Par 5 Ads:</b> 5, 10, 15, 20... har 5 games ke baad 5 ads (10s each) poore karne honge. Din mein 50 games ke baad 24h lock lagta hai.</p>
+        <p><b>1 → 2 → 3 Sequence:</b> Seedha agle game par nahi ja sakte. Pehle 1st game (Word Unscramble) poora kar ke <b>Submit</b> karein, phir 2nd (Odd One Out), phir 3rd (Mushkil Reverse Match).</p>
+        <p><b>Try Again Ad:</b> Ek baar bhi haare toh <b>Try Again</b> par ad open hoga aur dobara khelna hoga.</p>
+        <p><b>Har 5 Games Par 5 Ads:</b> 5, 10, 15... har 5 games ke baad 5 ads (10s each) poore karein. Din mein 50 games ke baad 24h lock lagta hai.</p>
       </div>
-
       <button type="button" onclick="closeGameGuideModal()" class="w-full py-3 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider">
-        Samajh Gaya — Start Playing
+        Samajh Gaya — Start
       </button>
     </div>
   </div>
@@ -325,7 +363,7 @@
     const DAILY_GAME_LIMIT = 50;
     const LOCK_DURATION_MS = 24 * 60 * 60 * 1000;
     const MSG_EXPIRY_MS = 24 * 60 * 60 * 1000;
-    const GAME_GUIDE_KEY = "sabii_braingame_guide_seen_v2";
+    const GAME_GUIDE_KEY = "sabii_braingame_guide_seen_v3";
     const CHAT_CACHE_KEY = "sabii_user_chat_memory_v1";
 
     // Payout rule per game number (1..50):
@@ -343,7 +381,6 @@
       return { actual: 0.40, display: 2 };
     }
 
-    // Non-math 3 mini-games bank (1st: Unscramble, 2nd: Odd One Out, 3rd: Hard Reverse/Pattern)
     const stage1Bank = [
       { q: "Letters 'L - E - P - A - P' se kaunsa sahi word banta hai?", hint: "Ek mashhoor phal", opts: ["APPLE", "PEARL", "GRAPE", "PLUMB"], ans: "APPLE" },
       { q: "Letters 'E - R - T - W - A' se kaunsa sahi word banta hai?", hint: "Peene ki cheez", opts: ["WATER", "TOWER", "HEART", "EARTH"], ans: "WATER" },
@@ -375,13 +412,11 @@
     let lockUntilTimestamp = 0;
     let lockIntervalId = null;
 
-    // Sequential 0 -> 1 -> 2 stage within current game set
     let currentStageIndex = 0;
     let selectedOption = null;
     let isStageLost = false;
     let isSubmittingSet = false;
 
-    // 5-ads checkpoint state (after every 5 games won: 5, 10, 15, 20...)
     let checkpointTarget = 0;
     let checkpointLinks = [];
     let checkpointCompletedMap = {};
@@ -400,6 +435,16 @@
       setTimeout(() => toast.remove(), 4500);
     };
 
+    window.toggleGuideBox = function (forceState) {
+      const drawer = document.getElementById('guide-drawer');
+      if (!drawer) return;
+      if (typeof forceState === 'boolean') {
+        drawer.classList.toggle('open', forceState);
+      } else {
+        drawer.classList.toggle('open');
+      }
+    };
+
     window.openGameGuideModal = function (force = false) {
       if (force || !localStorage.getItem(GAME_GUIDE_KEY)) {
         document.getElementById('game-guide-modal').classList.remove('hidden');
@@ -410,6 +455,23 @@
       localStorage.setItem(GAME_GUIDE_KEY, "1");
       document.getElementById('game-guide-modal').classList.add('hidden');
     };
+
+    function updateStepDots() {
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.getElementById(`step-dot-${i}`);
+        if (!dot) continue;
+        if (i - 1 < currentStageIndex) {
+          dot.className = "w-6 h-6 rounded-full bg-emerald-600 text-white text-[11px] font-extrabold flex items-center justify-center transition";
+          dot.innerHTML = `<i class="fa-solid fa-check text-[10px]"></i>`;
+        } else if (i - 1 === currentStageIndex) {
+          dot.className = "w-6 h-6 rounded-full bg-amber-500 text-white text-[11px] font-extrabold flex items-center justify-center ring-4 ring-amber-200 transition";
+          dot.innerText = String(i);
+        } else {
+          dot.className = "w-6 h-6 rounded-full bg-stone-200 text-stone-500 text-[11px] font-extrabold flex items-center justify-center transition";
+          dot.innerText = String(i);
+        }
+      }
+    }
 
     function getStagePuzzle(stageIdx, gameNumber) {
       const seed = (gameNumber - 1) + stageIdx * 3;
@@ -431,10 +493,12 @@
       const puzzle = getStagePuzzle(currentStageIndex, gameNum);
       selectedOption = null;
 
+      updateStepDots();
+
       document.getElementById('game-number-badge').innerText =
         `Game #${gameNum} of ${DAILY_GAME_LIMIT} • Reward Rs ${rateInfo.display}`;
       document.getElementById('mini-game-heading').innerText =
-        `Game ${currentStageIndex + 1} of 3 (No Skip)`;
+        `Game ${currentStageIndex + 1} of 3`;
       document.getElementById('stage-status-badge').innerText =
         `Stage ${currentStageIndex + 1} / 3`;
       document.getElementById('mini-game-type-label').innerText = puzzle.type;
@@ -450,7 +514,7 @@
         btn.type = "button";
         btn.disabled = isStageLost;
         btn.innerText = opt;
-        btn.className = `py-3 px-4 rounded-2xl border border-stone-300 bg-stone-50 text-xs sm:text-sm font-bold text-stone-800 transition text-left ${isStageLost ? 'opacity-50 cursor-not-allowed' : 'hover:bg-amber-50 hover:border-amber-400'}`;
+        btn.className = `option-tile py-3 px-4 rounded-2xl border border-stone-300 bg-stone-50 text-xs sm:text-sm font-bold text-stone-800 text-left ${isStageLost ? 'opacity-50 cursor-not-allowed' : 'hover:bg-amber-50 hover:border-amber-400'}`;
         btn.onclick = () => {
           if (isStageLost) return;
           selectedOption = opt;
@@ -484,7 +548,7 @@
       isStageLost = false;
       selectedOption = null;
       renderCurrentMiniGame();
-      showToast("Direct ad open hua! Ab dobara sahi jawab chunein aur Submit dabayein.", "success");
+      showToast("Direct ad open hua! Ab dobara sahi jawab chunein aur Submit karein.", "success");
     };
 
     window.handleSubmitCurrentGame = async function () {
@@ -502,15 +566,13 @@
         return;
       }
 
-      // If user makes even a single mistake, mark lost and require Try Again ad
       if (selectedOption !== puzzle.ans) {
         isStageLost = true;
         renderCurrentMiniGame();
-        showToast("Aap haar gaye! Aage barhne ke liye Try Again par click kar ke ad dekhein.", "error");
+        showToast("Aap haar gaye! Aage barhne ke liye Try Again dabayein.", "error");
         return;
       }
 
-      // Move sequentially: Stage 0 -> Stage 1 -> Stage 2 -> Complete Game Set
       if (currentStageIndex < 2) {
         currentStageIndex++;
         selectedOption = null;
@@ -520,7 +582,6 @@
         return;
       }
 
-      // All 3 sequential games won — finalize reward & daily progress in Firebase
       isSubmittingSet = true;
       try {
         const completedGameNumber = dailyCompletedGames + 1;
@@ -563,7 +624,6 @@
     }
 
     function openCheckpointGateIfNeeded() {
-      // Every 5 games won: 5, 10, 15, 20, 25, 30, 35, 40, 45
       if (dailyCompletedGames > 0 && dailyCompletedGames < DAILY_GAME_LIMIT && dailyCompletedGames % 5 === 0) {
         if (checkpointTarget === dailyCompletedGames) {
           return true;
@@ -598,7 +658,7 @@
         const row = document.createElement('div');
         row.className = "p-3 rounded-2xl border border-stone-200 bg-stone-50 flex items-center justify-between gap-2";
         row.innerHTML = `
-          <span class="text-xs font-bold text-stone-800">Ad #${idx + 1} (10s Required)</span>
+          <span class="text-xs font-bold text-stone-800">Ad #${idx + 1} (10s)</span>
           <button type="button" ${isDone ? "disabled" : ""} onclick="startCheckpointAd(${idx})"
             class="px-3.5 py-1.5 rounded-xl text-xs font-bold ${isDone ? 'bg-emerald-100 text-emerald-700' : 'sabii-button'}">
             ${isDone ? "Done ✓" : "Watch Ad (10s)"}
@@ -712,7 +772,7 @@
       }
     }
 
-    // --- Live Chatting Room with 24h Firebase Auto-Cleanup & User Memory Cache ---
+    // --- Compact Chat Room with 24h Firebase Cleanup & User Memory Cache ---
     function loadCachedMessages() {
       try {
         const raw = localStorage.getItem(CHAT_CACHE_KEY);
@@ -731,21 +791,21 @@
     function renderChatMessages(msgs) {
       const box = document.getElementById('chat-messages-box');
       if (!msgs || msgs.length === 0) {
-        box.innerHTML = `<p class="text-stone-400 text-center py-6">Chatting room mein abhi koi message nahi hai.</p>`;
+        box.innerHTML = `<p class="text-stone-400 text-center py-6">Koi message nahi hai.</p>`;
         return;
       }
 
       box.innerHTML = "";
       msgs.forEach((m) => {
         const item = document.createElement('div');
-        item.className = "p-2.5 rounded-xl bg-white border border-stone-200 space-y-1";
+        item.className = "p-2 rounded-xl bg-white border border-stone-200 space-y-0.5";
         const timeStr = m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "";
         item.innerHTML = `
           <div class="flex items-center justify-between text-[10px]">
-            <span class="font-bold text-sabii-darkgold">${escapeHtml(m.sender || "User")}</span>
-            <span class="text-stone-400">${timeStr}</span>
+            <span class="font-bold text-sabii-darkgold truncate">${escapeHtml(m.sender || "User")}</span>
+            <span class="text-stone-400 shrink-0">${timeStr}</span>
           </div>
-          <p class="text-xs text-stone-800 break-words">${escapeHtml(m.text || "")}</p>
+          <p class="text-[11px] text-stone-800 break-words">${escapeHtml(m.text || "")}</p>
         `;
         box.appendChild(item);
       });
