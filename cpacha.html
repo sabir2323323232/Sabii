@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sabii Captcha Solving (Rs 1)</title>
+  <!-- Monetag All Tag -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="313898" async data-cfasync="false"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            sabii: {
+              gold: '#C5A059',
+              lightgold: '#E5D3B3',
+              darkgold: '#A37F38',
+              accent: '#D4AF37',
+              bg: '#FFFFFF',
+            }
+          },
+          fontFamily: {
+            brand: ['Cormorant Garamond', 'serif'],
+            sans: ['Montserrat', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+    }
+    .sabii-card {
+      background: #FFFFFF;
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
+    }
+    .sabii-gold-text {
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .sabii-button {
+      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
+      color: #FFFFFF;
+      transition: all 0.3s ease;
+    }
+    .sabii-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-stone-800 pb-12">
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+
+  <!-- Header -->
+  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a href="dashboard.html" class="flex items-center gap-2 text-sabii-darkgold font-bold text-sm">
+        <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+      </a>
+      <h1 class="font-brand text-xl font-bold sabii-gold-text">Captcha (Rs 1)</h1>
+      <span id="header-balance" class="text-xs font-bold bg-sabii-gold/10 text-sabii-darkgold px-3 py-1 rounded-xl">Rs 0</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-2xl w-full mx-auto px-4 py-6 space-y-5">
+
+    <!-- Page Guide Trigger & Quick Info -->
+    <div class="sabii-card rounded-2xl p-4 flex items-center justify-between gap-3 bg-white">
+      <div class="space-y-0.5">
+        <p class="text-xs font-bold text-stone-800 flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-question text-sabii-darkgold"></i> How to Solve Captcha
+        </p>
+        <p class="text-[11px] text-stone-500">Har sahi captcha par <strong>Rs 1</strong> reward milta hai.</p>
+      </div>
+      <button type="button" onclick="openGuideModal(true)" class="px-3.5 py-2 rounded-xl sabii-button text-xs font-bold shrink-0">
+        <i class="fa-solid fa-play-circle mr-1"></i> Guide Dekhein
+      </button>
+    </div>
+
+    <!-- Captcha Box -->
+    <div class="sabii-card rounded-3xl p-5 sm:p-6 bg-white space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider bg-sabii-gold/15 text-sabii-darkgold px-2.5 py-1 rounded-full">
+            Reward: Rs 1
+          </span>
+          <h2 class="font-brand text-xl font-bold text-stone-800 mt-1">Enter Captcha Code</h2>
+        </div>
+        <button type="button" onclick="generateCaptcha()" class="px-3 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-rotate"></i> New Code
+        </button>
+      </div>
+
+      <!-- Captcha Display Area -->
+      <div class="py-5 px-4 rounded-2xl bg-stone-900 text-center border border-sabii-gold/40 select-none relative overflow-hidden">
+        <div id="captcha-display" class="text-2xl sm:text-3xl font-extrabold tracking-[0.35em] text-amber-300 font-mono">
+          A7K9M2
+        </div>
+        <p class="text-[10px] text-stone-400 mt-1.5">Upar diya gaya code neeche bilkul same likhein</p>
+      </div>
+
+      <!-- User Input Form -->
+      <form id="captcha-form" class="space-y-3">
+        <input id="captcha-input" type="text" autocomplete="off" required
+          placeholder="Yahan captcha code likhein..."
+          class="w-full px-4 py-3 rounded-2xl bg-stone-50 border border-stone-300 text-sm font-bold tracking-wider uppercase text-stone-800 focus:outline-none focus:border-sabii-gold">
+
+        <button id="submit-captcha-btn" type="submit" class="w-full py-3.5 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider shadow-md">
+          <i class="fa-solid fa-check-circle mr-1"></i> Submit Captcha (Earn Rs 1)
+        </button>
+      </form>
+
+      <!-- Pending / Return Claim Box (After Ad Click) -->
+      <div id="pending-claim-box" class="hidden p-4 rounded-2xl bg-amber-50 border border-amber-300 text-center space-y-2.5">
+        <p id="pending-claim-text" class="text-xs font-bold text-amber-900">
+          Ad open ho chuka hai. Wapis aane par apna Rs 1 reward claim karein ya dobara ad open karein.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button type="button" onclick="openDirectAd()" class="flex-1 py-2.5 px-3 rounded-xl bg-stone-800 hover:bg-stone-900 text-white font-bold text-xs">
+            Open Ad Again
+          </button>
+          <button type="button" onclick="finalizeCaptchaReward()" class="flex-1 py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs">
+            Claim Rs 1 Now
+          </button>
+        </div>
+      </div>
+
+      <!-- Wrong Captcha / Try Again Box -->
+      <div id="wrong-captcha-box" class="hidden p-4 rounded-2xl bg-red-50 border border-red-300 text-center space-y-2.5">
+        <p id="wrong-captcha-msg" class="text-xs font-bold text-red-700">
+          Captcha ghalat hai! Try Again par click kar ke ad dekhein aur dobara likhein.
+        </p>
+        <button type="button" onclick="handleTryAgainAd()" class="w-full py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs uppercase tracking-wider shadow">
+          <i class="fa-solid fa-arrow-rotate-right mr-1"></i> Try Again (Ad & New Captcha)
+        </button>
+      </div>
+    </div>
+
+    <!-- Permanent Guide Card on Page -->
+    <div id="page-guide-card" class="sabii-card rounded-3xl p-5 bg-white space-y-2.5 border border-sabii-gold/30">
+      <div class="flex items-center justify-between">
+        <h3 class="font-brand text-lg font-bold text-stone-800">How to Solve Captcha</h3>
+        <button type="button" onclick="openGuideModal(true)" class="text-xs font-bold text-sabii-darkgold hover:underline">
+          Popup Guide
+        </button>
+      </div>
+      <div class="text-xs text-stone-700 space-y-1.5 leading-relaxed">
+        <p class="font-bold text-stone-900">Assalamualaikum sir medium</p>
+        <p>Apko uper ek capcha milega apne neche ose lekna ha rewar 1 rupe ha</p>
+        <p>Har tap per ads chalega 2 3, bar apko tap karna hoga kyuke es per he paise milte ha jo ham apko dete ha apne ads dekhne ha wapis ana ha apna capcha pirse full karna ha shukreya</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- How to Solve Captcha Modal (Auto for New Users + Replayable) -->
+  <div id="guide-modal" class="hidden fixed inset-0 z-50 bg-stone-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="sabii-card max-w-md w-full rounded-3xl p-6 bg-white shadow-2xl space-y-4 text-center">
+      <div class="w-12 h-12 rounded-2xl bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center mx-auto text-xl">
+        <i class="fa-solid fa-key"></i>
+      </div>
+      <h3 class="font-brand text-2xl font-bold text-stone-800">How to Solve Captcha</h3>
+
+      <div class="text-xs text-stone-700 space-y-2 text-left bg-amber-50/70 border border-amber-200 rounded-2xl p-4 leading-relaxed">
+        <p class="font-bold text-stone-900">Assalamualaikum sir medium</p>
+        <p>Apko uper ek capcha milega apne neche ose lekna ha rewar 1 rupe ha</p>
+        <p>Har tap per ads chalega 2 3, bar apko tap karna hoga kyuke es per he paise milte ha jo ham apko dete ha apne ads dekhne ha wapis ana ha apna capcha pirse full karna ha shukreya</p>
+      </div>
+
+      <button type="button" onclick="closeGuideModal()" class="w-full py-3 rounded-2xl sabii-button font-bold text-xs uppercase tracking-wider">
+        Samajh Gaya — Start Captcha
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase Scripts & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
+      authDomain: "sabi-3ea84.firebaseapp.com",
+      projectId: "sabi-3ea84",
+      storageBucket: "sabi-3ea84.firebasestorage.app",
+      messagingSenderId: "124632688151",
+      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
+      measurementId: "G-837LHT24Y3"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    const DIRECT_AD_LINK = "https://uplcm.com/4/10474554";
+    const CAPTCHA_REWARD = 1;
+    const GUIDE_STORAGE_KEY = "sabii_captcha_guide_seen_v1";
+
+    let currentUser = null;
+    let currentCaptcha = "";
+    let awaitingReturnReward = false;
+    let adOpenTimestamp = 0;
+
+    window.showToast = function (message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
+      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-2 pointer-events-auto`;
+      toast.innerHTML = `<div class="flex items-center gap-2"><span>${message}</span></div>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 4500);
+    };
+
+    window.openGuideModal = function (force = false) {
+      if (force || !localStorage.getItem(GUIDE_STORAGE_KEY)) {
+        document.getElementById('guide-modal').classList.remove('hidden');
+      }
+    };
+
+    window.closeGuideModal = function () {
+      localStorage.setItem(GUIDE_STORAGE_KEY, "1");
+      document.getElementById('guide-modal').classList.add('hidden');
+    };
+
+    window.generateCaptcha = function () {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+      let code = "";
+      for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      currentCaptcha = code;
+      awaitingReturnReward = false;
+      adOpenTimestamp = 0;
+      document.getElementById('captcha-display').innerText = code;
+      document.getElementById('captcha-input').value = "";
+      document.getElementById('wrong-captcha-box').classList.add('hidden');
+      document.getElementById('pending-claim-box').classList.add('hidden');
+    };
+
+    window.openDirectAd = function () {
+      adOpenTimestamp = Date.now();
+      window.open(DIRECT_AD_LINK, "_blank", "noopener,noreferrer");
+    };
+
+    window.finalizeCaptchaReward = async function () {
+      if (!awaitingReturnReward || !currentUser) return;
+
+      const userRef = ref(db, 'users/' + currentUser.uid);
+      const snapshot = await get(userRef);
+
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const currentBalance = Number(data.balance || 0);
+        const solvedCount = Number(data.captchaSolved || 0);
+        const newBalance = Number((currentBalance + CAPTCHA_REWARD).toFixed(2));
+
+        await update(userRef, {
+          balance: newBalance,
+          captchaSolved: solvedCount + 1
+        });
+
+        awaitingReturnReward = false;
+        showToast("Mubarak! Captcha mukammal aur Rs 1 balance mein add ho gaya.", "success");
+        generateCaptcha();
+      }
+    };
+
+    function handleUserReturnFromAd() {
+      if (!awaitingReturnReward || !adOpenTimestamp) return;
+      if (document.visibilityState === 'visible') {
+        const spentSec = (Date.now() - adOpenTimestamp) / 1000;
+        if (spentSec >= 2) {
+          finalizeCaptchaReward();
+        }
+      }
+    }
+
+    window.addEventListener('focus', handleUserReturnFromAd);
+    document.addEventListener('visibilitychange', handleUserReturnFromAd);
+
+    document.getElementById('captcha-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const entered = document.getElementById('captcha-input').value.trim().toUpperCase();
+
+      if (entered === currentCaptcha) {
+        document.getElementById('wrong-captcha-box').classList.add('hidden');
+        awaitingReturnReward = true;
+        openDirectAd();
+        document.getElementById('pending-claim-box').classList.remove('hidden');
+        showToast("Ad open hua hai! Wapis aane par Rs 1 reward mil jayega.", "success");
+      } else {
+        awaitingReturnReward = false;
+        document.getElementById('pending-claim-box').classList.add('hidden');
+        document.getElementById('wrong-captcha-msg').innerText = "Captcha ghalat likha gaya hai! Try Again par click kar ke ad dekhein.";
+        document.getElementById('wrong-captcha-box').classList.remove('hidden');
+        showToast("Captcha ghalat hai! Try Again dabayein.", "error");
+      }
+    });
+
+    window.handleTryAgainAd = function () {
+      openDirectAd();
+      generateCaptcha();
+      showToast("Ad open hua hai! Ab naya captcha sahi likh kar submit karein.", "success");
+    };
+
+    generateCaptcha();
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      } else {
+        currentUser = user;
+        openGuideModal(false);
+        const userRef = ref(db, 'users/' + user.uid);
+        onValue(userRef, (snapshot) => {
+          if (snapshot.exists()) {
+            const data = snapshot.val();
+            document.getElementById('header-balance').innerText = `Rs ${data.balance || 0}`;
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Start of global snippet: Please do not remove -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'DC-16361189');
+  </script>
+  <!-- End of global snippet: Please do not remove -->
+
+  <!-- Event snippet for sabii-seven.vercel.app -->
+  <script>
+    gtag('event', 'conversion', {
+      'allow_custom_scripts': true,
+      'send_to': 'DC-16361189/manau0/sabii0+standard'
+    });
+  </script>
+  <noscript>
+    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=;ord=1?" width="1" height="1" alt=""/>
+  </noscript>
+  <!-- End of event snippet: Please do not remove -->
+
+</body>
+</html>
