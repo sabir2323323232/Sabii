@@ -4,7 +4,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii Dashboard</title>
+  <title>Sabii - Dashboard</title>
+
+  <!-- Monetag All Tag -->
+  <script src="https://quge5.com/88/tag.min.js" data-zone="313977" async data-cfasync="false"></script>
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
@@ -13,6 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <script>
     tailwind.config = {
       theme: {
@@ -34,364 +39,252 @@
       }
     }
   </script>
+
   <style>
     body {
       background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
     }
+
     .sabii-card {
       background: #FFFFFF;
-      border: 1px solid rgba(197, 160, 89, 0.3);
-      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
-      transition: all 0.3s ease;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.06);
     }
-    .sabii-card:hover {
-      box-shadow: 0 15px 35px rgba(197, 160, 89, 0.18);
-      transform: translateY(-2px);
-    }
+
     .sabii-gold-text {
       background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
     .sabii-button {
       background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
-      background-size: 200% auto;
-      transition: all 0.3s ease;
       color: #FFFFFF;
+      transition: all 0.25s ease;
     }
+
     .sabii-button:hover {
-      background-position: right center;
       transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
+      box-shadow: 0 6px 18px rgba(197, 160, 89, 0.3);
     }
 
-    /* Compact Gol Animated Buttons Styling */
-    @keyframes floatPulse {
-      0%, 100% {
-        transform: translateY(0px) scale(1);
-        box-shadow: 0 6px 18px rgba(197, 160, 89, 0.25);
-      }
-      50% {
-        transform: translateY(-4px) scale(1.03);
-        box-shadow: 0 12px 24px rgba(197, 160, 89, 0.38);
-      }
-    }
-
-    @keyframes slowSpinRing {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .orb-btn {
-      position: relative;
+    /* Stationary glowing circle button (no up-down movement) */
+    .fixed-circle-btn {
       width: 78px;
       height: 78px;
       border-radius: 9999px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      animation: floatPulse 3s ease-in-out infinite;
-      transition: transform 0.25s ease, filter 0.25s ease;
+      background: linear-gradient(135deg, #A37F38 0%, #C5A059 55%, #D4AF37 100%);
+      box-shadow: 0 0 0 6px rgba(212, 175, 55, 0.16), 0 10px 24px rgba(163, 127, 56, 0.28);
+      transition: transform 0.2s ease, box-shadow 0.25s ease;
     }
 
-    .orb-btn:hover {
-      transform: scale(1.08) !important;
-      filter: brightness(1.06);
+    .fixed-circle-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 0 8px rgba(212, 175, 55, 0.24), 0 12px 26px rgba(163, 127, 56, 0.35);
     }
 
-    .orb-btn::before {
-      content: "";
-      position: absolute;
-      inset: -3px;
-      border-radius: 9999px;
-      border: 1.5px dashed rgba(197, 160, 89, 0.7);
-      animation: slowSpinRing 9s linear infinite;
-      pointer-events: none;
+    .fixed-circle-btn:active {
+      transform: scale(0.97);
     }
-
-    ::-webkit-scrollbar { width: 5px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #FAF9F6; }
-    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
   </style>
 </head>
-<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800 pb-28">
+<body class="flex flex-col min-h-screen text-stone-800 pb-12">
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
 
-  <!-- Old Users Only Notice Modal -->
-  <div id="old-user-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 text-center space-y-4 bg-white shadow-2xl border-2 border-sabii-gold">
-      <div class="w-14 h-14 mx-auto rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shadow">
-        <i class="fa-solid fa-bullhorn animate-bounce"></i>
-      </div>
-      <div>
-        <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-3 py-1 rounded-full mb-2">
-          Special Update For Old Members
-        </span>
-        <h3 class="text-lg font-bold text-stone-800 font-brand">Withdraw Update</h3>
-        <p class="text-xs text-stone-700 leading-relaxed mt-2 bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200 font-medium">
-          Sorry afsos se ke hamare website me update chal raha tha, us wajah se withdraw late ho gaya hai. Ab aap aane wale Sunday ko withdraw laga sakte hain. Aapke paise aapke wallet me transfer hain.
-        </p>
-      </div>
-      <button onclick="closeOldUserModal()" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider">
-        Theek Hai, Shukriya
-      </button>
-    </div>
-  </div>
-
-  <!-- Profile Details Modal -->
-  <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 space-y-5 bg-white shadow-2xl relative">
-      <div class="flex items-center justify-between border-b border-sabii-gold/20 pb-3">
-        <h3 class="text-lg font-bold text-stone-800 font-brand flex items-center gap-2">
-          <i class="fa-solid fa-user-circle text-sabii-gold"></i> User Profile Details
-        </h3>
-        <button onclick="closeProfileModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="space-y-3 text-xs">
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Full Name:</span>
-          <span id="modal-name" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Username:</span>
-          <span id="modal-username" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Email Address:</span>
-          <span id="modal-email" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Mobile Number:</span>
-          <span id="modal-phone" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">City:</span>
-          <span id="modal-city" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Total Referrals:</span>
-          <span id="modal-referrals" class="font-bold text-sabii-darkgold">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100 items-center">
-          <span class="text-stone-500 font-medium">Referral Code:</span>
-          <span id="modal-refcode" class="font-bold text-sabii-darkgold bg-sabii-gold/10 px-2 py-1 rounded">-</span>
-        </div>
-      </div>
-      <button onclick="closeProfileModal()" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider">
-        Band Karein
-      </button>
-    </div>
-  </div>
-
-  <!-- Logout Permission Modal -->
-  <div id="logout-modal" class="hidden fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-sm w-full rounded-3xl p-6 text-center space-y-4 shadow-2xl bg-white">
-      <div class="w-14 h-14 bg-red-50 border border-red-200 text-red-500 rounded-full flex items-center justify-center mx-auto text-xl">
-        <i class="fa-solid fa-right-from-bracket"></i>
-      </div>
-      <div>
-        <h3 class="text-lg font-bold text-stone-800 font-brand">Logout Ki Permission?</h3>
-        <p class="text-xs text-stone-500 mt-1">Kya aap waqai apne account se logout hona chahte hain?</p>
-      </div>
-      <div class="flex gap-3 pt-2">
-        <button onclick="closeLogoutModal()" class="flex-1 py-3 rounded-xl border border-stone-200 text-stone-600 font-bold text-xs">
-          Cancel
-        </button>
-        <button onclick="confirmLogout()" class="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs">
-          Haan, Logout
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Top Header Bar -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
-        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-sabii-gold text-white flex items-center justify-center shadow-sm">
-          <span class="font-brand font-bold text-xl sm:text-2xl">S</span>
+  <!-- Header -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-full bg-sabii-gold/15 border border-sabii-gold/35 flex items-center justify-center text-sabii-darkgold font-brand font-bold text-xl">
+          S
         </div>
         <div>
-          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
-          <span class="text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Automation Dashboard</span>
+          <span class="font-brand text-2xl font-bold sabii-gold-text leading-none block">Sabii</span>
+          <span class="text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Member Dashboard</span>
         </div>
-      </a>
+      </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <div onclick="openProfileModal()" class="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-amber-50 to-orange-50 border border-sabii-gold/30 rounded-full p-1 pr-3">
-          <div id="user-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full sabii-button flex items-center justify-center font-bold text-xs">
-            U
-          </div>
-          <div class="hidden sm:block text-left pr-1">
-            <h4 id="user-name" class="text-xs font-bold text-stone-800 leading-tight">Loading...</h4>
-            <p id="user-email" class="text-[10px] text-stone-500">...</p>
-          </div>
-        </div>
-        <button onclick="openLogoutModal()" title="Logout" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center">
-          <i class="fa-solid fa-power-off text-sm"></i>
+      <div class="flex items-center gap-2.5">
+        <span id="header-balance" class="text-xs font-bold bg-sabii-gold/15 text-sabii-darkgold px-3 py-1.5 rounded-xl">
+          Rs 0
+        </span>
+        <button type="button" onclick="handleLogout()"
+          class="px-3 py-1.5 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-600 text-xs font-semibold transition">
+          <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Area -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-5">
+  <!-- Main Content -->
+  <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 space-y-5">
 
-    <!-- Old Users Only Notice Banner -->
-    <div id="old-user-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-2 border-sabii-gold shadow-md">
-      <div class="flex items-start gap-3">
-        <div class="w-9 h-9 rounded-full sabii-button flex items-center justify-center shrink-0 mt-0.5">
-          <i class="fa-solid fa-circle-info text-sm"></i>
-        </div>
-        <div class="flex-1 text-xs text-stone-800 leading-relaxed">
-          <p class="font-bold text-amber-900 mb-1">Important Notice (Old Users):</p>
-          <p>Sorry afsos se ke hamare website me update chal raha tha, us wajah se withdraw late ho gaya hai. Ab aap aane wale Sunday ko withdraw laga sakte hain. Aapke paise aapke wallet me transfer hain.</p>
-        </div>
-        <button onclick="dismissOldUserBanner()" class="text-stone-400 hover:text-stone-700 text-xs px-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Circular Animated Buttons Together Up Top -->
-    <section class="sabii-card rounded-3xl p-4 bg-white/95">
-      <div class="flex items-center justify-between mb-3 px-1">
-        <h3 class="text-xs font-bold font-brand text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-bolt text-amber-500"></i> Quick Earning Circles
-        </h3>
-        <span class="text-[10px] text-stone-400 font-semibold">Tap to Start</span>
-      </div>
-
-      <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 place-items-center py-1">
-        <!-- 1. VIP (0.015) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-purple-800 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
-            0.015 / Ad
-          </span>
-          <a href="vip-ads.html" class="orb-btn bg-gradient-to-br from-purple-500 via-indigo-600 to-purple-800 text-white" style="animation-delay: 0s;">
-            <i class="fa-solid fa-crown text-sm text-amber-200 mb-0.5"></i>
-            <span class="text-[10px] font-bold tracking-wide">VIP</span>
-          </a>
-        </div>
-
-        <!-- 2. Gold (0.010) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-amber-900 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
-            0.010 / Ad
-          </span>
-          <a href="golden-ads.html" class="orb-btn sabii-button text-white" style="animation-delay: 0.25s;">
-            <i class="fa-solid fa-award text-sm text-amber-100 mb-0.5"></i>
-            <span class="text-[10px] font-bold tracking-wide">Gold</span>
-          </a>
-        </div>
-
-        <!-- 3. Simple (0.05) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-stone-700 bg-stone-100 border border-stone-300 px-2 py-0.5 rounded-full">
-            0.05 / Ad
-          </span>
-          <a href="free-ads.html" class="orb-btn bg-gradient-to-br from-stone-400 via-stone-600 to-stone-800 text-white" style="animation-delay: 0.5s;">
-            <i class="fa-solid fa-feather text-sm text-stone-200 mb-0.5"></i>
-            <span class="text-[10px] font-bold tracking-wide">Simple</span>
-          </a>
-        </div>
-
-        <!-- 4. Captcha Solve -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full leading-tight text-center">
-            Per Captcha 1 Rupe Available 20
-          </span>
-          <a href="cpacha.html" class="orb-btn bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-800 text-white" style="animation-delay: 0.75s;">
-            <i class="fa-solid fa-shield-halved text-sm text-emerald-100 mb-0.5"></i>
-            <span class="text-[9px] font-bold leading-tight px-1">Captcha<br>Solve</span>
-          </a>
-        </div>
-
-        <!-- 5. Writing and Earn -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-orange-800 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full leading-tight text-center">
-            Per Page 1.1 Rupe Available 20
-          </span>
-          <a href="Dora.html" class="orb-btn bg-gradient-to-br from-amber-500 via-orange-600 to-amber-800 text-white" style="animation-delay: 1s;">
-            <i class="fa-solid fa-pen-nib text-sm text-amber-100 mb-0.5"></i>
-            <span class="text-[9px] font-bold leading-tight px-1">Writing<br>and Earn</span>
-          </a>
-        </div>
-
-        <!-- 6. Brain Game (Side of Writing Button) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-indigo-800 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full leading-tight text-center">
-            Per Game 2 Rupe Available 50 Games
-          </span>
-          <a href="brain-game.html" class="orb-btn bg-gradient-to-br from-indigo-500 via-violet-600 to-purple-800 text-white" style="animation-delay: 1.25s;">
-            <i class="fa-solid fa-brain text-sm text-indigo-100 mb-0.5"></i>
-            <span class="text-[9px] font-bold leading-tight px-1">Brain<br>Game</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Wallet Balance Widget -->
-    <div class="flex items-center justify-between">
-      <div class="flex items-center justify-between bg-gradient-to-r from-white via-amber-50/40 to-white border border-sabii-gold/30 rounded-2xl py-3 px-4 shadow-sm w-full sm:w-80">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-sabii-darkgold text-white flex items-center justify-center">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
-          <div class="text-left">
-            <p class="text-[9px] text-stone-400 uppercase font-bold tracking-wider leading-none">Wallet Balance</p>
-            <span id="header-balance" class="text-sm sm:text-base font-bold sabii-gold-text">Rs 0</span>
-          </div>
-        </div>
-        <button onclick="toggleBalanceVisibility()" title="Hide/Show Balance" class="text-stone-400 hover:text-stone-600 pl-2">
-          <i id="balance-eye-icon" class="fa-solid fa-eye"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Muslim Ad Network Banner Container -->
-    <div class="w-full overflow-hidden flex flex-col items-center justify-center bg-white/80 rounded-2xl p-3 border border-sabii-gold/20 shadow-sm">
-      <ins class="bbbac5e5" data-key="84141f0674365d0bb6cef7d4687c3f53"></ins>
-      <script async src="https://cdn77.aj2742.top/dcfc6ab7.js"></script>
-      <p style="text-align:center;" class="text-[10px] text-stone-400 mt-1">
-        <a href="https://muslimadnetwork.com/?pub=sabii-seven.vercel.app" target="_blank" rel="noopener">Ads By Muslim Ad Network</a>
+    <!-- Daily 1-Line Islamic Quote Strip (Replaces Islamic Ad Banner) -->
+    <div class="sabii-card rounded-2xl px-4 py-3 bg-gradient-to-r from-amber-50/90 via-white to-amber-50/90 border border-sabii-gold/35 flex items-center gap-3">
+      <span class="w-7 h-7 rounded-full bg-sabii-gold/15 text-sabii-darkgold flex items-center justify-center shrink-0 text-xs">
+        <i class="fa-solid fa-moon"></i>
+      </span>
+      <p id="daily-islamic-quote" class="text-xs sm:text-sm font-semibold text-stone-800 truncate sm:whitespace-normal">
+        Indeed, with hardship comes ease. (Quran 94:6)
       </p>
     </div>
 
+    <!-- Top Balance & Quick Action Card -->
+    <div class="sabii-card rounded-3xl p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Available Wallet Balance</p>
+        <h2 id="main-balance" class="text-3xl font-extrabold sabii-gold-text mt-1">Rs 0</h2>
+        <p id="user-greeting" class="text-xs text-stone-500 mt-1">Welcome back, Member</p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5">
+        <a href="withdraw.html"
+          class="px-4 py-2.5 rounded-xl sabii-button text-xs font-bold uppercase tracking-wider flex items-center gap-2 shadow">
+          <i class="fa-solid fa-wallet"></i> Withdraw
+        </a>
+      </div>
+    </div>
+
+    <!-- Salary Jobs (20k Monthly & 50k Monthly Coming Soon) + Stationary Circular Button -->
+    <section class="sabii-card rounded-3xl p-5 sm:p-6 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="font-brand text-xl font-bold text-stone-900">Salary Jobs</h3>
+          <p class="text-xs text-stone-500">Monthly fixed salary plans</p>
+        </div>
+        <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">
+          Coming Soon
+        </span>
+      </div>
+
+      <!-- Two Salary Buttons Above Stationary Circular Button -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <button type="button" onclick="showComingSoonToast('20k Monthly Salary Job')"
+          class="w-full py-3 px-4 rounded-2xl border border-sabii-gold/40 bg-amber-50/60 hover:bg-amber-100/70 text-stone-800 flex items-center justify-between transition">
+          <span class="text-xs sm:text-sm font-bold flex items-center gap-2">
+            <i class="fa-solid fa-briefcase text-sabii-darkgold"></i> 20k Monthly
+          </span>
+          <span class="text-[10px] font-extrabold uppercase bg-amber-200/80 text-amber-900 px-2.5 py-1 rounded-full">
+            Coming Soon
+          </span>
+        </button>
+
+        <button type="button" onclick="showComingSoonToast('50k Monthly Salary Job')"
+          class="w-full py-3 px-4 rounded-2xl border border-sabii-gold/40 bg-amber-50/60 hover:bg-amber-100/70 text-stone-800 flex items-center justify-between transition">
+          <span class="text-xs sm:text-sm font-bold flex items-center gap-2">
+            <i class="fa-solid fa-crown text-sabii-darkgold"></i> 50k Monthly
+          </span>
+          <span class="text-[10px] font-extrabold uppercase bg-amber-200/80 text-amber-900 px-2.5 py-1 rounded-full">
+            Coming Soon
+          </span>
+        </button>
+      </div>
+
+      <!-- Stationary Gol Button Directly Below (No Up-Down Motion) -->
+      <div class="pt-2 flex flex-col items-center justify-center text-center space-y-2">
+        <a href="brain-game.html" aria-label="Play Brain Game"
+          class="fixed-circle-btn flex flex-col items-center justify-center text-white">
+          <i class="fa-solid fa-gamepad text-lg"></i>
+          <span class="text-[10px] font-extrabold uppercase tracking-wider mt-0.5">Play</span>
+        </a>
+        <span class="text-[11px] font-semibold text-stone-500">Quick Brain Game</span>
+      </div>
+    </section>
+
+    <!-- Core Earning Modules Grid -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <a href="vip-ads.html"
+        class="sabii-card rounded-2xl p-4 flex items-center justify-between hover:border-sabii-gold transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
+            <i class="fa-solid fa-gem"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-stone-800">VIP Ads</h4>
+            <p class="text-[11px] text-stone-500">High priority ad tasks</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-stone-400"></i>
+      </a>
+
+      <a href="golden-ads.html"
+        class="sabii-card rounded-2xl p-4 flex items-center justify-between hover:border-sabii-gold transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center">
+            <i class="fa-solid fa-star"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-stone-800">Golden Ads</h4>
+            <p class="text-[11px] text-stone-500">Daily golden ad rewards</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-stone-400"></i>
+      </a>
+
+      <a href="simple-ads.html"
+        class="sabii-card rounded-2xl p-4 flex items-center justify-between hover:border-sabii-gold transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-stone-100 text-stone-700 flex items-center justify-center">
+            <i class="fa-solid fa-ad"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-stone-800">Simple Ads</h4>
+            <p class="text-[11px] text-stone-500">Quick daily ad viewing</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-stone-400"></i>
+      </a>
+
+      <a href="captcha.html"
+        class="sabii-card rounded-2xl p-4 flex items-center justify-between hover:border-sabii-gold transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-stone-800">Captcha Task</h4>
+            <p class="text-[11px] text-stone-500">Solve daily captchas</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-stone-400"></i>
+      </a>
+
+      <a href="writing.html"
+        class="sabii-card rounded-2xl p-4 flex items-center justify-between hover:border-sabii-gold transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+            <i class="fa-solid fa-pen-nib"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-stone-800">Writing Task</h4>
+            <p class="text-[11px] text-stone-500">Copy & type English lines</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-stone-400"></i>
+      </a>
+
+      <a href="brain-game.html"
+        class="sabii-card rounded-2xl p-4 flex items-center justify-between hover:border-sabii-gold transition">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center">
+            <i class="fa-solid fa-brain"></i>
+          </div>
+          <div>
+            <h4 class="text-sm font-bold text-stone-800">Brain Game & Chat</h4>
+            <p class="text-[11px] text-stone-500">3-stage game & chat room</p>
+          </div>
+        </div>
+        <i class="fa-solid fa-chevron-right text-xs text-stone-400"></i>
+      </a>
+    </section>
+
   </main>
 
-  <!-- Fixed Bottom Menu Bar -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-40">
-    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-2">
-      <a href="payment.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 text-emerald-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-credit-card text-emerald-600 text-sm"></i> Payment
-      </a>
-      <a href="gmail-selling.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-sky-50 to-sky-100 border border-sky-200 text-sky-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-envelope-open-text text-sky-600 text-sm"></i> Gmail Rs 50
-      </a>
-      <a href="referral.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 text-orange-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-users text-orange-600 text-sm"></i> Ref 50 Rs
-      </a>
-      <a href="help-centre.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-rose-50 to-rose-100 border border-rose-200 text-rose-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-headset text-rose-600 text-sm"></i> Help
-      </a>
-    </div>
-  </nav>
-
-  <!-- Footer -->
-  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-28 shadow-inner">
-    &copy; Sabii Application. Powered by SABIPK.
-  </footer>
-
-  <!-- Firebase Scripts & Logic -->
+  <!-- Firebase & Dashboard Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -411,137 +304,66 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    let isBalanceHidden = false;
-    let actualBalance = 0;
-    let currentUid = null;
+    // One short Islamic quote per day (rotates automatically by day of year)
+    const dailyIslamicQuotes = [
+      "Indeed, with hardship comes ease. (Quran 94:6)",
+      "Allah does not burden a soul beyond that it can bear. (Quran 2:286)",
+      "Speak good or remain silent. (Hadith)",
+      "Be grateful, and I will surely increase you. (Quran 14:7)",
+      "Trust in Allah, and tie your camel. (Hadith)",
+      "Allah is with those who are patient. (Quran 2:153)",
+      "The best among you are those who have the best manners. (Hadith)"
+    ];
 
-    function handleOldUserNotice(uid, userData, authUser) {
-      if (userData.isNewUser === true) return;
-
-      const cutoffDate = new Date("2026-11-22T00:00:00Z").getTime();
-      const rawCreated = userData.createdAt || userData.registeredAt || userData.joinedAt || authUser?.metadata?.creationTime;
-      const createdMs = rawCreated ? new Date(rawCreated).getTime() : NaN;
-
-      const isOldUser = !Number.isNaN(createdMs) ? createdMs < cutoffDate : true;
-      if (!isOldUser) return;
-
-      const storageKey = `oldUserNoticeSeen_${uid}`;
-      if (!localStorage.getItem(storageKey)) {
-        document.getElementById('old-user-banner').classList.remove('hidden');
-        document.getElementById('old-user-modal').classList.remove('hidden');
-      }
+    function setDailyIslamicQuote() {
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 0);
+      const dayOfYear = Math.floor((now - startOfYear) / 86400000);
+      const quote = dailyIslamicQuotes[dayOfYear % dailyIslamicQuotes.length];
+      const el = document.getElementById('daily-islamic-quote');
+      if (el) el.innerText = quote;
     }
-
-    window.closeOldUserModal = function() {
-      document.getElementById('old-user-modal').classList.add('hidden');
-      if (currentUid) {
-        localStorage.setItem(`oldUserNoticeSeen_${currentUid}`, "1");
-      }
-    };
-
-    window.dismissOldUserBanner = function() {
-      document.getElementById('old-user-banner').classList.add('hidden');
-      if (currentUid) {
-        localStorage.setItem(`oldUserNoticeSeen_${currentUid}`, "1");
-      }
-    };
 
     window.showToast = function (message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
-      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
-      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
-      toast.innerHTML = `<div class="flex items-center gap-2">${icon}<span>${message}</span></div><button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>`;
+      const bg = type === 'success'
+        ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold'
+        : 'bg-amber-900 border-amber-400 text-amber-100';
+      toast.className = `p-3.5 rounded-xl border ${bg} shadow-xl text-xs font-semibold pointer-events-auto`;
+      toast.innerText = message;
       container.appendChild(toast);
-      setTimeout(() => toast.classList.remove('translate-y-[-10px]', 'opacity-0'), 10);
-      setTimeout(() => {
-        toast.classList.add('opacity-0');
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
+      setTimeout(() => toast.remove(), 3500);
     };
 
-    window.toggleBalanceVisibility = function() {
-      isBalanceHidden = !isBalanceHidden;
-      const balanceEl = document.getElementById('header-balance');
-      const eyeIcon = document.getElementById('balance-eye-icon');
-      if (isBalanceHidden) {
-        balanceEl.innerText = "Rs *****";
-        eyeIcon.className = "fa-solid fa-eye-slash";
-      } else {
-        balanceEl.innerText = `Rs ${actualBalance}`;
-        eyeIcon.className = "fa-solid fa-eye";
-      }
+    window.showComingSoonToast = function (featureName) {
+      showToast(`${featureName} — Coming Soon!`, 'info');
     };
 
-    window.openProfileModal = function() { document.getElementById('profile-modal').classList.remove('hidden'); };
-    window.closeProfileModal = function() { document.getElementById('profile-modal').classList.add('hidden'); };
-    window.openLogoutModal = function() { document.getElementById('logout-modal').classList.remove('hidden'); };
-    window.closeLogoutModal = function() { document.getElementById('logout-modal').classList.add('hidden'); };
-
-    window.confirmLogout = async function() {
-      try {
-        await signOut(auth);
-        window.location.href = "index.html";
-      } catch (error) {
-        showToast("Logout karne me masla aya!", "error");
-      }
+    window.handleLogout = async function () {
+      await signOut(auth);
+      window.location.href = "index.html";
     };
+
+    setDailyIslamicQuote();
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "index.html";
       } else {
-        currentUid = user.uid;
         const userRef = ref(db, 'users/' + user.uid);
         onValue(userRef, (snapshot) => {
           if (snapshot.exists()) {
             const data = snapshot.val();
-            actualBalance = data.balance || 0;
-
-            handleOldUserNotice(user.uid, data, user);
-            
-            document.getElementById('user-name').innerText = data.name || "User";
-            document.getElementById('user-email').innerText = data.email || user.email;
-            document.getElementById('user-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
-
-            if (!isBalanceHidden) {
-              document.getElementById('header-balance').innerText = `Rs ${actualBalance}`;
-            }
-            document.getElementById('modal-name').innerText = data.name || "-";
-            document.getElementById('modal-username').innerText = data.username || "-";
-            document.getElementById('modal-email').innerText = data.email || user.email;
-            document.getElementById('modal-phone').innerText = data.phone || "-";
-            document.getElementById('modal-city').innerText = data.city || "-";
-            document.getElementById('modal-referrals').innerText = data.totalReferrals || 0;
-            document.getElementById('modal-refcode').innerText = data.referralCode || "-";
+            const bal = Number(data.balance || 0);
+            document.getElementById('header-balance').innerText = `Rs ${bal}`;
+            document.getElementById('main-balance').innerText = `Rs ${bal}`;
+            const name = data.name || data.username || (user.email ? user.email.split("@")[0] : "Member");
+            document.getElementById('user-greeting').innerText = `Welcome back, ${name}`;
           }
         });
       }
     });
   </script>
-
-  <!-- Start of global snippet: Please do not remove -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'DC-16361189');
-  </script>
-  <!-- End of global snippet: Please do not remove -->
-
-  <!-- Event snippet for sabii-seven.vercel.app -->
-  <script>
-    gtag('event', 'conversion', {
-      'allow_custom_scripts': true,
-      'send_to': 'DC-16361189/manau0/sabii0+standard'
-    });
-  </script>
-  <noscript>
-    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=;ord=1?" width="1" height="1" alt=""/>
-  </noscript>
-  <!-- End of event snippet: Please do not remove -->
-
 </body>
 </html>
