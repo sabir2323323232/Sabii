@@ -67,23 +67,7 @@
       box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
     }
 
-    /* Compact Gol Animated Buttons Styling */
-    @keyframes floatPulse {
-      0%, 100% {
-        transform: translateY(0px) scale(1);
-        box-shadow: 0 6px 18px rgba(197, 160, 89, 0.25);
-      }
-      50% {
-        transform: translateY(-4px) scale(1.03);
-        box-shadow: 0 12px 24px rgba(197, 160, 89, 0.38);
-      }
-    }
-
-    @keyframes slowSpinRing {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
+    /* Stationary Gol Buttons Styling (No Animation) */
     .orb-btn {
       position: relative;
       width: 78px;
@@ -94,13 +78,12 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      animation: floatPulse 3s ease-in-out infinite;
-      transition: transform 0.25s ease, filter 0.25s ease;
+      box-shadow: 0 6px 18px rgba(197, 160, 89, 0.25);
+      transition: filter 0.2s ease;
     }
 
     .orb-btn:hover {
-      transform: scale(1.08) !important;
-      filter: brightness(1.06);
+      filter: brightness(1.05);
     }
 
     .orb-btn::before {
@@ -109,7 +92,6 @@
       inset: -3px;
       border-radius: 9999px;
       border: 1.5px dashed rgba(197, 160, 89, 0.7);
-      animation: slowSpinRing 9s linear infinite;
       pointer-events: none;
     }
 
@@ -127,7 +109,7 @@
   <div id="old-user-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="sabii-card max-w-md w-full rounded-3xl p-6 text-center space-y-4 bg-white shadow-2xl border-2 border-sabii-gold">
       <div class="w-14 h-14 mx-auto rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shadow">
-        <i class="fa-solid fa-bullhorn animate-bounce"></i>
+        <i class="fa-solid fa-bullhorn"></i>
       </div>
       <div>
         <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-3 py-1 rounded-full mb-2">
@@ -261,13 +243,38 @@
       </div>
     </div>
 
-    <!-- Circular Animated Buttons Together Up Top -->
-    <section class="sabii-card rounded-3xl p-4 bg-white/95">
-      <div class="flex items-center justify-between mb-3 px-1">
+    <!-- Circular Buttons Together Up Top -->
+    <section class="sabii-card rounded-3xl p-4 bg-white/95 space-y-4">
+      <div class="flex items-center justify-between px-1">
         <h3 class="text-xs font-bold font-brand text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
           <i class="fa-solid fa-bolt text-amber-500"></i> Quick Earning Circles
         </h3>
         <span class="text-[10px] text-stone-400 font-semibold">Tap to Start</span>
+      </div>
+
+      <!-- Two Extra Gol Buttons Above Existing Gol Buttons (Coming Soon) -->
+      <div class="flex flex-wrap items-center justify-center gap-5 pb-2 border-b border-sabii-gold/15">
+        <div class="flex flex-col items-center gap-1.5">
+          <span class="text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
+            Coming Soon
+          </span>
+          <button type="button" onclick="showComingSoonToast('Data Entry Work — Per Data 100 Rupe')"
+            class="orb-btn bg-gradient-to-br from-amber-500 via-yellow-600 to-amber-800 text-white">
+            <i class="fa-solid fa-keyboard text-sm text-amber-100 mb-0.5"></i>
+            <span class="text-[8px] font-bold leading-tight px-1">Data Entry<br>100 Rs</span>
+          </button>
+        </div>
+
+        <div class="flex flex-col items-center gap-1.5">
+          <span class="text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
+            Coming Soon
+          </span>
+          <button type="button" onclick="showComingSoonToast('Salary Base Work — Monthly 25k')"
+            class="orb-btn bg-gradient-to-br from-stone-600 via-amber-700 to-stone-900 text-white">
+            <i class="fa-solid fa-briefcase text-sm text-amber-200 mb-0.5"></i>
+            <span class="text-[8px] font-bold leading-tight px-1">Salary Base<br>Monthly 25k</span>
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 place-items-center py-1">
@@ -276,7 +283,7 @@
           <span class="text-[9px] font-bold text-purple-800 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
             0.015 / Ad
           </span>
-          <a href="vip-ads.html" class="orb-btn bg-gradient-to-br from-purple-500 via-indigo-600 to-purple-800 text-white" style="animation-delay: 0s;">
+          <a href="vip-ads.html" class="orb-btn bg-gradient-to-br from-purple-500 via-indigo-600 to-purple-800 text-white">
             <i class="fa-solid fa-crown text-sm text-amber-200 mb-0.5"></i>
             <span class="text-[10px] font-bold tracking-wide">VIP</span>
           </a>
@@ -287,7 +294,7 @@
           <span class="text-[9px] font-bold text-amber-900 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
             0.010 / Ad
           </span>
-          <a href="golden-ads.html" class="orb-btn sabii-button text-white" style="animation-delay: 0.25s;">
+          <a href="golden-ads.html" class="orb-btn sabii-button text-white">
             <i class="fa-solid fa-award text-sm text-amber-100 mb-0.5"></i>
             <span class="text-[10px] font-bold tracking-wide">Gold</span>
           </a>
@@ -298,7 +305,7 @@
           <span class="text-[9px] font-bold text-stone-700 bg-stone-100 border border-stone-300 px-2 py-0.5 rounded-full">
             0.05 / Ad
           </span>
-          <a href="free-ads.html" class="orb-btn bg-gradient-to-br from-stone-400 via-stone-600 to-stone-800 text-white" style="animation-delay: 0.5s;">
+          <a href="free-ads.html" class="orb-btn bg-gradient-to-br from-stone-400 via-stone-600 to-stone-800 text-white">
             <i class="fa-solid fa-feather text-sm text-stone-200 mb-0.5"></i>
             <span class="text-[10px] font-bold tracking-wide">Simple</span>
           </a>
@@ -309,7 +316,7 @@
           <span class="text-[9px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full leading-tight text-center">
             Per Captcha 1 Rupe Available 20
           </span>
-          <a href="cpacha.html" class="orb-btn bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-800 text-white" style="animation-delay: 0.75s;">
+          <a href="cpacha.html" class="orb-btn bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-800 text-white">
             <i class="fa-solid fa-shield-halved text-sm text-emerald-100 mb-0.5"></i>
             <span class="text-[9px] font-bold leading-tight px-1">Captcha<br>Solve</span>
           </a>
@@ -320,7 +327,7 @@
           <span class="text-[9px] font-bold text-orange-800 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full leading-tight text-center">
             Per Page 1.1 Rupe Available 20
           </span>
-          <a href="Dora.html" class="orb-btn bg-gradient-to-br from-amber-500 via-orange-600 to-amber-800 text-white" style="animation-delay: 1s;">
+          <a href="Dora.html" class="orb-btn bg-gradient-to-br from-amber-500 via-orange-600 to-amber-800 text-white">
             <i class="fa-solid fa-pen-nib text-sm text-amber-100 mb-0.5"></i>
             <span class="text-[9px] font-bold leading-tight px-1">Writing<br>and Earn</span>
           </a>
@@ -331,7 +338,7 @@
           <span class="text-[9px] font-bold text-indigo-800 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full leading-tight text-center">
             Per Game 2 Rupe Available 50 Games
           </span>
-          <a href="brain-game.html" class="orb-btn bg-gradient-to-br from-indigo-500 via-violet-600 to-purple-800 text-white" style="animation-delay: 1.25s;">
+          <a href="brain-game.html" class="orb-btn bg-gradient-to-br from-indigo-500 via-violet-600 to-purple-800 text-white">
             <i class="fa-solid fa-brain text-sm text-indigo-100 mb-0.5"></i>
             <span class="text-[9px] font-bold leading-tight px-1">Brain<br>Game</span>
           </a>
@@ -357,12 +364,10 @@
       </div>
     </div>
 
-    <!-- Muslim Ad Network Banner Container -->
-    <div class="w-full overflow-hidden flex flex-col items-center justify-center bg-white/80 rounded-2xl p-3 border border-sabii-gold/20 shadow-sm">
-      <ins class="bbbac5e5" data-key="84141f0674365d0bb6cef7d4687c3f53"></ins>
-      <script async src="https://cdn77.aj2742.top/dcfc6ab7.js"></script>
-      <p style="text-align:center;" class="text-[10px] text-stone-400 mt-1">
-        <a href="https://muslimadnetwork.com/?pub=sabii-seven.vercel.app" target="_blank" rel="noopener">Ads By Muslim Ad Network</a>
+    <!-- Daily 1-Line Urdu Islamic Quote (Replaces Islamic Ad Banner) -->
+    <div class="w-full overflow-hidden flex items-center justify-center bg-white/90 rounded-2xl px-4 py-3.5 border border-sabii-gold/25 shadow-sm text-center">
+      <p id="daily-urdu-islamic-quote" dir="rtl" class="text-xs sm:text-sm font-semibold text-stone-800">
+        بے شک ہر مشکل کے ساتھ آسانی ہے۔
       </p>
     </div>
 
@@ -414,6 +419,31 @@
     let isBalanceHidden = false;
     let actualBalance = 0;
     let currentUid = null;
+
+    // One short Urdu Islamic quote per day
+    const dailyUrduQuotes = [
+      "بے شک ہر مشکل کے ساتھ آسانی ہے۔",
+      "اللہ صبر کرنے والوں کے ساتھ ہے۔",
+      "اچھی بات کہنا یا خاموش رہنا بہترین عمل ہے۔",
+      "شکر کرو گے تو میں تمہیں اور زیادہ دوں گا۔",
+      "اللہ پر بھروسہ کرو اور محنت جاری رکھو۔",
+      "بہترین انسان وہ ہے جو دوسروں کو فائدہ پہنچائے۔",
+      "رزق حلال میں حقیقی برکت ہوتی ہے۔"
+    ];
+
+    function setDailyUrduQuote() {
+      const now = new Date();
+      const startOfYear = new Date(now.getFullYear(), 0, 0);
+      const dayOfYear = Math.floor((now - startOfYear) / 86400000);
+      const el = document.getElementById('daily-urdu-islamic-quote');
+      if (el) {
+        el.innerText = dailyUrduQuotes[dayOfYear % dailyUrduQuotes.length];
+      }
+    }
+
+    window.showComingSoonToast = function(title) {
+      showToast(`${title} — Coming Soon!`, 'success');
+    };
 
     function handleOldUserNotice(uid, userData, authUser) {
       if (userData.isNewUser === true) return;
@@ -487,6 +517,8 @@
         showToast("Logout karne me masla aya!", "error");
       }
     };
+
+    setDailyUrduQuote();
 
     onAuthStateChanged(auth, (user) => {
       if (!user) {
