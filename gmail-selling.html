@@ -131,9 +131,9 @@
         </h3>
         <ul class="text-xs text-stone-600 space-y-1 list-disc list-inside">
           <li>Har fresh Gmail ke aapko <span class="font-bold sabii-gold-text">Rs 40</span> milenge.</li>
-          <li>Password hamesha <span class="font-bold text-stone-800 bg-sabii-gold/20 px-1.5 py-0.5 rounded">sgsg1122</span> hona chahiye.</li>
+          <li>Mails ka password hamesha <span class="font-bold text-stone-800 bg-sabii-gold/20 px-1.5 py-0.5 rounded">sgsg1122</span> rakhna lazmi hai.</li>
           <li>Gmail me koi mobile number add nahi hona chahiye (Fresh honi chahiye).</li>
-          <li>Admin approval ke baad amount aapke balance me add ho jayegi.oske bad remove karna hodse gamil lamzi.</li>
+          <li>Admin approval ke baad amount aapke balance me add ho jayegi. Uske baad khud se Gmail remove karna lazmi hai.</li>
         </ul>
       </div>
 
@@ -151,7 +151,7 @@
           <h3 class="text-base font-bold text-stone-800 font-brand flex items-center gap-2">
             <i class="fa-solid fa-paper-plane text-sabii-gold"></i> Submit Gmail Account
           </h3>
-          <p class="text-xs text-stone-400">Apni banayi hui fresh Gmail aur password yahan submit karein.</p>
+          <p class="text-xs text-stone-400">Apni banayi hui fresh Gmail aur password (<span class="font-bold text-stone-600">sgsg1122</span>) yahan submit karein.</p>
         </div>
 
         <form id="gmail-form" onsubmit="handleGmailSubmit(event)" class="space-y-4">
@@ -167,10 +167,10 @@
 
           <!-- Box 2: Password -->
           <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Password (Rule: aass1122)</label>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Password (Rule: sgsg1122 rakhna hai)</label>
             <div class="relative">
               <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-sabii-gold"><i class="fa-solid fa-lock"></i></span>
-              <input type="text" id="gmail-password" required value="aass1122" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800 font-bold">
+              <input type="text" id="gmail-password" required value="sgsg1122" class="w-full pl-10 pr-4 py-2.5 rounded-xl text-xs sabii-input text-stone-800 font-bold">
             </div>
           </div>
 
@@ -282,8 +282,8 @@
       const email = document.getElementById('gmail-address').value.trim();
       const password = document.getElementById('gmail-password').value.trim();
 
-      if (password !== 'aass1122') {
-        showToast("Password hamesha 'aass1122' hona lazmi hai!", "error");
+      if (password !== 'sgsg1122') {
+        showToast("Mails ka password hamesha 'sgsg1122' rakhna lazmi hai!", "error");
         return;
       }
 
@@ -318,7 +318,7 @@
 
         showToast("Gmail kamyabi se admin ko bhej di gayi hai!", "success");
         document.getElementById('gmail-form').reset();
-        document.getElementById('gmail-password').value = 'aass1122'; // Keep default rule password
+        document.getElementById('gmail-password').value = 'sgsg1122'; // Keep default rule password
 
       } catch (err) {
         console.error(err);
