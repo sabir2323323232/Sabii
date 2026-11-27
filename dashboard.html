@@ -1,579 +1,423 @@
 
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sabii Dashboard</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            sabii: {
-              gold: '#C5A059',
-              lightgold: '#E5D3B3',
-              darkgold: '#A37F38',
-              accent: '#D4AF37',
-              bg: '#FFFFFF',
-            }
-          },
-          fontFamily: {
-            brand: ['Cormorant Garamond', 'serif'],
-            sans: ['Montserrat', 'sans-serif'],
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    body {
-      background: linear-gradient(135deg, #FAF9F6 0%, #F5F0EB 100%);
-      font-family: 'Montserrat', sans-serif;
-      min-height: 100vh;
-    }
-    .sabii-card {
-      background: #FFFFFF;
-      border: 1px solid rgba(197, 160, 89, 0.3);
-      box-shadow: 0 10px 30px rgba(197, 160, 89, 0.08);
-      transition: all 0.3s ease;
-    }
-    .sabii-card:hover {
-      box-shadow: 0 15px 35px rgba(197, 160, 89, 0.18);
-      transform: translateY(-2px);
-    }
-    .sabii-gold-text {
-      background: linear-gradient(135deg, #A37F38 0%, #C5A059 50%, #D4AF37 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .sabii-button {
-      background: linear-gradient(135deg, #C5A059 0%, #D4AF37 50%, #A37F38 100%);
-      background-size: 200% auto;
-      transition: all 0.3s ease;
-      color: #FFFFFF;
-    }
-    .sabii-button:hover {
-      background-position: right center;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.35);
-    }
-
-    /* Stationary Gol Buttons Styling (No Animation) */
-    .orb-btn {
-      position: relative;
-      width: 78px;
-      height: 78px;
-      border-radius: 9999px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(197, 160, 89, 0.25);
-      transition: filter 0.2s ease;
-    }
-
-    .orb-btn:hover {
-      filter: brightness(1.05);
-    }
-
-    .orb-btn::before {
-      content: "";
-      position: absolute;
-      inset: -3px;
-      border-radius: 9999px;
-      border: 1.5px dashed rgba(197, 160, 89, 0.7);
-      pointer-events: none;
-    }
-
-    ::-webkit-scrollbar { width: 5px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #FAF9F6; }
-    ::-webkit-scrollbar-thumb { background: #C5A059; border-radius: 10px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sabii Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+body{font-family:Montserrat,sans-serif;background:linear-gradient(135deg,#faf9f6,#f5f0eb);color:#292524}
+.gold{color:#a37f38}
+.brand{font-family:'Cormorant Garamond',serif}
+.card{background:#fff;border:1px solid #e8d9bb;box-shadow:0 8px 24px #a37f3810;border-radius:22px}
+.btn{background:linear-gradient(120deg,#c5a059,#a37f38);color:white}
+.muted{color:#78716c}
+input,select{border:1px solid #e7dfd2;border-radius:12px;padding:11px;width:100%;background:#fff}
+.modal{background:#0008}
+</style>
 </head>
-<body class="flex flex-col min-h-screen relative overflow-x-hidden text-stone-800 pb-28">
+<body class="pb-28">
 
-  <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3 max-w-sm w-full pointer-events-none"></div>
+<header class="sticky top-0 z-30 bg-white/95 border-b border-amber-200">
+<div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+<a href="dashboard.html" class="flex items-center gap-2">
+<span class="w-10 h-10 rounded-xl btn flex items-center justify-center text-xl brand">S</span>
+<span><b class="brand text-2xl gold">Sabii</b><small class="block text-[9px] tracking-widest muted">MEMBER DASHBOARD</small></span>
+</a>
+<div class="flex items-center gap-3">
+<span id="userName" class="text-xs font-bold">Loading…</span>
+<button id="logout" class="text-red-500" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+</div>
+</div>
+</header>
 
-  <!-- Old Users Only Notice Modal -->
-  <div id="old-user-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 text-center space-y-4 bg-white shadow-2xl border-2 border-sabii-gold">
-      <div class="w-14 h-14 mx-auto rounded-full bg-amber-100 text-amber-700 flex items-center justify-center text-2xl shadow">
-        <i class="fa-solid fa-bullhorn"></i>
-      </div>
-      <div>
-        <span class="inline-block text-[10px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-3 py-1 rounded-full mb-2">
-          Special Update For Old Members
-        </span>
-        <h3 class="text-lg font-bold text-stone-800 font-brand">Withdraw Update</h3>
-        <p class="text-xs text-stone-700 leading-relaxed mt-2 bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200 font-medium">
-          Sorry afsos se ke hamare website me update chal raha tha, us wajah se withdraw late ho gaya hai. Ab aap aane wale Sunday ko withdraw laga sakte hain. Aapke paise aapke wallet me transfer hain.
-        </p>
-      </div>
-      <button onclick="closeOldUserModal()" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider">
-        Theek Hai, Shukriya
-      </button>
-    </div>
-  </div>
+<main class="max-w-6xl mx-auto p-4 space-y-5">
 
-  <!-- Profile Details Modal -->
-  <div id="profile-modal" class="hidden fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-md w-full rounded-3xl p-6 space-y-5 bg-white shadow-2xl relative">
-      <div class="flex items-center justify-between border-b border-sabii-gold/20 pb-3">
-        <h3 class="text-lg font-bold text-stone-800 font-brand flex items-center gap-2">
-          <i class="fa-solid fa-user-circle text-sabii-gold"></i> User Profile Details
-        </h3>
-        <button onclick="closeProfileModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="space-y-3 text-xs">
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Full Name:</span>
-          <span id="modal-name" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Username:</span>
-          <span id="modal-username" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Email Address:</span>
-          <span id="modal-email" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Mobile Number:</span>
-          <span id="modal-phone" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">City:</span>
-          <span id="modal-city" class="font-bold text-stone-800">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100">
-          <span class="text-stone-500 font-medium">Total Referrals:</span>
-          <span id="modal-referrals" class="font-bold text-sabii-darkgold">-</span>
-        </div>
-        <div class="flex justify-between p-3 rounded-xl bg-stone-50 border border-stone-100 items-center">
-          <span class="text-stone-500 font-medium">Referral Code:</span>
-          <span id="modal-refcode" class="font-bold text-sabii-darkgold bg-sabii-gold/10 px-2 py-1 rounded">-</span>
-        </div>
-      </div>
-      <button onclick="closeProfileModal()" class="w-full py-3 rounded-xl sabii-button font-bold text-xs uppercase tracking-wider">
-        Band Karein
-      </button>
-    </div>
-  </div>
+<div class="card p-4 flex items-center justify-between">
+<div>
+<p class="text-xs muted">Available wallet balance</p>
+<strong id="wallet" class="text-2xl gold">Rs 0.00</strong>
+</div>
+<i class="fa-solid fa-wallet text-3xl gold"></i>
+</div>
 
-  <!-- Logout Permission Modal -->
-  <div id="logout-modal" class="hidden fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="sabii-card max-w-sm w-full rounded-3xl p-6 text-center space-y-4 shadow-2xl bg-white">
-      <div class="w-14 h-14 bg-red-50 border border-red-200 text-red-500 rounded-full flex items-center justify-center mx-auto text-xl">
-        <i class="fa-solid fa-right-from-bracket"></i>
-      </div>
-      <div>
-        <h3 class="text-lg font-bold text-stone-800 font-brand">Logout Ki Permission?</h3>
-        <p class="text-xs text-stone-500 mt-1">Kya aap waqai apne account se logout hona chahte hain?</p>
-      </div>
-      <div class="flex gap-3 pt-2">
-        <button onclick="closeLogoutModal()" class="flex-1 py-3 rounded-xl border border-stone-200 text-stone-600 font-bold text-xs">
-          Cancel
-        </button>
-        <button onclick="confirmLogout()" class="flex-1 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs">
-          Haan, Logout
-        </button>
-      </div>
-    </div>
-  </div>
+<section class="card p-4">
+<div class="flex justify-between items-center gap-2">
+<div>
+<h1 class="text-xl font-extrabold">Sabii Commodity Market</h1>
+<p class="text-xs muted mt-1">Admin-updated reference prices · Pakistan Rupees</p>
+</div>
+<span class="text-xs bg-amber-50 text-amber-800 px-3 py-2 rounded-full">Market</span>
+</div>
 
-  <!-- Top Header Bar -->
-  <header class="bg-white/90 backdrop-blur-md border-b border-sabii-gold/20 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
-      <a href="dashboard.html" class="flex items-center gap-2 sm:gap-3">
-        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-amber-500 to-sabii-gold text-white flex items-center justify-center shadow-sm">
-          <span class="font-brand font-bold text-xl sm:text-2xl">S</span>
-        </div>
-        <div>
-          <span class="font-brand text-xl sm:text-3xl font-bold sabii-gold-text tracking-wider block leading-none">Sabii</span>
-          <span class="text-[9px] text-stone-400 font-semibold uppercase tracking-widest">Automation Dashboard</span>
-        </div>
-      </a>
+<div id="marketNote" class="text-xs text-stone-500 mt-3">
+Prices are indicative and may differ by city/shop. Not a guaranteed return.
+</div>
+<div id="market" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4"></div>
+</section>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <div onclick="openProfileModal()" class="cursor-pointer flex items-center gap-2 bg-gradient-to-r from-amber-50 to-orange-50 border border-sabii-gold/30 rounded-full p-1 pr-3">
-          <div id="user-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full sabii-button flex items-center justify-center font-bold text-xs">
-            U
-          </div>
-          <div class="hidden sm:block text-left pr-1">
-            <h4 id="user-name" class="text-xs font-bold text-stone-800 leading-tight">Loading...</h4>
-            <p id="user-email" class="text-[10px] text-stone-500">...</p>
-          </div>
-        </div>
-        <button onclick="openLogoutModal()" title="Logout" class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 flex items-center justify-center">
-          <i class="fa-solid fa-power-off text-sm"></i>
-        </button>
-      </div>
-    </div>
-  </header>
+<section class="card p-4">
+<h2 class="font-bold text-lg">My Holdings</h2>
+<p class="text-xs muted mb-3">Estimated value and unrealized profit/loss. This does not change your withdrawable wallet.</p>
+<div id="holdings" class="space-y-3">
+<p class="text-sm muted">No approved holdings yet.</p>
+</div>
+</section>
 
-  <!-- Main Area -->
-  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-5">
+<section class="card p-4">
+<h2 class="font-bold text-lg">My Orders</h2>
+<div id="orders" class="mt-3 space-y-2 text-sm muted">No orders yet.</div>
+</section>
 
-    <!-- Daily 1-Line Urdu Islamic Quote (Top Visible Strip) -->
-    <div class="w-full overflow-hidden flex items-center justify-center bg-white/95 rounded-2xl px-4 py-3 border border-sabii-gold/30 shadow-sm text-center">
-      <p id="daily-urdu-islamic-quote" dir="rtl" class="text-xs sm:text-sm font-semibold text-stone-800">
-        بے شک ہر مشکل کے ساتھ آسانی ہے۔
-      </p>
-    </div>
+</main>
 
-    <!-- Old Users Only Notice Banner -->
-    <div id="old-user-banner" class="hidden rounded-2xl p-4 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 border-2 border-sabii-gold shadow-md">
-      <div class="flex items-start gap-3">
-        <div class="w-9 h-9 rounded-full sabii-button flex items-center justify-center shrink-0 mt-0.5">
-          <i class="fa-solid fa-circle-info text-sm"></i>
-        </div>
-        <div class="flex-1 text-xs text-stone-800 leading-relaxed">
-          <p class="font-bold text-amber-900 mb-1">Important Notice (Old Users):</p>
-          <p>Sorry afsos se ke hamare website me update chal raha tha, us wajah se withdraw late ho gaya hai. Ab aap aane wale Sunday ko withdraw laga sakte hain. Aapke paise aapke wallet me transfer hain.</p>
-        </div>
-        <button onclick="dismissOldUserBanner()" class="text-stone-400 hover:text-stone-700 text-xs px-1">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-    </div>
+<nav class="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-amber-200">
+<div class="max-w-6xl mx-auto grid grid-cols-5 gap-1 p-2 text-center text-[10px] font-bold">
+<a href="payment.html" class="p-2 text-emerald-700"><i class="fa-solid fa-credit-card block text-base mb-1"></i>Payment</a>
+<a href="gmail-selling.html" class="p-2 text-sky-700"><i class="fa-solid fa-envelope block text-base mb-1"></i>Gmail</a>
+<a href="referral.html" class="p-2 text-orange-700"><i class="fa-solid fa-users block text-base mb-1"></i>Referral</a>
+<a href="help-centre.html" class="p-2 text-rose-700"><i class="fa-solid fa-headset block text-base mb-1"></i>Help</a>
+<a href="task.html" class="p-2 text-amber-800 bg-amber-50 rounded-xl"><i class="fa-solid fa-list-check block text-base mb-1"></i>Tasks</a>
+</div>
+</nav>
 
-    <!-- Circular Buttons Together Up Top -->
-    <section class="sabii-card rounded-3xl p-4 bg-white/95 space-y-4">
-      <div class="flex items-center justify-between px-1">
-        <h3 class="text-xs font-bold font-brand text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
-          <i class="fa-solid fa-bolt text-amber-500"></i> Quick Earning Circles
-        </h3>
-        <span class="text-[10px] text-stone-400 font-semibold">Tap to Start</span>
-      </div>
+<div id="buyModal" class="hidden fixed inset-0 z-50 modal flex items-center justify-center p-3">
+<div class="bg-white rounded-3xl p-5 w-full max-w-md max-h-[92vh] overflow-auto">
+<div class="flex justify-between">
+<h3 id="modalTitle" class="font-extrabold text-lg">Buy</h3>
+<button id="closeModal" class="text-xl">×</button>
+</div>
+<p id="unitPrice" class="text-sm muted mt-1"></p>
 
-      <!-- Two Extra Gol Buttons Above Existing Gol Buttons (Coming Soon) -->
-      <div class="flex flex-wrap items-center justify-center gap-5 pb-2 border-b border-sabii-gold/15">
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
-            Coming Soon
-          </span>
-          <button type="button" onclick="showComingSoonToast('Data Entry Work — Per Data 100 Rupe')"
-            class="orb-btn bg-gradient-to-br from-amber-500 via-yellow-600 to-amber-800 text-white">
-            <i class="fa-solid fa-keyboard text-sm text-amber-100 mb-0.5"></i>
-            <span class="text-[8px] font-bold leading-tight px-1">Data Entry<br>100 Rs</span>
-          </button>
-        </div>
+<form id="buyForm" class="space-y-3 mt-4">
+<label class="block text-xs font-bold">Quantity
+<input id="quantity" type="number" min="0.01" step="0.01" value="1" required>
+</label>
 
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-full">
-            Coming Soon
-          </span>
-          <button type="button" onclick="showComingSoonToast('Salary Base Work — Monthly 25k')"
-            class="orb-btn bg-gradient-to-br from-stone-600 via-amber-700 to-stone-900 text-white">
-            <i class="fa-solid fa-briefcase text-sm text-amber-200 mb-0.5"></i>
-            <span class="text-[8px] font-bold leading-tight px-1">Salary Base<br>Monthly 25k</span>
-          </button>
-        </div>
-      </div>
+<div class="bg-amber-50 p-3 rounded-xl flex justify-between">
+<span class="text-sm">Total</span>
+<b id="total">Rs 0</b>
+</div>
 
-      <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 place-items-center py-1">
-        <!-- 1. VIP (0.015 Available 27 ads) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-purple-800 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
-            0.015 / Ad available 27ads
-          </span>
-          <a href="vip-ads.html" class="orb-btn bg-gradient-to-br from-purple-500 via-indigo-600 to-purple-800 text-white">
-            <i class="fa-solid fa-crown text-sm text-amber-200 mb-0.5"></i>
-            <span class="text-[10px] font-bold tracking-wide">VIP</span>
-          </a>
-        </div>
+<label class="block text-xs font-bold">Payment method
+<select id="paymentMethod">
+<option value="wallet">Website wallet</option>
+<option value="easypaisa">Easypaisa</option>
+</select>
+</label>
 
-        <!-- 2. Gold (0.010 available 27ads) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-amber-900 bg-amber-50 border border-amber-300 px-2 py-0.5 rounded-full">
-            0.010 / Ad available 27ads
-          </span>
-          <a href="golden-ads.html" class="orb-btn sabii-button text-white">
-            <i class="fa-solid fa-award text-sm text-amber-100 mb-0.5"></i>
-            <span class="text-[10px] font-bold tracking-wide">Gold</span>
-          </a>
-        </div>
+<div id="walletInfo" class="text-xs bg-stone-50 p-3 rounded-xl">
+Wallet payment will be checked by admin before activation.
+</div>
 
-        <!-- 3. Simple (0.05 available 27ads) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-stone-700 bg-stone-100 border border-stone-300 px-2 py-0.5 rounded-full">
-            0.05 / Ad available 27ads
-          </span>
-          <a href="free-ads.html" class="orb-btn bg-gradient-to-br from-stone-400 via-stone-600 to-stone-800 text-white">
-            <i class="fa-solid fa-feather text-sm text-stone-200 mb-0.5"></i>
-            <span class="text-[10px] font-bold tracking-wide">Simple</span>
-          </a>
-        </div>
+<div id="easypaisaInfo" class="hidden text-xs bg-amber-50 p-3 rounded-xl">
+<b>Send payment to Sajjad Ali</b><br>
+Easypaisa: <b>03428051256</b><br>
+Upload payment screenshot below.
+</div>
 
-        <!-- 4. Captcha Solve -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full leading-tight text-center">
-            Per Captcha 1 Rupe Available 20
-          </span>
-          <a href="cpacha.html" class="orb-btn bg-gradient-to-br from-emerald-500 via-teal-600 to-emerald-800 text-white">
-            <i class="fa-solid fa-shield-halved text-sm text-emerald-100 mb-0.5"></i>
-            <span class="text-[9px] font-bold leading-tight px-1">Captcha<br>Solve</span>
-          </a>
-        </div>
+<label id="proofWrap" class="hidden block text-xs font-bold">
+Payment screenshot
+<input id="proof" type="file" accept="image/*" class="mt-2">
+</label>
 
-        <!-- 5. Writing and Earn -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-orange-800 bg-orange-50 border border-orange-200 px-2 py-0.5 rounded-full leading-tight text-center">
-            Per Page 1.1 Rupe Available 20
-          </span>
-          <a href="Dora.html" class="orb-btn bg-gradient-to-br from-amber-500 via-orange-600 to-amber-800 text-white">
-            <i class="fa-solid fa-pen-nib text-sm text-amber-100 mb-0.5"></i>
-            <span class="text-[9px] font-bold leading-tight px-1">Writing<br>and Earn</span>
-          </a>
-        </div>
+<label class="flex gap-2 text-xs items-start">
+<input id="agree" type="checkbox" required style="width:auto;margin-top:2px">
+<span>I understand that market prices can fall and losses are possible. Displayed profit/loss is an estimate, not guaranteed income.</span>
+</label>
 
-        <!-- 6. Brain Game (Side of Writing Button) -->
-        <div class="flex flex-col items-center gap-1.5">
-          <span class="text-[9px] font-bold text-indigo-800 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full leading-tight text-center">
-            Per Game 2 Rupe Available 50 Games
-          </span>
-          <a href="brain-game.html" class="orb-btn bg-gradient-to-br from-indigo-500 via-violet-600 to-purple-800 text-white">
-            <i class="fa-solid fa-brain text-sm text-indigo-100 mb-0.5"></i>
-            <span class="text-[9px] font-bold leading-tight px-1">Brain<br>Game</span>
-          </a>
-        </div>
-      </div>
-    </section>
+<button class="btn rounded-xl w-full py-3 font-bold" type="submit">
+Submit purchase request
+</button>
+</form>
+</div>
+</div>
 
-    <!-- Wallet Balance Widget -->
-    <div class="flex items-center justify-between">
-      <div class="flex items-center justify-between bg-gradient-to-r from-white via-amber-50/40 to-white border border-sabii-gold/30 rounded-2xl py-3 px-4 shadow-sm w-full sm:w-80">
-        <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-sabii-darkgold text-white flex items-center justify-center">
-            <i class="fa-solid fa-wallet"></i>
-          </div>
-          <div class="text-left">
-            <p class="text-[9px] text-stone-400 uppercase font-bold tracking-wider leading-none">Wallet Balance</p>
-            <span id="header-balance" class="text-sm sm:text-base font-bold sabii-gold-text">Rs 0</span>
-          </div>
-        </div>
-        <button onclick="toggleBalanceVisibility()" title="Hide/Show Balance" class="text-stone-400 hover:text-stone-600 pl-2">
-          <i id="balance-eye-icon" class="fa-solid fa-eye"></i>
-        </button>
-      </div>
-    </div>
+<div id="toast" class="hidden fixed top-20 right-4 z-[60] bg-stone-900 text-white p-3 rounded-xl text-xs"></div>
 
-  </main>
+<script type="module">
 
-  <!-- Fixed Bottom Menu Bar -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-sabii-gold/30 py-2.5 px-3 z-40">
-    <div class="max-w-7xl mx-auto grid grid-cols-4 gap-2">
-      <a href="payment.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 text-emerald-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-credit-card text-emerald-600 text-sm"></i> Payment
-      </a>
-      <a href="gmail-selling.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-sky-50 to-sky-100 border border-sky-200 text-sky-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-envelope-open-text text-sky-600 text-sm"></i> Gmail Rs 50
-      </a>
-      <a href="referral.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 text-orange-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-users text-orange-600 text-sm"></i> Ref 50 Rs
-      </a>
-      <a href="help-centre.html" class="py-2 px-1 rounded-xl bg-gradient-to-br from-rose-50 to-rose-100 border border-rose-200 text-rose-800 font-bold text-[10px] text-center flex flex-col items-center gap-1">
-        <i class="fa-solid fa-headset text-rose-600 text-sm"></i> Help
-      </a>
-    </div>
-  </nav>
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 
-  <!-- Footer -->
-  <footer class="p-3 text-center border-t border-stone-100 bg-white text-[10px] text-stone-400 mb-28 shadow-inner">
-    &copy; Sabii Application. Powered by SABIPK.
-  </footer>
+import {getAuth,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 
-  <!-- Firebase Scripts & Logic -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+import {getDatabase,ref,onValue,push,set} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4",
-      authDomain: "sabi-3ea84.firebaseapp.com",
-      projectId: "sabi-3ea84",
-      storageBucket: "sabi-3ea84.firebasestorage.app",
-      messagingSenderId: "124632688151",
-      appId: "1:124632688151:web:b4804b0cc7f301d30d9e52",
-      measurementId: "G-837LHT24Y3"
-    };
+import {getStorage,ref as sRef,uploadBytes,getDownloadURL} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
+const firebaseConfig={
+apiKey:'AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4',
+authDomain:'sabi-3ea84.firebaseapp.com',
+databaseURL:'https://sabi-3ea84-default-rtdb.firebaseio.com',
+projectId:'sabi-3ea84',
+storageBucket:'sabi-3ea84.firebasestorage.app',
+messagingSenderId:'124632688151',
+appId:'1:124632688151:web:b4804b0cc7f301d30d9e52'
+};
 
-    let isBalanceHidden = false;
-    let actualBalance = 0;
-    let currentUid = null;
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getDatabase(app);
+const storage=getStorage(app);
 
-    // One short Urdu Islamic quote per day
-    const dailyUrduQuotes = [
-      "بے شک ہر مشکل کے ساتھ آسانی ہے۔",
-      "اللہ صبر کرنے والوں کے ساتھ ہے۔",
-      "اچھی بات کہنا یا خاموش رہنا بہترین عمل ہے۔",
-      "شکر کرو گے تو میں تمہیں اور زیادہ دوں گا۔",
-      "اللہ پر بھروسہ کرو اور محنت جاری رکھو۔",
-      "بہترین انسان وہ ہے جو دوسروں کو فائدہ پہنچائے۔",
-      "رزق حلال میں حقیقی برکت ہوتی ہے۔"
-    ];
+let uid=null,prices={},selected=null;
 
-    function setDailyUrduQuote() {
-      const now = new Date();
-      const startOfYear = new Date(now.getFullYear(), 0, 0);
-      const dayOfYear = Math.floor((now - startOfYear) / 86400000);
-      const el = document.getElementById('daily-urdu-islamic-quote');
-      if (el) {
-        el.innerText = dailyUrduQuotes[dayOfYear % dailyUrduQuotes.length];
-      }
-    }
+const defaults=[
+['petrol','Petrol','fa-gas-pump',314,'litre'],
+['diesel','Diesel','fa-truck',348,'litre'],
+['flour20','Flour 20 KG','fa-wheat-awn',2800,'20 kg bag'],
+['gold','Gold 24K','fa-coins',385436,'tola'],
+['sugar','Sugar','fa-cubes-stacked',150,'kg'],
+['rice','Rice (Basmati broken)','fa-bowl-rice',222,'kg'],
+['ghee','Ghee','fa-jar',625,'kg'],
+['chicken','Chicken (live)','fa-drumstick-bite',465,'kg'],
+['potato','Potatoes','fa-carrot',55,'kg'],
+['onion','Onions','fa-leaf',213,'kg'],
+['tomato','Tomatoes','fa-apple-whole',230,'kg'],
+['oil5','Cooking oil 5L','fa-bottle-droplet',3090,'5 litre'],
+['masoor','Daal Masoor','fa-seedling',264,'kg'],
+['wheat','Wheat','fa-wheat-awn',140,'kg']
+];
 
-    window.showComingSoonToast = function(title) {
-      showToast(`${title} — Coming Soon!`, 'success');
-    };
+const money=n=>'Rs '+Number(n||0).toLocaleString('en-PK',{maximumFractionDigits:2});
 
-    function handleOldUserNotice(uid, userData, authUser) {
-      if (userData.isNewUser === true) return;
+function toast(t){
+let e=document.getElementById('toast');
+e.textContent=t;
+e.classList.remove('hidden');
+setTimeout(()=>e.classList.add('hidden'),3500);
+}
 
-      const cutoffDate = new Date("2026-11-22T00:00:00Z").getTime();
-      const rawCreated = userData.createdAt || userData.registeredAt || userData.joinedAt || authUser?.metadata?.creationTime;
-      const createdMs = rawCreated ? new Date(rawCreated).getTime() : NaN;
+function renderMarket(){
+let root=document.getElementById('market');
+root.innerHTML='';
 
-      const isOldUser = !Number.isNaN(createdMs) ? createdMs < cutoffDate : true;
-      if (!isOldUser) return;
+defaults.forEach(([id,name,icon,base,unit])=>{
+let p=prices[id]?.price??base;
+let updated=prices[id]?.updatedAt?new Date(prices[id].updatedAt).toLocaleDateString():'Reference';
 
-      const storageKey = `oldUserNoticeSeen_${uid}`;
-      if (!localStorage.getItem(storageKey)) {
-        document.getElementById('old-user-banner').classList.remove('hidden');
-        document.getElementById('old-user-modal').classList.remove('hidden');
-      }
-    }
+let el=document.createElement('article');
+el.className='border border-amber-100 rounded-2xl p-3 bg-white';
 
-    window.closeOldUserModal = function() {
-      document.getElementById('old-user-modal').classList.add('hidden');
-      if (currentUid) {
-        localStorage.setItem(`oldUserNoticeSeen_${currentUid}`, "1");
-      }
-    };
+el.innerHTML=`
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center text-lg">
+<i class="fa-solid ${icon}"></i>
+</div>
+<h3 class="font-bold text-sm mt-2"></h3>
+<p class="text-xs muted"></p>
+<p class="text-[10px] text-stone-400 mt-1"></p>
+<button class="btn rounded-xl w-full py-2 mt-3 text-xs font-bold">Buy / Request</button>
+`;
 
-    window.dismissOldUserBanner = function() {
-      document.getElementById('old-user-banner').classList.add('hidden');
-      if (currentUid) {
-        localStorage.setItem(`oldUserNoticeSeen_${currentUid}`, "1");
-      }
-    };
+el.querySelector('h3').textContent=name;
+el.querySelector('p').textContent=money(p)+' / '+unit;
+el.querySelectorAll('p')[1].textContent='Updated: '+updated;
 
-    window.showToast = function (message, type = 'success') {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      const bgColor = type === 'success' ? 'bg-stone-900 border-sabii-gold text-sabii-lightgold' : 'bg-red-900 border-red-500 text-white';
-      toast.className = `p-3.5 rounded-xl border ${bgColor} shadow-xl text-xs font-semibold flex items-center justify-between gap-3 pointer-events-auto transform translate-y-[-10px] opacity-0 transition-all duration-300`;
-      const icon = type === 'success' ? '<i class="fa-solid fa-circle-check text-sabii-gold text-base"></i>' : '<i class="fa-solid fa-triangle-exclamation text-red-400 text-base"></i>';
-      toast.innerHTML = `<div class="flex items-center gap-2">${icon}<span>${message}</span></div><button onclick="this.parentElement.remove()" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-xmark"></i></button>`;
-      container.appendChild(toast);
-      setTimeout(() => toast.classList.remove('translate-y-[-10px]', 'opacity-0'), 10);
-      setTimeout(() => {
-        toast.classList.add('opacity-0');
-        setTimeout(() => toast.remove(), 300);
-      }, 4000);
-    };
+el.querySelector('button').onclick=()=>{
+openBuy({id,name,price:Number(p),unit});
+};
 
-    window.toggleBalanceVisibility = function() {
-      isBalanceHidden = !isBalanceHidden;
-      const balanceEl = document.getElementById('header-balance');
-      const eyeIcon = document.getElementById('balance-eye-icon');
-      if (isBalanceHidden) {
-        balanceEl.innerText = "Rs *****";
-        eyeIcon.className = "fa-solid fa-eye-slash";
-      } else {
-        balanceEl.innerText = `Rs ${actualBalance}`;
-        eyeIcon.className = "fa-solid fa-eye";
-      }
-    };
+root.appendChild(el);
+});
+}
 
-    window.openProfileModal = function() { document.getElementById('profile-modal').classList.remove('hidden'); };
-    window.closeProfileModal = function() { document.getElementById('profile-modal').classList.add('hidden'); };
-    window.openLogoutModal = function() { document.getElementById('logout-modal').classList.remove('hidden'); };
-    window.closeLogoutModal = function() { document.getElementById('logout-modal').classList.add('hidden'); };
+function openBuy(item){
+selected=item;
+document.getElementById('modalTitle').textContent='Buy '+item.name;
+document.getElementById('unitPrice').textContent=money(item.price)+' per '+item.unit;
+document.getElementById('quantity').value=1;
+calc();
+document.getElementById('buyModal').classList.remove('hidden');
+}
 
-    window.confirmLogout = async function() {
-      try {
-        await signOut(auth);
-        window.location.href = "index.html";
-      } catch (error) {
-        showToast("Logout karne me masla aya!", "error");
-      }
-    };
+function calc(){
+if(!selected)return;
+let q=Number(document.getElementById('quantity').value||0);
+document.getElementById('total').textContent=money(q*selected.price);
+}
 
-    setDailyUrduQuote();
+document.getElementById('quantity').addEventListener('input',calc);
 
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        window.location.href = "index.html";
-      } else {
-        currentUid = user.uid;
-        const userRef = ref(db, 'users/' + user.uid);
-        onValue(userRef, (snapshot) => {
-          if (snapshot.exists()) {
-            const data = snapshot.val();
-            actualBalance = data.balance || 0;
+document.getElementById('closeModal').onclick=()=>{
+document.getElementById('buyModal').classList.add('hidden');
+};
 
-            handleOldUserNotice(user.uid, data, user);
-            
-            document.getElementById('user-name').innerText = data.name || "User";
-            document.getElementById('user-email').innerText = data.email || user.email;
-            document.getElementById('user-avatar').innerText = (data.name || "U").charAt(0).toUpperCase();
+document.getElementById('paymentMethod').onchange=e=>{
+let ep=e.target.value==='easypaisa';
+document.getElementById('easypaisaInfo').classList.toggle('hidden',!ep);
+document.getElementById('proofWrap').classList.toggle('hidden',!ep);
+document.getElementById('walletInfo').classList.toggle('hidden',ep);
+document.getElementById('proof').required=ep;
+};
 
-            if (!isBalanceHidden) {
-              document.getElementById('header-balance').innerText = `Rs ${actualBalance}`;
-            }
-            document.getElementById('modal-name').innerText = data.name || "-";
-            document.getElementById('modal-username').innerText = data.username || "-";
-            document.getElementById('modal-email').innerText = data.email || user.email;
-            document.getElementById('modal-phone').innerText = data.phone || "-";
-            document.getElementById('modal-city').innerText = data.city || "-";
-            document.getElementById('modal-referrals').innerText = data.totalReferrals || 0;
-            document.getElementById('modal-refcode').innerText = data.referralCode || "-";
-          }
-        });
-      }
-    });
-  </script>
+document.getElementById('buyForm').onsubmit=async e=>{
+e.preventDefault();
 
-  <!-- Start of global snippet: Please do not remove -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=DC-16361189"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'DC-16361189');
-  </script>
-  <!-- End of global snippet: Please do not remove -->
+if(!uid||!selected)return;
 
-  <!-- Event snippet for sabii-seven.vercel.app -->
-  <script>
-    gtag('event', 'conversion', {
-      'allow_custom_scripts': true,
-      'send_to': 'DC-16361189/manau0/sabii0+standard'
-    });
-  </script>
-  <noscript>
-    <img src="https://ad.doubleclick.net/ddm/activity/src=16361189;type=manau0;cat=sabii0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=;ord=1?" width="1" height="1" alt=""/>
-  </noscript>
-  <!-- End of event snippet: Please do not remove -->
+let q=Number(document.getElementById('quantity').value);
+let method=document.getElementById('paymentMethod').value;
+let total=q*selected.price;
 
+if(!(q>0)||!Number.isFinite(total))
+return toast('Valid quantity enter karein');
+
+let btn=e.submitter;
+btn.disabled=true;
+btn.textContent='Submitting…';
+
+try{
+
+let orderRef=push(ref(db,`marketOrders/${uid}`));
+let proofUrl='';
+
+if(method==='easypaisa'){
+
+let file=document.getElementById('proof').files[0];
+
+if(!file)throw Error('Payment screenshot upload karein');
+
+if(file.size>5*1024*1024)
+throw Error('Screenshot 5MB se chhota hona chahiye');
+
+let path=`paymentProofs/${uid}/${orderRef.key}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+
+let uploaded=await uploadBytes(sRef(storage,path),file);
+proofUrl=await getDownloadURL(uploaded.ref);
+}
+
+await set(orderRef,{
+uid,
+commodityId:selected.id,
+commodityName:selected.name,
+quantity:q,
+unit:selected.unit,
+unitPrice:selected.price,
+total,
+paymentMethod:method,
+paymentProofUrl:proofUrl,
+status:'pending',
+createdAt:Date.now(),
+note:'Requires admin review and secure settlement'
+});
+
+toast('Request submitted. Admin approval pending.');
+document.getElementById('buyModal').classList.add('hidden');
+e.target.reset();
+
+}catch(err){
+toast(err.message||'Request submit nahi hui');
+}finally{
+btn.disabled=false;
+btn.textContent='Submit purchase request';
+}
+};
+
+onAuthStateChanged(auth,user=>{
+
+if(!user){
+location.href='index.html';
+return;
+}
+
+uid=user.uid;
+
+document.getElementById('userName').textContent=
+user.displayName||user.email||'Member';
+
+onValue(ref(db,`users/${uid}`),s=>{
+let d=s.val()||{};
+document.getElementById('wallet').textContent=money(d.balance||0);
+});
+
+onValue(ref(db,'marketPrices'),s=>{
+prices=s.val()||{};
+renderMarket();
+});
+
+onValue(ref(db,`marketHoldings/${uid}`),s=>{
+
+let data=s.val()||{};
+let root=document.getElementById('holdings');
+root.innerHTML='';
+
+let entries=Object.entries(data).filter(([,h])=>h.status==='active');
+
+if(!entries.length){
+root.textContent='No approved holdings yet.';
+return;
+}
+
+entries.forEach(([id,h])=>{
+
+let current=Number(prices[h.commodityId]?.price??h.currentPrice??h.buyPrice);
+let cost=Number(h.quantity)*Number(h.buyPrice);
+let value=Number(h.quantity)*current;
+let pl=value-cost;
+
+let div=document.createElement('div');
+div.className='border rounded-xl p-3 text-xs';
+
+div.innerHTML=`
+<div class="flex justify-between gap-2"><b></b><b></b></div>
+<p class="muted mt-1"></p>
+<p class="mt-1"></p>
+`;
+
+div.querySelectorAll('b')[0].textContent=h.commodityName||h.commodityId;
+div.querySelectorAll('b')[1].textContent=money(value);
+
+div.querySelectorAll('p')[0].textContent=
+`Quantity: ${h.quantity} ${h.unit||''} · Buy price: ${money(h.buyPrice)}`;
+
+div.querySelectorAll('p')[1].textContent=
+`Estimated ${pl>=0?'profit':'loss'}: ${money(Math.abs(pl))}`;
+
+div.querySelectorAll('p')[1].className=
+pl>=0?'mt-1 text-emerald-700 font-bold':'mt-1 text-red-600 font-bold';
+
+root.appendChild(div);
+
+});
+});
+
+onValue(ref(db,`marketOrders/${uid}`),s=>{
+
+let data=s.val()||{};
+let root=document.getElementById('orders');
+root.innerHTML='';
+
+Object.values(data).reverse().forEach(o=>{
+
+let d=document.createElement('div');
+d.className='border rounded-xl p-3';
+
+let st=o.status||'pending';
+
+d.textContent=
+`${o.commodityName} · ${o.quantity} ${o.unit} · ${money(o.total)} · ${st.toUpperCase()}`;
+
+root.appendChild(d);
+
+});
+
+if(!root.children.length)
+root.textContent='No orders yet.';
+
+});
+
+});
+
+document.getElementById('logout').onclick=async()=>{
+await signOut(auth);
+location.href='index.html';
+};
+
+</script>
 </body>
 </html>
