@@ -90,7 +90,7 @@ main{padding:12px!important}
 
  <!-- Notice -->
  <div class="card p-4 bg-amber-50/60 text-xs leading-relaxed">
-  <b>Kaise kaam karein:</b> Task open karein, instructions ke mutabik YouTube / Instagram / Facebook / WhatsApp ka task complete karein, aur wapis aakar <b>screenshot upload</b> karein. Admin approve karega toh task ki price (default <b>Rs 0.50</b> ya jo admin ne lagayi ho) aapke wallet mein add ho jayegi.
+  <b>Kaise kaam karein:</b> Task open karein, instructions ke mutabik YouTube / Instagram / Facebook / WhatsApp ka task complete karein, aur wapis aakar <b>gallery se screenshot upload</b> karein. Admin approve karega toh task ki price (default <b>Rs 0.50</b> ya jo admin ne lagayi ho) aapke wallet mein add ho jayegi.
  </div>
 
  <!-- Switch Tabs -->
@@ -326,9 +326,9 @@ window.openTask = id => {
     <h3 class="font-bold text-base">Submit Proof: ${esc(t.title)}</h3>
     <span class="text-sm font-bold text-emerald-700">+ ${money(reward)}</span>
    </div>
-   <p class="text-xs muted">Task complete karne ke baad wapis aakar screenshot upload karein.</p>
-   <label>Screenshot (JPG, PNG, WEBP — max 5 MB)</label>
-   <input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp" capture="environment">
+   <p class="text-xs muted">Task complete karne ke baad wapis aakar gallery se screenshot select karein.</p>
+   <label>Select Screenshot from Gallery (JPG, PNG, WEBP — max 5 MB)</label>
+   <input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp">
    <label>Note (optional)</label>
    <textarea id="proofNote" placeholder="Username ya completion detail likhein..."></textarea>
    <div class="flex gap-2 flex-wrap">
@@ -349,7 +349,7 @@ async function submitProof(taskId) {
  const t = tasksCache[taskId];
 
  if (!file) {
-  $('proofMsg').textContent = 'Please screenshot select karein.';
+  $('proofMsg').textContent = 'Please gallery se screenshot select karein.';
   return;
  }
  if (file.size > 5 * 1024 * 1024) {
