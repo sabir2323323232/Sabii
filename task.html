@@ -214,6 +214,13 @@ function clearListeners() {
  unsubs = [];
 }
 
+function withTimeout(promise, ms, label) {
+ return Promise.race([
+  promise,
+  new Promise((_, reject) => setTimeout(() => reject(new Error(`${label} timeout (${Math.round(ms / 1000)}s). Firebase Storage rules ya internet connection check karein.`)), ms))
+ ]);
+}
+
 $('tabTasksBtn').onclick = () => {
  $('tasksSection').classList.remove('hidden');
  $('mySection').classList.add('hidden');
@@ -335,7 +342,7 @@ window.openTask = id => {
     <button id="sendProofBtn" class="btn ok flex-1">Submit for Approval</button>
     <button type="button" class="btn sec" onclick="$('submitBoxMount').innerHTML=''">Cancel</button>
    </div>
-   <p id="proofMsg" class="text-xs muted"></p>
+   <p id="proofMsg" class="text-xs muted font-semibold"></p>
   </div>
  `;
 
@@ -344,51 +351,94 @@ window.openTask = id => {
 };
 
 async function submitProof(taskId) {
- if (!currentUser) return;
- const file = $('proofFile').files[0];
+ if (!currentUser) {
+  toast('Pehle login karein');
+  return;
+ }
+
+ const fileInput = $('proofFile');
+ const file = fileInput?.files?.[0];
  const t = tasksCache[taskId];
+ const msgEl = $('proofMsg');
 
  if (!file) {
-  $('proofMsg').textContent = 'Please gallery se screenshot select karein.';
+  msgEl.className = 'text-xs text-red-600 font-semibold';
+  msgEl.textContent = 'Please gallery se screenshot select karein.';
   return;
  }
  if (file.size > 5 * 1024 * 1024) {
-  $('proofMsg').textContent = 'Screenshot 5 MB se bara na ho.';
+  msgEl.className = 'text-xs text-red-600 font-semibold';
+  msgEl.textContent = 'Screenshot 5 MB se bara na ho.';
   return;
  }
- if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-  $('proofMsg').textContent = 'Sirf JPG, PNG ya WEBP image upload karein.';
+ const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+ const isImage = validTypes.includes(file.type) || /\.(jpe?g|png|webp)$/i.test(file.name || '');
+ if (!isImage) {
+  msgEl.className = 'text-xs text-red-600 font-semibold';
+  msgEl.textContent = 'Sirf JPG, PNG ya WEBP image upload karein.';
   return;
  }
 
  const btn = $('sendProofBtn');
  btn.disabled = true;
- $('proofMsg').textContent = 'Uploading screenshot...';
+ msgEl.className = 'text-xs text-amber-700 font-semibold';
+ msgEl.textContent = 'Uploading screenshot...';
 
  try {
-  const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+  const mimeType = validTypes.includes(file.type)
+   ? file.type
+   : /\.png$/i.test(file.name)
+    ? 'image/png'
+    : /\.webp$/i.test(file.name)
+     ? 'image/webp'
+     : 'image/jpeg';
+
+  const ext = mimeType === 'image/png' ? 'png' : mimeType === 'image/webp' ? 'webp' : 'jpg';
   const fileRef = sRef(storage, `proofs/${currentUser.uid}/${taskId}_${Date.now()}.${ext}`);
-  const snap = await uploadBytes(fileRef, file, { contentType: file.type });
-  const proofUrl = await getDownloadURL(snap.ref);
+
+  const snap = await withTimeout(
+   uploadBytes(fileRef, file, { contentType: mimeType }),
+   25000,
+   'Storage upload'
+  );
+
+  const proofUrl = await withTimeout(
+   getDownloadURL(snap.ref),
+   15000,
+   'Download URL'
+  );
+
   const reward = Number(t?.reward ?? 0.50);
 
-  await set(ref(db, `submissions/${currentUser.uid}/${taskId}`), {
-   taskId,
-   uid: currentUser.uid,
-   userEmail: currentUser.email || '',
-   taskTitle: t?.title || taskId,
-   platform: t?.platform || 'Other',
-   proofUrl,
-   note: $('proofNote').value.trim(),
-   status: 'pending',
-   reward,
-   createdAt: serverTimestamp()
-  });
+  await withTimeout(
+   set(ref(db, `submissions/${currentUser.uid}/${taskId}`), {
+    taskId,
+    uid: currentUser.uid,
+    userEmail: currentUser.email || '',
+    taskTitle: t?.title || taskId,
+    platform: t?.platform || 'Other',
+    proofUrl,
+    note: ($('proofNote')?.value || '').trim(),
+    status: 'pending',
+    reward,
+    createdAt: serverTimestamp()
+   }),
+   15000,
+   'Database save'
+  );
 
-  toast('Screenshot submit ho gaya! Admin approval ka intezar karein.');
-  $('submitBoxMount').innerHTML = '';
+  msgEl.className = 'text-xs text-emerald-700 font-semibold';
+  msgEl.textContent = 'Screenshot submit ho gaya! Admin approval ka intezar karein.';
+  toast('Screenshot submit ho gaya!');
+  setTimeout(() => {
+   if ($('submitBoxMount')) $('submitBoxMount').innerHTML = '';
+  }, 900);
  } catch (err) {
-  $('proofMsg').textContent = 'Error: ' + err.message;
+  console.error('Submit proof error:', err);
+  const errText = err?.message || 'Upload fail ho gaya.';
+  msgEl.className = 'text-xs text-red-600 font-semibold';
+  msgEl.textContent = errText;
+  toast(errText);
   btn.disabled = false;
  }
 }
