@@ -1,446 +1,437 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sabii Tasks — User Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sabii Tasks</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root{
-  --bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#687386;
-  --brand:#635bdb;--green:#159768;--line:#e8ebf2;--red:#d64545;--amber:#b4690e;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);font-family:Inter,system-ui,Arial,sans-serif;color:var(--ink)}
-header{
-  background:#171a2b;color:#fff;padding:16px max(18px,calc((100% - 1120px)/2));
-  display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
-  position:sticky;top:0;z-index:20;
-}
-header b{font-size:20px;letter-spacing:.3px}
-main{max-width:1120px;margin:24px auto;padding:0 16px}
-.panel,.task,.stat{
-  background:var(--card);border:1px solid var(--line);border-radius:17px;
-  padding:18px;box-shadow:0 5px 20px #1c28500a;
-}
 .hidden{display:none!important}
-.muted{color:var(--muted);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin:16px 0}
-.stat small{color:var(--muted)}
-.stat strong{display:block;font-size:24px;margin-top:5px}
-.task h3{margin:8px 0}
-.pill{
-  display:inline-block;border-radius:30px;background:#efefff;color:var(--brand);
-  padding:4px 10px;font-size:12px;font-weight:700;margin-right:4px;
-}
-.pill.ok{background:#e7f7f0;color:var(--green)}
-.pill.wait{background:#fff5e5;color:var(--amber)}
-.pill.no{background:#fdecec;color:var(--red)}
-.reward{color:var(--green);font-weight:800;font-size:15px}
-.btn{
-  border:0;border-radius:10px;padding:10px 14px;background:var(--brand);
-  color:#fff;font-weight:700;cursor:pointer;text-decoration:none;
-  display:inline-block;font-size:13px;
-}
+*{box-sizing:border-box}
+body{margin:0;padding-bottom:100px;font-family:Arial,sans-serif;background:#faf7f1;color:#292524;overflow-x:hidden}
+.gold{color:#a37f38}
+.card{background:white;border:1px solid #e8d9bb;border-radius:18px;box-shadow:0 5px 18px #a37f3810}
+.btn{background:linear-gradient(120deg,#c5a059,#a37f38);color:white;border:0;border-radius:12px;padding:10px 14px;font-weight:bold;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13px}
 .btn:disabled{opacity:.6;cursor:not-allowed}
-.btn.secondary{background:#eef0f6;color:#283149}
-.btn.green{background:var(--green)}
-.btn.ghost{background:rgba(255,255,255,.12);color:#fff}
-input,textarea,select{
-  width:100%;padding:11px;border:1px solid #dce1eb;border-radius:10px;
-  margin:6px 0 12px;font:inherit;background:#fff;
-}
-label{font-size:13px;font-weight:650}
-textarea{min-height:76px;resize:vertical}
-.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.row>*{flex:1}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
-.tabs button.active{background:#252943;color:#fff}
-.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.filter-btn{
-  border:1px solid var(--line);background:#fff;color:var(--ink);
-  border-radius:25px;padding:6px 12px;font-size:12px;font-weight:650;cursor:pointer;
-}
-.filter-btn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
-.submission{border:1px solid var(--line);border-radius:13px;padding:14px;margin:10px 0;background:#fff}
-.notice{
-  background:#fff8e6;border:1px solid #f4dfaa;padding:12px 14px;
-  border-radius:12px;font-size:13px;margin:12px 0;
-}
-.empty{text-align:center;padding:35px;color:var(--muted)}
-@media(max-width:600px){
-  header{padding:14px}main{margin:14px auto}.panel,.task{padding:14px}.row>*{min-width:100%}
+.btn.sec{background:#f3ede0;color:#44403c}
+.btn.ok{background:#15803d;color:white}
+.muted{color:#78716c}
+.pill{display:inline-block;border-radius:999px;background:#fdf6e7;border:1px solid #ecd8b0;color:#92400e;padding:3px 10px;font-size:11px;font-weight:bold}
+.pill.ok{background:#dcfce7;border-color:#86efac;color:#166534}
+.pill.wait{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+.pill.no{background:#fee2e2;border-color:#fca5a5;color:#991b1b}
+.filter-btn{border:1px solid #e8d9bb;background:white;color:#44403c;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:bold;cursor:pointer}
+.filter-btn.active{background:linear-gradient(120deg,#c5a059,#a37f38);color:white;border-color:transparent}
+input,textarea{width:100%;padding:10px 12px;border:1px solid #e2d2b0;border-radius:12px;margin:6px 0 12px;font:inherit;background:#fff}
+label{font-size:12px;font-weight:bold;color:#44403c}
+textarea{min-height:74px;resize:vertical}
+.nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;border-radius:12px;font-size:9px;font-weight:bold;padding:9px 2px}
+.nav-item i{font-size:17px}
+@media(max-width:640px){
+body{padding-bottom:100px}
+main{padding:12px!important}
+.nav-item{font-size:8px;min-height:55px}
+.nav-item i{font-size:16px}
 }
 </style>
 </head>
+
 <body>
-<header>
-  <b>✦ SABII TASKS</b>
-  <div class="row" style="flex:0 1 auto">
-    <a href="dashboard.html" class="btn ghost">Dashboard</a>
-    <a href="admin.html" id="adminPageLink" class="btn ghost hidden">Admin Panel</a>
-    <span id="userLabel" class="muted" style="color:#d9d9e8">Not signed in</span>
-    <button id="logoutBtn" class="btn secondary hidden">Logout</button>
+
+<header class="sticky top-0 z-30 bg-white border-b border-amber-200">
+ <div class="max-w-6xl mx-auto px-3 h-16 flex items-center justify-between gap-2">
+
+  <a href="dashboard.html" class="flex items-center gap-2 text-inherit no-underline">
+   <span class="w-10 h-10 rounded-xl btn flex items-center justify-center text-xl font-bold">S</span>
+   <span>
+    <b class="text-xl gold">Sabii</b>
+    <small class="block text-[9px] muted">TASKS CENTRE</small>
+   </span>
+  </a>
+
+  <div class="flex items-center gap-2 sm:gap-3">
+   <a href="dashboard.html" class="btn sec text-xs py-2 px-3">
+    <i class="fa-solid fa-arrow-left"></i> Dashboard
+   </a>
+   <span id="userName" class="text-xs font-bold hidden sm:inline">Loading...</span>
+   <button id="logout" class="text-red-500 p-2" aria-label="Logout">
+    <i class="fa-solid fa-right-from-bracket"></i>
+   </button>
   </div>
+
+ </div>
 </header>
 
-<main>
-  <!-- Auth Panel -->
-  <section id="authPanel" class="panel" style="max-width:520px;margin:28px auto">
-    <h2>Welcome to Sabii Tasks</h2>
-    <p class="muted">YouTube, Instagram, Facebook aur WhatsApp tasks complete karein, screenshot upload karein, aur approval ke baad paise kamayein.</p>
-    <div class="row">
-      <div><label>Email</label><input id="email" type="email" placeholder="you@example.com"></div>
-      <div><label>Password</label><input id="password" type="password" placeholder="At least 6 characters"></div>
-    </div>
-    <div class="row">
-      <button class="btn" id="loginBtn">Login</button>
-      <button class="btn secondary" id="registerBtn">Create account</button>
-    </div>
-    <p id="authMsg" class="muted"></p>
-  </section>
+<main class="max-w-6xl mx-auto p-4 space-y-4">
 
-  <!-- Main User App -->
-  <section id="appPanel" class="hidden">
-    <div class="stats">
-      <div class="stat"><small>Available Balance</small><strong id="balance">Rs. 0.00</strong></div>
-      <div class="stat"><small>Approved Tasks</small><strong id="approvedCount">0</strong></div>
-      <div class="stat"><small>Pending Tasks</small><strong id="pendingCount">0</strong></div>
-      <div class="stat"><small>Rejected Tasks</small><strong id="rejectedCount">0</strong></div>
-    </div>
+ <!-- Wallet & Summary -->
+ <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+  <div class="card p-4 col-span-2 sm:col-span-1 flex justify-between items-center">
+   <div>
+    <p class="text-xs muted">Wallet balance</p>
+    <strong id="wallet" class="text-xl gold">Rs 0.00</strong>
+   </div>
+   <i class="fa-solid fa-wallet text-2xl gold"></i>
+  </div>
+  <div class="card p-4">
+   <p class="text-xs muted">Approved</p>
+   <strong id="approvedCount" class="text-xl text-emerald-700">0</strong>
+  </div>
+  <div class="card p-4">
+   <p class="text-xs muted">Pending</p>
+   <strong id="pendingCount" class="text-xl text-amber-700">0</strong>
+  </div>
+  <div class="card p-4">
+   <p class="text-xs muted">Rejected</p>
+   <strong id="rejectedCount" class="text-xl text-red-600">0</strong>
+  </div>
+ </div>
 
-    <div class="notice">
-      Task open karke instructions ke mutabik kaam complete karein aur wapis aakar <b>screenshot proof</b> upload karein. Admin approve karega toh set kiya gaya reward (default <b>Rs. 0.50</b> ya admin ki lagayi price) aapke wallet mein add ho jayega.
-    </div>
+ <!-- Notice -->
+ <div class="card p-4 bg-amber-50/60 text-xs leading-relaxed">
+  <b>Kaise kaam karein:</b> Task open karein, instructions ke mutabik YouTube / Instagram / Facebook / WhatsApp ka task complete karein, aur wapis aakar <b>screenshot upload</b> karein. Admin approve karega toh task ki price (default <b>Rs 0.50</b> ya jo admin ne lagayi ho) aapke wallet mein add ho jayegi.
+ </div>
 
-    <div class="tabs">
-      <button class="btn active" data-tab="tasksTab">Available Tasks</button>
-      <button class="btn secondary" data-tab="myTab">My Submissions</button>
-    </div>
+ <!-- Switch Tabs -->
+ <div class="flex gap-2 flex-wrap">
+  <button id="tabTasksBtn" class="btn">Available Tasks</button>
+  <button id="tabMyBtn" class="btn sec">My Submissions</button>
+ </div>
 
-    <!-- Available Tasks Tab -->
-    <section id="tasksTab">
-      <div class="row" style="justify-content:space-between;margin-bottom:8px">
-        <h2 style="margin:0">Available Tasks</h2>
-      </div>
+ <!-- Available Tasks Section -->
+ <section id="tasksSection" class="space-y-4">
+  <div class="flex gap-2 flex-wrap" id="platformFilters">
+   <button class="filter-btn active" data-platform="All">All</button>
+   <button class="filter-btn" data-platform="YouTube">YouTube</button>
+   <button class="filter-btn" data-platform="Instagram">Instagram</button>
+   <button class="filter-btn" data-platform="Facebook">Facebook</button>
+   <button class="filter-btn" data-platform="WhatsApp">WhatsApp</button>
+   <button class="filter-btn" data-platform="Other">Other</button>
+  </div>
 
-      <div class="filter-bar" id="platformFilters">
-        <button class="filter-btn active" data-platform="All">All</button>
-        <button class="filter-btn" data-platform="YouTube">YouTube</button>
-        <button class="filter-btn" data-platform="Instagram">Instagram</button>
-        <button class="filter-btn" data-platform="Facebook">Facebook</button>
-        <button class="filter-btn" data-platform="WhatsApp">WhatsApp</button>
-        <button class="filter-btn" data-platform="Other">Other</button>
-      </div>
+  <div id="submitBoxMount"></div>
 
-      <div id="submitBoxMount"></div>
-      <div id="taskList" class="grid"><div class="empty">Loading tasks...</div></div>
-    </section>
+  <div id="taskList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+   <div class="card p-6 text-center text-xs muted col-span-full">Loading tasks...</div>
+  </div>
+ </section>
 
-    <!-- My Submissions Tab -->
-    <section id="myTab" class="hidden">
-      <h2>My Submissions</h2>
-      <div id="myList"><div class="empty">Loading your submissions...</div></div>
-    </section>
-  </section>
+ <!-- My Submissions Section -->
+ <section id="mySection" class="hidden space-y-3">
+  <div id="myList">
+   <div class="card p-6 text-center text-xs muted">Loading submissions...</div>
+  </div>
+ </section>
+
 </main>
 
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
-<script>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-amber-200">
+ <div class="max-w-6xl mx-auto grid grid-cols-5 gap-1 p-2 text-center">
+
+  <a href="payment.html" class="nav-item text-emerald-700">
+   <i class="fa-solid fa-credit-card"></i>
+   Payment
+  </a>
+
+  <a href="gmail-selling.html" class="nav-item text-sky-700">
+   <i class="fa-solid fa-envelope"></i>
+   Gmail Rs 50
+  </a>
+
+  <a href="referral.html" class="nav-item text-orange-700">
+   <i class="fa-solid fa-users"></i>
+   Referral Rs 50
+  </a>
+
+  <a href="help-centre.html" class="nav-item text-rose-700">
+   <i class="fa-solid fa-headset"></i>
+   Help
+  </a>
+
+  <a href="task.html" class="nav-item text-amber-800 bg-amber-50">
+   <i class="fa-solid fa-list-check"></i>
+   Tasks
+  </a>
+
+ </div>
+</nav>
+
+<div id="toast" class="hidden fixed top-20 right-4 z-[90] bg-stone-900 text-white p-3 rounded-xl text-xs shadow-lg"></div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getDatabase, ref, onValue, set, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4',
-  authDomain: 'sabi-3ea84.firebaseapp.com',
-  databaseURL: 'https://sabi-3ea84-default-rtdb.firebaseio.com',
-  projectId: 'sabi-3ea84',
-  storageBucket: 'sabi-3ea84.firebasestorage.app',
-  messagingSenderId: '124632688151',
-  appId: '1:124632688151:web:b4804b0cc7f301d30d9e52'
+ apiKey: 'AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4',
+ authDomain: 'sabi-3ea84.firebaseapp.com',
+ databaseURL: 'https://sabi-3ea84-default-rtdb.firebaseio.com',
+ projectId: 'sabi-3ea84',
+ storageBucket: 'sabi-3ea84.firebasestorage.app',
+ messagingSenderId: '124632688151',
+ appId: '1:124632688151:web:b4804b0cc7f301d30d9e52'
 };
 
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.database();
-const storage = firebase.storage();
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+const storage = getStorage(app);
 
 const $ = id => document.getElementById(id);
-const money = n => 'Rs. ' + Number(n || 0).toFixed(2);
+const money = n => 'Rs ' + Number(n || 0).toLocaleString('en-PK', {
+ minimumFractionDigits: 2,
+ maximumFractionDigits: 2
+});
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
-  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
 }[c]));
 
 let currentUser = null;
 let tasksCache = {};
 let subsCache = {};
 let selectedPlatform = 'All';
-let listeners = [];
+let unsubs = [];
 
-function listen(ref, event, cb) {
-  ref.on(event, cb);
-  listeners.push(() => ref.off(event, cb));
+function toast(message) {
+ const el = $('toast');
+ el.textContent = message;
+ el.classList.remove('hidden');
+ clearTimeout(window._t);
+ window._t = setTimeout(() => el.classList.add('hidden'), 3500);
 }
 
-function stopListeners() {
-  listeners.forEach(fn => fn());
-  listeners = [];
+function listen(r, cb) {
+ const off = onValue(r, cb, err => toast('Sync error: ' + err.message));
+ unsubs.push(off);
 }
 
-$('loginBtn').onclick = async () => {
-  $('authMsg').textContent = '';
-  try {
-    await auth.signInWithEmailAndPassword($('email').value.trim(), $('password').value);
-  } catch (e) {
-    $('authMsg').textContent = e.message;
-  }
+function clearListeners() {
+ unsubs.forEach(fn => fn());
+ unsubs = [];
+}
+
+$('tabTasksBtn').onclick = () => {
+ $('tasksSection').classList.remove('hidden');
+ $('mySection').classList.add('hidden');
+ $('tabTasksBtn').className = 'btn';
+ $('tabMyBtn').className = 'btn sec';
 };
 
-$('registerBtn').onclick = async () => {
-  $('authMsg').textContent = '';
-  try {
-    const cred = await auth.createUserWithEmailAndPassword($('email').value.trim(), $('password').value);
-    await db.ref(`wallets/${cred.user.uid}`).set({
-      balance: 0,
-      email: cred.user.email || '',
-      createdAt: firebase.database.ServerValue.TIMESTAMP
-    });
-  } catch (e) {
-    $('authMsg').textContent = e.message;
-  }
+$('tabMyBtn').onclick = () => {
+ $('mySection').classList.remove('hidden');
+ $('tasksSection').classList.add('hidden');
+ $('tabMyBtn').className = 'btn';
+ $('tabTasksBtn').className = 'btn sec';
 };
-
-$('logoutBtn').onclick = () => auth.signOut();
-
-document.querySelectorAll('[data-tab]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.tab;
-    ['tasksTab', 'myTab'].forEach(id => {
-      $(id).classList.toggle('hidden', id !== target);
-    });
-    document.querySelectorAll('[data-tab]').forEach(b => {
-      b.classList.toggle('active', b.dataset.tab === target);
-      b.classList.toggle('secondary', b.dataset.tab !== target);
-    });
-  });
-});
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    selectedPlatform = btn.dataset.platform;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
-    renderTasks();
-  });
+ btn.addEventListener('click', () => {
+  selectedPlatform = btn.dataset.platform;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderTasks();
+ });
 });
 
-auth.onAuthStateChanged(async user => {
-  stopListeners();
-  currentUser = user;
-  $('authPanel').classList.toggle('hidden', !!user);
-  $('appPanel').classList.toggle('hidden', !user);
-  $('logoutBtn').classList.toggle('hidden', !user);
-  $('adminPageLink').classList.add('hidden');
-  $('userLabel').textContent = user ? user.email : 'Not signed in';
+onAuthStateChanged(auth, user => {
+ clearListeners();
+ currentUser = user;
 
-  if (!user) {
-    tasksCache = {};
-    subsCache = {};
-    return;
-  }
+ if (!user) {
+  $('userName').textContent = 'Login required';
+  location.href = 'index.html';
+  return;
+ }
 
-  try {
-    const adminSnap = await db.ref(`admins/${user.uid}`).once('value');
-    if (adminSnap.val() === true) {
-      $('adminPageLink').classList.remove('hidden');
-    }
-  } catch (_) {}
+ $('userName').textContent = user.displayName || user.email || 'Member';
 
-  startListeners();
+ listen(ref(db, `users/${user.uid}/balance`), snap => {
+  $('wallet').textContent = money(snap.val() || 0);
+ });
+
+ listen(ref(db, 'tasks'), snap => {
+  tasksCache = snap.val() || {};
+  renderTasks();
+ });
+
+ listen(ref(db, `submissions/${user.uid}`), snap => {
+  subsCache = snap.val() || {};
+  const vals = Object.values(subsCache);
+  $('approvedCount').textContent = vals.filter(x => x.status === 'approved').length;
+  $('pendingCount').textContent = vals.filter(x => x.status === 'pending').length;
+  $('rejectedCount').textContent = vals.filter(x => x.status === 'rejected').length;
+  renderMine();
+  renderTasks();
+ });
 });
-
-function startListeners() {
-  stopListeners();
-
-  listen(db.ref('tasks'), 'value', snap => {
-    tasksCache = snap.val() || {};
-    renderTasks();
-  });
-
-  listen(db.ref(`wallets/${currentUser.uid}/balance`), 'value', snap => {
-    $('balance').textContent = money(snap.val());
-  });
-
-  listen(db.ref(`submissions/${currentUser.uid}`), 'value', snap => {
-    subsCache = snap.val() || {};
-    const vals = Object.values(subsCache);
-    $('approvedCount').textContent = vals.filter(x => x.status === 'approved').length;
-    $('pendingCount').textContent = vals.filter(x => x.status === 'pending').length;
-    $('rejectedCount').textContent = vals.filter(x => x.status === 'rejected').length;
-    renderMine();
-    renderTasks();
-  });
-}
 
 function renderTasks() {
-  if (!currentUser) return;
-  const arr = Object.entries(tasksCache).filter(([, t]) => {
-    if (t.active === false) return false;
-    if (selectedPlatform !== 'All' && (t.platform || 'Other') !== selectedPlatform) return false;
-    return true;
-  });
+ if (!currentUser) return;
+ const list = Object.entries(tasksCache).filter(([, t]) => {
+  if (t.active === false) return false;
+  if (selectedPlatform !== 'All' && (t.platform || 'Other') !== selectedPlatform) return false;
+  return true;
+ });
 
-  if (!arr.length) {
-    $('taskList').innerHTML = '<div class="empty">Is platform ya category mein abhi koi task available nahi hai.</div>';
-    return;
+ if (!list.length) {
+  $('taskList').innerHTML = '<div class="card p-6 text-center text-xs muted col-span-full">Is category mein abhi koi task available nahi hai.</div>';
+  return;
+ }
+
+ $('taskList').innerHTML = list.map(([id, t]) => {
+  const reward = Number(t.reward ?? 0.50);
+  const sub = subsCache[id];
+  let btnHtml = `<button class="btn w-full" onclick="openTask('${esc(id)}')">Start Task & Upload Proof</button>`;
+
+  if (sub) {
+   if (sub.status === 'rejected') {
+    btnHtml = `<button class="btn w-full" onclick="openTask('${esc(id)}')">Resubmit Screenshot</button>`;
+   } else {
+    btnHtml = `<button class="btn sec w-full" disabled>Submitted (${esc(sub.status)})</button>`;
+   }
   }
 
-  $('taskList').innerHTML = arr.map(([id, t]) => {
-    const existingSub = subsCache[id];
-    const rewardVal = Number(t.reward ?? 0.50);
-    let actionHtml = `<button class="btn" onclick="openTask('${esc(id)}')">Start Task & Submit Proof</button>`;
-
-    if (existingSub) {
-      if (existingSub.status === 'rejected') {
-        actionHtml = `<button class="btn" onclick="openTask('${esc(id)}')">Resubmit Proof</button>`;
-      } else {
-        actionHtml = `<button class="btn secondary" disabled>Submitted (${esc(existingSub.status)})</button>`;
-      }
-    }
-
-    return `
-      <article class="task">
-        <div>
-          <span class="pill">${esc(t.platform || 'Other')}</span>
-          <span class="pill">${esc(t.type || 'Task')}</span>
-        </div>
-        <h3>${esc(t.title)}</h3>
-        <p class="muted">${esc(t.instructions || '')}</p>
-        <div class="row" style="margin-top:10px">
-          <span class="reward">+ ${money(rewardVal)}</span>
-        </div>
-        <div style="margin-top:13px">${actionHtml}</div>
-      </article>
-    `;
-  }).join('');
+  return `
+   <article class="card p-4 flex flex-col justify-between gap-3">
+    <div class="space-y-2">
+     <div class="flex items-center justify-between gap-2">
+      <span class="pill">${esc(t.platform || 'Other')}</span>
+      <span class="text-sm font-bold text-emerald-700">+ ${money(reward)}</span>
+     </div>
+     <h3 class="font-bold text-base">${esc(t.title)}</h3>
+     <p class="text-xs muted leading-relaxed">${esc(t.instructions || '')}</p>
+    </div>
+    <div>${btnHtml}</div>
+   </article>
+  `;
+ }).join('');
 }
 
 window.openTask = id => {
-  const t = tasksCache[id];
-  if (!t || !currentUser) return;
+ const t = tasksCache[id];
+ if (!t || !currentUser) return;
 
-  const rewardVal = Number(t.reward ?? 0.50);
-  if (t.url) {
-    const w = window.open(t.url, '_blank', 'noopener');
-    if (!w) alert('Task link kholne ke liye browser mein popups allow karein.');
-  }
+ const reward = Number(t.reward ?? 0.50);
+ if (t.url) {
+  const win = window.open(t.url, '_blank', 'noopener');
+  if (!win) toast('Task link open karne ke liye popup allow karein');
+ }
 
-  $('submitBoxMount').innerHTML = `
-    <div class="panel" style="margin:14px 0" id="submitBox">
-      <div class="row" style="justify-content:space-between">
-        <h3 style="margin:0">Submit Proof: ${esc(t.title)}</h3>
-        <span class="reward">Reward: ${money(rewardVal)}</span>
-      </div>
-      <p class="muted">Task complete karne ke baad wapis aakar screenshot upload karein.</p>
-      <label>Screenshot proof (JPG, PNG, WEBP — max 5 MB)</label>
-      <input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp" capture="environment">
-      <label>Note / proof details (optional)</label>
-      <textarea id="proofNote" placeholder="Apna username, comment ya completion detail likhein..."></textarea>
-      <div class="row">
-        <button class="btn green" id="sendProof">Submit for Approval</button>
-        <button class="btn secondary" type="button" onclick="$('submitBoxMount').innerHTML=''">Cancel</button>
-      </div>
-      <p id="proofMsg" class="muted"></p>
-    </div>
-  `;
+ $('submitBoxMount').innerHTML = `
+  <div id="submitBox" class="card p-4 space-y-2 border-amber-300">
+   <div class="flex items-center justify-between gap-2">
+    <h3 class="font-bold text-base">Submit Proof: ${esc(t.title)}</h3>
+    <span class="text-sm font-bold text-emerald-700">+ ${money(reward)}</span>
+   </div>
+   <p class="text-xs muted">Task complete karne ke baad wapis aakar screenshot upload karein.</p>
+   <label>Screenshot (JPG, PNG, WEBP — max 5 MB)</label>
+   <input id="proofFile" type="file" accept="image/png,image/jpeg,image/webp" capture="environment">
+   <label>Note (optional)</label>
+   <textarea id="proofNote" placeholder="Username ya completion detail likhein..."></textarea>
+   <div class="flex gap-2 flex-wrap">
+    <button id="sendProofBtn" class="btn ok flex-1">Submit for Approval</button>
+    <button type="button" class="btn sec" onclick="$('submitBoxMount').innerHTML=''">Cancel</button>
+   </div>
+   <p id="proofMsg" class="text-xs muted"></p>
+  </div>
+ `;
 
-  $('submitBox').scrollIntoView({ behavior: 'smooth' });
-  $('sendProof').onclick = () => submitProof(id);
+ $('submitBox').scrollIntoView({ behavior: 'smooth' });
+ $('sendProofBtn').onclick = () => submitProof(id);
 };
 
 async function submitProof(taskId) {
-  if (!currentUser) return;
-  const file = $('proofFile').files[0];
-  const t = tasksCache[taskId];
+ if (!currentUser) return;
+ const file = $('proofFile').files[0];
+ const t = tasksCache[taskId];
 
-  if (!file) {
-    $('proofMsg').textContent = 'Please screenshot select karein.';
-    return;
-  }
-  if (file.size > 5 * 1024 * 1024) {
-    $('proofMsg').textContent = 'Maximum screenshot size 5 MB hai.';
-    return;
-  }
-  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
-    $('proofMsg').textContent = 'Sirf JPG, PNG ya WEBP image allowed hai.';
-    return;
-  }
+ if (!file) {
+  $('proofMsg').textContent = 'Please screenshot select karein.';
+  return;
+ }
+ if (file.size > 5 * 1024 * 1024) {
+  $('proofMsg').textContent = 'Screenshot 5 MB se bara na ho.';
+  return;
+ }
+ if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+  $('proofMsg').textContent = 'Sirf JPG, PNG ya WEBP image upload karein.';
+  return;
+ }
 
-  const btn = $('sendProof');
-  btn.disabled = true;
-  $('proofMsg').textContent = 'Screenshot upload ho raha hai...';
+ const btn = $('sendProofBtn');
+ btn.disabled = true;
+ $('proofMsg').textContent = 'Uploading screenshot...';
 
-  try {
-    const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
-    const path = `proofs/${currentUser.uid}/${taskId}_${Date.now()}.${ext}`;
-    const snap = await storage.ref(path).put(file, { contentType: file.type });
-    const proofUrl = await snap.ref.getDownloadURL();
-    const rewardAmount = Number(t?.reward ?? 0.50);
+ try {
+  const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+  const fileRef = sRef(storage, `proofs/${currentUser.uid}/${taskId}_${Date.now()}.${ext}`);
+  const snap = await uploadBytes(fileRef, file, { contentType: file.type });
+  const proofUrl = await getDownloadURL(snap.ref);
+  const reward = Number(t?.reward ?? 0.50);
 
-    await db.ref(`submissions/${currentUser.uid}/${taskId}`).set({
-      taskId,
-      uid: currentUser.uid,
-      userEmail: currentUser.email || '',
-      taskTitle: t?.title || taskId,
-      platform: t?.platform || 'Other',
-      proofPath: path,
-      proofUrl,
-      note: $('proofNote').value.trim(),
-      status: 'pending',
-      reward: rewardAmount,
-      createdAt: firebase.database.ServerValue.TIMESTAMP
-    });
+  await set(ref(db, `submissions/${currentUser.uid}/${taskId}`), {
+   taskId,
+   uid: currentUser.uid,
+   userEmail: currentUser.email || '',
+   taskTitle: t?.title || taskId,
+   platform: t?.platform || 'Other',
+   proofUrl,
+   note: $('proofNote').value.trim(),
+   status: 'pending',
+   reward,
+   createdAt: serverTimestamp()
+  });
 
-    $('proofMsg').textContent = 'Screenshot submit ho gaya! Admin approval ka intezar karein.';
-    setTimeout(() => {
-      if ($('submitBoxMount')) $('submitBoxMount').innerHTML = '';
-    }, 1500);
-  } catch (e) {
-    $('proofMsg').textContent = 'Upload error: ' + e.message;
-    btn.disabled = false;
-  }
+  toast('Screenshot submit ho gaya! Admin approval ka intezar karein.');
+  $('submitBoxMount').innerHTML = '';
+ } catch (err) {
+  $('proofMsg').textContent = 'Error: ' + err.message;
+  btn.disabled = false;
+ }
 }
 
 function renderMine() {
-  const entries = Object.entries(subsCache);
-  if (!entries.length) {
-    $('myList').innerHTML = '<div class="empty">Aapne abhi tak koi task submit nahi kiya.</div>';
-    return;
-  }
+ const entries = Object.entries(subsCache);
+ if (!entries.length) {
+  $('myList').innerHTML = '<div class="card p-6 text-center text-xs muted">Aapne abhi tak koi task submit nahi kiya.</div>';
+  return;
+ }
 
-  entries.sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0));
+ entries.sort(([, a], [, b]) => (b.createdAt || 0) - (a.createdAt || 0));
 
-  $('myList').innerHTML = entries.map(([, s]) => {
-    const status = s.status || 'pending';
-    const pillClass = status === 'approved' ? 'ok' : status === 'rejected' ? 'no' : 'wait';
-    const rewardVal = Number(s.reward ?? 0.50);
+ $('myList').innerHTML = entries.map(([, s]) => {
+  const st = s.status || 'pending';
+  const badgeCls = st === 'approved' ? 'ok' : st === 'rejected' ? 'no' : 'wait';
+  const reward = Number(s.reward ?? 0.50);
 
-    return `
-      <div class="submission">
-        <div class="row" style="justify-content:space-between">
-          <div>
-            <b>${esc(s.taskTitle || s.taskId)}</b>
-            <p class="muted" style="margin:4px 0 0">${esc(s.platform || 'Other')} · ${new Date(s.createdAt || Date.now()).toLocaleString()}</p>
-          </div>
-          <div>
-            <span class="pill ${pillClass}">${esc(status.toUpperCase())}</span>
-            <b class="reward">${status === 'approved' ? '+ ' + money(rewardVal) : money(rewardVal)}</b>
-          </div>
-        </div>
-        ${status === 'rejected' ? `<p class="muted" style="color:var(--red);margin:6px 0 0">Reason: ${esc(s.rejectReason || 'Not specified')}</p>` : ''}
-      </div>
-    `;
-  }).join('');
+  return `
+   <div class="card p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+    <div>
+     <b class="text-sm">${esc(s.taskTitle || s.taskId)}</b>
+     <p class="text-xs muted mt-0.5">${esc(s.platform || 'Other')} · ${new Date(s.createdAt || Date.now()).toLocaleString()}</p>
+     ${st === 'rejected' ? `<p class="text-xs text-red-600 mt-1">Reason: ${esc(s.rejectReason || 'Not specified')}</p>` : ''}
+    </div>
+    <div class="flex items-center gap-2">
+     <span class="pill ${badgeCls}">${esc(st.toUpperCase())}</span>
+     <b class="text-sm text-emerald-700">${st === 'approved' ? '+ ' + money(reward) : money(reward)}</b>
+    </div>
+   </div>
+  `;
+ }).join('');
 }
+
+$('logout').onclick = async () => {
+ try {
+  await signOut(auth);
+  location.href = 'index.html';
+ } catch (err) {
+  toast(err.message || 'Logout failed');
+ }
+};
 </script>
+
 </body>
 </html>
