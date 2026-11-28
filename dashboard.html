@@ -11,156 +11,126 @@
 .hidden{display:none!important}
 *{box-sizing:border-box}
 body{margin:0;padding-bottom:100px;font-family:Arial,sans-serif;background:#faf7f1;color:#292524;overflow-x:hidden}
-.gold{color:#a37f38}.card{background:white;border:1px solid #e8d9bb;border-radius:18px;box-shadow:0 5px 18px #a37f3810}
+.gold{color:#a37f38}
+.card{background:white;border:1px solid #e8d9bb;border-radius:18px;box-shadow:0 5px 18px #a37f3810}
 .btn{background:linear-gradient(120deg,#c5a059,#a37f38);color:white}
 .muted{color:#78716c}
-input,select{border:1px solid #e7dfd2;border-radius:12px;padding:11px;width:100%;background:white}
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;border-radius:12px;font-size:9px;font-weight:bold;padding:9px 2px;animation:float 3s ease-in-out infinite}
 .nav-item i{font-size:17px}
-.nav-item:nth-child(2){animation-delay:.2s}.nav-item:nth-child(3){animation-delay:.4s}.nav-item:nth-child(4){animation-delay:.6s}.nav-item:nth-child(5){animation-delay:.8s}
+.nav-item:nth-child(2){animation-delay:.2s}
+.nav-item:nth-child(3){animation-delay:.4s}
+.nav-item:nth-child(4){animation-delay:.6s}
+.nav-item:nth-child(5){animation-delay:.8s}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .how-btn{animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 #c5a05955}50%{box-shadow:0 0 0 8px #c5a05900}}
-.detail-fab{position:fixed;right:12px;bottom:82px;z-index:45;border-radius:30px;padding:11px 15px;background:linear-gradient(120deg,#c5a059,#96702e);color:white;font-size:12px;font-weight:bold;box-shadow:0 5px 18px #6b4b1b44;animation:pulse 2.5s infinite}
-.modal{background:#0009;backdrop-filter:blur(4px)}
 @media(max-width:640px){
- body{padding-bottom:100px}
- main{padding:12px!important}
- .market-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
- .market-grid article{padding:10px;border-radius:14px;min-width:0}
- .market-grid article h3{font-size:12px;min-height:28px}
- .market-grid article .price-line{font-size:11px;overflow-wrap:anywhere}
- .market-grid article button{font-size:10px;padding:9px 3px}
- .nav-item{font-size:8px;min-height:55px}
- .nav-item i{font-size:16px}
- .detail-fab{bottom:78px;font-size:11px;padding:10px 12px}
- .modal-panel{max-height:88vh!important;padding:15px!important}
+body{padding-bottom:100px}
+main{padding:12px!important}
+.nav-item{font-size:8px;min-height:55px}
+.nav-item i{font-size:16px}
 }
-@media(max-width:360px){.nav-item{font-size:7px}.nav-item i{font-size:14px}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+@media(max-width:360px){
+.nav-item{font-size:7px}
+.nav-item i{font-size:14px}
+}
+@media(prefers-reduced-motion:reduce){
+*{animation:none!important}
+}
 </style>
 </head>
+
 <body>
+
 <header class="sticky top-0 z-30 bg-white border-b border-amber-200">
  <div class="max-w-6xl mx-auto px-3 h-16 flex items-center justify-between">
+
   <div class="flex items-center gap-2">
    <span class="w-10 h-10 rounded-xl btn flex items-center justify-center text-xl font-bold">S</span>
-   <span><b class="text-xl gold">Sabii</b><small class="block text-[9px]">MEMBER DASHBOARD</small></span>
+   <span>
+    <b class="text-xl gold">Sabii</b>
+    <small class="block text-[9px]">MEMBER DASHBOARD</small>
+   </span>
   </div>
+
   <div class="flex items-center gap-3">
-   <button id="howOpen" class="how-btn rounded-full bg-amber-50 border border-amber-200 text-amber-800 w-9 h-9"><i class="fa-solid fa-circle-info"></i></button>
+   <button id="howOpen" class="how-btn rounded-full bg-amber-50 border border-amber-200 text-amber-800 w-9 h-9" aria-label="Dashboard information">
+    <i class="fa-solid fa-circle-info"></i>
+   </button>
+
    <span id="userName" class="text-xs font-bold">Loading...</span>
-   <button id="logout" class="text-red-500"><i class="fa-solid fa-right-from-bracket"></i></button>
+
+   <button id="logout" class="text-red-500" aria-label="Logout">
+    <i class="fa-solid fa-right-from-bracket"></i>
+   </button>
   </div>
+
  </div>
 </header>
 
 <main class="max-w-6xl mx-auto p-4 space-y-4">
+
  <div class="card p-4 flex justify-between items-center">
-  <div><p class="text-xs muted">Available wallet balance</p><strong id="wallet" class="text-2xl gold">Rs 0.00</strong></div>
+  <div>
+   <p class="text-xs muted">Available wallet balance</p>
+   <strong id="wallet" class="text-2xl gold">Rs 0.00</strong>
+  </div>
+
   <i class="fa-solid fa-wallet text-3xl gold"></i>
  </div>
 
- <section class="card p-4">
-  <div class="flex justify-between items-center gap-2">
-   <div><h1 class="text-lg font-extrabold">Sabii Commodity Market</h1><p class="text-xs muted">Admin-updated reference prices</p></div>
-   <span class="text-xs bg-amber-50 text-amber-800 rounded-full px-3 py-2">Market</span>
-  </div>
-  <div id="marketNote" class="text-xs text-stone-500 mt-3">Reference prices. Actual market prices may differ.</div>
-  <div id="market" class="market-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mt-4"></div>
- </section>
-
- <section class="card p-4">
-  <h2 class="font-bold text-lg">My Holdings</h2>
-  <p class="text-xs muted mb-3">Estimated value and profit/loss. Not withdrawable wallet balance.</p>
-  <div id="holdings" class="space-y-3 text-sm muted">No approved holdings yet.</div>
- </section>
-
- <section class="card p-4">
-  <h2 class="font-bold text-lg">My Orders</h2>
-  <div id="orders" class="mt-3 space-y-2 text-sm muted">No orders yet.</div>
- </section>
 </main>
 
+<!-- Bottom Navigation -->
 <nav class="fixed bottom-0 inset-x-0 z-40 bg-white border-t border-amber-200">
  <div class="max-w-6xl mx-auto grid grid-cols-5 gap-1 p-2 text-center">
-  <a href="payment.html" class="nav-item text-emerald-700"><i class="fa-solid fa-credit-card"></i>Payment</a>
-  <a href="gmail-selling.html" class="nav-item text-sky-700"><i class="fa-solid fa-envelope"></i>Gmail Rs 50</a>
-  <a href="referral.html" class="nav-item text-orange-700"><i class="fa-solid fa-users"></i>Referral Rs 50</a>
-  <a href="help-centre.html" class="nav-item text-rose-700"><i class="fa-solid fa-headset"></i>Help</a>
-  <a href="task.html" class="nav-item text-amber-800 bg-amber-50"><i class="fa-solid fa-list-check"></i>Tasks Rs 1</a>
+
+  <a href="payment.html" class="nav-item text-emerald-700">
+   <i class="fa-solid fa-credit-card"></i>
+   Payment
+  </a>
+
+  <a href="gmail-selling.html" class="nav-item text-sky-700">
+   <i class="fa-solid fa-envelope"></i>
+   Gmail Rs 50
+  </a>
+
+  <a href="referral.html" class="nav-item text-orange-700">
+   <i class="fa-solid fa-users"></i>
+   Referral Rs 50
+  </a>
+
+  <a href="help-centre.html" class="nav-item text-rose-700">
+   <i class="fa-solid fa-headset"></i>
+   Help
+  </a>
+
+  <a href="task.html" class="nav-item text-amber-800 bg-amber-50">
+   <i class="fa-solid fa-list-check"></i>
+   Tasks Rs 1
+  </a>
+
  </div>
 </nav>
 
-<div id="buyModal" class="hidden fixed inset-0 z-50 modal flex items-center justify-center p-3">
- <div class="modal-panel bg-white rounded-3xl p-5 w-full max-w-md max-h-[92vh] overflow-auto">
-  <div class="flex justify-between"><h3 id="modalTitle" class="font-bold text-lg">Buy</h3><button id="closeModal" class="text-xl">×</button></div>
-  <p id="unitPrice" class="text-sm muted mt-1"></p>
-  <form id="buyForm" class="space-y-3 mt-4">
-   <label class="block text-xs font-bold">Quantity<input id="quantity" type="number" min="0.01" step="0.01" value="1" required></label>
-   <div class="bg-amber-50 p-3 rounded-xl flex justify-between"><span>Total</span><b id="total">Rs 0</b></div>
-   <label class="block text-xs font-bold">Payment method
-    <select id="paymentMethod"><option value="wallet">Website wallet</option><option value="easypaisa">Easypaisa</option></select>
-   </label>
-   <div id="walletInfo" class="text-xs bg-stone-50 p-3 rounded-xl">Wallet request will be checked by admin.</div>
-   <div id="easypaisaInfo" class="hidden text-xs bg-amber-50 p-3 rounded-xl">Send payment to Sajjad Ali<br>Easypaisa: <b>03428051256</b></div>
-   <label id="proofWrap" class="hidden block text-xs font-bold">Payment screenshot<input id="proof" type="file" accept="image/*" class="mt-2"></label>
-   <label class="flex gap-2 text-xs"><input id="agree" type="checkbox" required style="width:auto"><span>I understand prices can fall and profit is not guaranteed.</span></label>
-   <button class="btn rounded-xl w-full py-3 font-bold" type="submit">Submit purchase request</button>
-  </form>
- </div>
-</div>
-
-<div id="howModal" class="hidden fixed inset-0 z-[70] modal flex items-center justify-center p-3">
- <div class="modal-panel bg-white rounded-3xl p-5 w-full max-w-2xl max-h-[90vh] overflow-auto">
-  <div class="flex justify-between items-center border-b pb-3">
-   <h2 class="font-extrabold text-amber-900">ویب سائٹ استعمال کرنے کا مکمل طریقہ</h2>
-   <button id="howClose" class="text-2xl">×</button>
-  </div>
-  <div dir="rtl" class="text-right text-sm leading-8 space-y-4 pt-3">
-   <section><h3 class="font-bold text-amber-800">1۔ Tasks سے کمائی</h3><p>نیچے Tasks پر کلک کریں۔ کام کی ہدایات پڑھیں، کام مکمل کریں اور مطلوبہ ثبوت جمع کروائیں۔ ہر منظور شدہ ٹاسک کا انعام Rs 1 ہے۔ جعلی ثبوت یا ایک ہی کام بار بار جمع نہ کروائیں۔</p></section>
-   <section><h3 class="font-bold text-amber-800">2۔ Gmail کام</h3><p>Gmail والے حصے میں صرف واضح اور جائز کام کریں۔ Rs 50 فی اہل اور منظور شدہ کام کی شرح ہے۔ اپنا Gmail پاس ورڈ، OTP یا ریکوری کوڈ کسی کو نہ دیں۔</p></section>
-   <section><h3 class="font-bold text-amber-800">3۔ Referral</h3><p>اپنا referral link دوستوں کے ساتھ شیئر کریں۔ Rs 50 صرف حقیقی نئے ممبر اور ویب سائٹ کی شرائط پوری ہونے پر منظور ہوگا۔ جعلی اکاؤنٹ نہ بنائیں۔</p></section>
-   <section><h3 class="font-bold text-amber-800">4۔ چیز کیسے خریدیں؟</h3><p>Market میں کسی چیز کے Buy / Request بٹن پر کلک کریں۔ مقدار درج کریں، کل رقم دیکھیں اور ادائیگی کا طریقہ منتخب کریں۔ Easypaisa کی صورت میں ادائیگی کی اصل رسید اپ لوڈ کریں۔ Admin کی تصدیق کے بعد ہی آرڈر منظور ہوگا۔</p></section>
-   <section><h3 class="font-bold text-amber-800">5۔ منافع اور نقصان</h3><p>مثال: اگر ایک یونٹ Rs 300 میں لیا اور بعد میں قیمت Rs 320 ہوئی تو اندازاً Rs 20 منافع دکھے گا۔ قیمت Rs 200 ہونے پر Rs 100 نقصان ہوگا۔ یہ صرف تخمینہ ہے، یقینی کمائی نہیں۔</p><p>اس موجودہ Dashboard میں دکھایا گیا منافع خود بخود Wallet میں شامل نہیں ہوتا اور نقصان خود بخود Wallet سے نہیں کٹتا۔ حقیقی منافع کے لیے حقیقی ملکیت اور جائز خرید و فروخت ضروری ہے۔</p></section>
-   <section><h3 class="font-bold text-amber-800">6۔ قیمتیں اور احتیاط</h3><p>قیمتیں Admin اپ ڈیٹ کرتا ہے۔ اصل بازار کی قیمت شہر اور وقت کے مطابق مختلف ہوسکتی ہے۔ قیمت بڑھنے کی ضمانت نہیں؛ نقصان بھی ہوسکتا ہے۔</p></section>
-   <p class="bg-amber-50 border border-amber-200 rounded-xl p-3 font-bold">صرف حقیقی اور جائز کام کریں۔ کسی کو اپنا پاس ورڈ یا OTP نہ دیں۔</p>
-  </div>
- </div>
-</div>
-
-<button id="detailsFab" class="detail-fab"><i class="fa-solid fa-circle-info"></i> مکمل طریقہ کار</button>
 <div id="toast" class="hidden fixed top-20 right-4 z-[90] bg-stone-900 text-white p-3 rounded-xl text-xs"></div>
 
-<script>
-(function(){
- const items=[
- ['petrol','Petrol','fa-gas-pump',314,'litre'],
- ['diesel','Diesel','fa-truck',348,'litre'],
- ['flour20','Flour 20 KG','fa-wheat-awn',2800,'20 kg bag'],
- ['gold','Gold 24K','fa-coins',385436,'tola'],
- ['sugar','Sugar','fa-cubes-stacked',150,'kg'],
- ['rice','Rice','fa-bowl-rice',222,'kg'],
- ['ghee','Ghee','fa-jar',625,'kg'],
- ['chicken','Chicken','fa-drumstick-bite',465,'kg'],
- ['potato','Potatoes','fa-carrot',55,'kg'],
- ['onion','Onions','fa-leaf',213,'kg'],
- ['tomato','Tomatoes','fa-apple-whole',230,'kg'],
- ['oil5','Cooking oil 5L','fa-bottle-droplet',3090,'5 litre'],
- ['masoor','Daal Masoor','fa-seedling',264,'kg'],
- ['wheat','Wheat','fa-wheat-awn',140,'kg']
- ];
- window.sabiiDefaultItems=items;
- const root=document.getElementById('market');
- root.innerHTML=items.map(x=>`<article class="border border-amber-100 rounded-2xl p-3 bg-white"><div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center"><i class="fa-solid ${x[2]}"></i></div><h3 class="font-bold text-sm mt-2">${x[1]}</h3><p class="text-xs muted">Rs ${x[3].toLocaleString()} / ${x[4]}</p><p class="text-[10px] text-stone-400 mt-1">Reference price</p><button class="btn rounded-xl w-full py-2 mt-3 text-xs font-bold" disabled>Loading account...</button></article>`).join('');
-})();
-</script>
-
 <script type="module">
+
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-import {getAuth,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import {getDatabase,ref,onValue,push,set} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
-import {getStorage,ref as sRef,uploadBytes,getDownloadURL} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js';
+
+import {
+ getAuth,
+ onAuthStateChanged,
+ signOut
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+
+import {
+ getDatabase,
+ ref,
+ onValue
+} from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js';
+
 
 const firebaseConfig={
  apiKey:'AIzaSyC0ufsDkglGIXuU8Tj3wg4-yexoI6oxBm4',
@@ -172,149 +142,82 @@ const firebaseConfig={
  appId:'1:124632688151:web:b4804b0cc7f301d30d9e52'
 };
 
+
 const app=initializeApp(firebaseConfig);
-const auth=getAuth(app),db=getDatabase(app),storage=getStorage(app);
-let uid=null,prices={},selected=null;
-const defaults=window.sabiiDefaultItems;
-const money=n=>'Rs '+Number(n||0).toLocaleString('en-PK',{maximumFractionDigits:2});
+const auth=getAuth(app);
+const db=getDatabase(app);
+
 const $=id=>document.getElementById(id);
 
-function toast(message){
- const el=$('toast');el.textContent=message;el.classList.remove('hidden');
- setTimeout(()=>el.classList.add('hidden'),5000);
-}
-function openHow(){$('howModal').classList.remove('hidden')}
-$('howOpen').onclick=openHow;
-$('detailsFab').onclick=openHow;
-$('howClose').onclick=()=>$('howModal').classList.add('hidden');
-$('howModal').addEventListener('click',e=>{if(e.target.id==='howModal')e.currentTarget.classList.add('hidden')});
-
-function renderMarket(){
- const root=$('market');root.innerHTML='';
- defaults.forEach(([id,name,icon,base,unit])=>{
-  const price=Number(prices[id]?.price??base);
-  const card=document.createElement('article');
-  card.className='border border-amber-100 rounded-2xl p-3 bg-white';
-  card.innerHTML=`<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center"><i class="fa-solid ${icon}"></i></div><h3 class="font-bold text-sm mt-2"></h3><p class="text-xs muted"></p><p class="text-[10px] text-stone-400 mt-1"></p><button class="btn rounded-xl w-full py-2 mt-3 text-xs font-bold">Buy / Request</button>`;
-  card.querySelector('h3').textContent=name;
-  card.querySelector('p').textContent=money(price)+' / '+unit;
-  card.querySelectorAll('p')[1].textContent=prices[id]?.updatedAt?'Updated: '+new Date(prices[id].updatedAt).toLocaleDateString():'Reference price';
-  card.querySelector('button').onclick=()=>openBuy({id,name,price,unit});
-  root.appendChild(card);
- });
-}
-renderMarket();
-
-function openBuy(item){
- selected=item;
- $('modalTitle').textContent='Buy '+item.name;
- $('unitPrice').textContent=money(item.price)+' per '+item.unit;
- $('quantity').value=1;calc();
- $('buyModal').classList.remove('hidden');
-}
-function calc(){
- if(!selected)return;
- $('total').textContent=money(Number($('quantity').value||0)*selected.price);
-}
-$('quantity').addEventListener('input',calc);
-$('closeModal').onclick=()=>$('buyModal').classList.add('hidden');
-
-$('paymentMethod').onchange=e=>{
- const isEP=e.target.value==='easypaisa';
- $('easypaisaInfo').classList.toggle('hidden',!isEP);
- $('proofWrap').classList.toggle('hidden',!isEP);
- $('walletInfo').classList.toggle('hidden',isEP);
- $('proof').required=isEP;
-};
-
-$('buyForm').onsubmit=async e=>{
- e.preventDefault();
- if(!uid||!selected)return toast('Please login first');
- const quantity=Number($('quantity').value);
- const method=$('paymentMethod').value;
- const total=quantity*selected.price;
- if(!(quantity>0)||!Number.isFinite(total))return toast('Valid quantity enter karein');
- const button=e.submitter;button.disabled=true;button.textContent='Submitting...';
- try{
-  const order=push(ref(db,`marketOrders/${uid}`));
-  let proofUrl='';
-  if(method==='easypaisa'){
-   const file=$('proof').files[0];
-   if(!file)throw Error('Payment screenshot upload karein');
-   if(file.size>5*1024*1024)throw Error('Screenshot 5MB se chhota hona chahiye');
-   const path=`paymentProofs/${uid}/${order.key}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-   const uploaded=await uploadBytes(sRef(storage,path),file);
-   proofUrl=await getDownloadURL(uploaded.ref);
-  }
-  await set(order,{
-   uid,commodityId:selected.id,commodityName:selected.name,
-   quantity,unit:selected.unit,unitPrice:selected.price,total,
-   paymentMethod:method,paymentProofUrl:proofUrl,
-   status:'pending',createdAt:Date.now()
-  });
-  toast('Request submitted. Admin approval pending.');
-  $('buyModal').classList.add('hidden');e.target.reset();
- }catch(error){toast(error.message||'Request submit nahi hui')}
- finally{button.disabled=false;button.textContent='Submit purchase request'}
-};
-
-onAuthStateChanged(auth,user=>{
- if(!user){$('userName').textContent='Login required';location.href='index.html';return}
- uid=user.uid;
- $('userName').textContent=user.displayName||user.email||'Member';
-
- onValue(ref(db,`users/${uid}`),snapshot=>{
-  const data=snapshot.val()||{};
-  $('wallet').textContent=money(data.balance||0);
- },error=>toast('Wallet error: '+error.message));
-
- onValue(ref(db,'marketPrices'),snapshot=>{
-  prices=snapshot.val()||{};
-  renderMarket();
- },error=>{
-  $('marketNote').textContent='Default reference prices shown. Firebase market data error: '+error.message;
-  toast('Market data error: '+error.message);
- });
-
- onValue(ref(db,`marketHoldings/${uid}`),snapshot=>{
-  const data=snapshot.val()||{};
-  const root=$('holdings');root.innerHTML='';
-  const entries=Object.values(data).filter(h=>h.status==='active');
-  if(!entries.length){root.textContent='No approved holdings yet.';return}
-  entries.forEach(h=>{
-   const current=Number(prices[h.commodityId]?.price??h.currentPrice??h.buyPrice);
-   const cost=Number(h.quantity)*Number(h.buyPrice);
-   const value=Number(h.quantity)*current;
-   const profit=value-cost;
-   const div=document.createElement('div');
-   div.className='border rounded-xl p-3 text-xs';
-   div.innerHTML='<b></b><p class="muted mt-1"></p><p class="mt-1 font-bold"></p>';
-   div.querySelector('b').textContent=(h.commodityName||h.commodityId)+' · '+money(value);
-   div.querySelectorAll('p')[0].textContent=`Quantity: ${h.quantity} ${h.unit||''} · Buy price: ${money(h.buyPrice)}`;
-   const result=div.querySelectorAll('p')[1];
-   result.textContent=`Estimated ${profit>=0?'profit':'loss'}: ${money(Math.abs(profit))}`;
-   result.className=profit>=0?'mt-1 text-emerald-700 font-bold':'mt-1 text-red-600 font-bold';
-   root.appendChild(div);
-  });
- },error=>toast('Holdings error: '+error.message));
-
- onValue(ref(db,`marketOrders/${uid}`),snapshot=>{
-  const data=snapshot.val()||{};
-  const root=$('orders');root.innerHTML='';
-  Object.values(data).reverse().forEach(order=>{
-   const row=document.createElement('div');
-   row.className='border rounded-xl p-3';
-   row.textContent=`${order.commodityName} · ${order.quantity} ${order.unit} · ${money(order.total)} · ${(order.status||'pending').toUpperCase()}`;
-   root.appendChild(row);
-  });
-  if(!root.children.length)root.textContent='No orders yet.';
- },error=>toast('Orders error: '+error.message));
+const money=n=>'Rs '+Number(n||0).toLocaleString('en-PK',{
+ minimumFractionDigits:2,
+ maximumFractionDigits:2
 });
 
-$('logout').onclick=async()=>{
- await signOut(auth);
- location.href='index.html';
+
+function toast(message){
+
+ const el=$('toast');
+
+ el.textContent=message;
+
+ el.classList.remove('hidden');
+
+ setTimeout(()=>{
+  el.classList.add('hidden');
+ },3500);
+
+}
+
+
+$('howOpen').onclick=()=>{
+ toast('Welcome to your Sabii dashboard. Use the buttons below to open services.');
 };
+
+
+onAuthStateChanged(auth,user=>{
+
+ if(!user){
+
+  $('userName').textContent='Login required';
+
+  location.href='index.html';
+
+  return;
+
+ }
+
+ $('userName').textContent=user.displayName||user.email||'Member';
+
+
+ onValue(ref(db,`users/${user.uid}`),snapshot=>{
+
+  const data=snapshot.val()||{};
+
+  $('wallet').textContent=money(data.balance||0);
+
+ },error=>toast('Wallet error: '+error.message));
+
+});
+
+
+$('logout').onclick=async()=>{
+
+ try{
+
+  await signOut(auth);
+
+  location.href='index.html';
+
+ }catch(error){
+
+  toast(error.message||'Logout failed');
+
+ }
+
+};
+
 </script>
+
 </body>
 </html>
